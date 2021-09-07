@@ -1,0 +1,25 @@
+LoadP3DFile("art\missions\level04\mission7cam.p3d");
+
+LoadP3DFile( "art\frontend\dynaload\images\msnicons\char\apu.p3d" );
+LoadP3DFile( "art\frontend\dynaload\images\msnicons\location\kwike.p3d" );
+
+// Mission 1 Skin Shop Spawner
+LoadP3DFile( "art\l4m1.p3d" );
+
+// Mission 2 Skin Shop Spawner
+LoadP3DFile( "art\l4m2.p3d" );
+
+// Mission 3 Skin Shop Spawner
+LoadP3DFile( "art\l4m3.p3d" );
+
+// Mission 4 Skin Shop Spawner
+LoadP3DFile( "art\l4m4.p3d" );
+
+// Mission 5 Skin Shop Spawner
+LoadP3DFile( "art\l4m5.p3d" );
+
+// Mission 6 Skin Shop Spawner
+LoadP3DFile( "art\l4m6.p3d" );
+
+// Mission 7 Skin Shop Spawner
+LoadP3DFile( "art\l4m7.p3d" );

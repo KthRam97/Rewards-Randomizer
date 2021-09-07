@@ -1,0 +1,9 @@
+LoadP3DFile("art\missions\level06\mission2cam.p3d");
+
+LoadP3DFile( "art\frontend\dynaload\images\msnicons\char\barneuni.p3d" );
+
+// Mission 1 Skin Shop Spawner
+LoadP3DFile( "art\l6m1.p3d" );
+
+// Mission 2 Skin Shop Spawner
+LoadP3DFile( "art\l6m2.p3d" );

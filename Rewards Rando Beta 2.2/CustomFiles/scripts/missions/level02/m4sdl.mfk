@@ -1,0 +1,16 @@
+LoadP3DFile("art\missions\level02\mission4cam.p3d");
+
+LoadP3DFile( "art\frontend\dynaload\images\msnicons\location\stadium.p3d" );
+LoadP3DFile( "art\frontend\dynaload\images\msnicons\char\frink.p3d" );
+
+// Mission 1 Skin Shop Spawner
+LoadP3DFile( "art\l2m1.p3d" );
+
+// Mission 2 Skin Shop Spawner
+LoadP3DFile( "art\l2m2.p3d" );
+
+// Mission 3 Skin Shop Spawner
+LoadP3DFile( "art\l2m3.p3d" );
+
+// Mission 4 Skin Shop Spawner
+LoadP3DFile( "art\l2m4.p3d" );
