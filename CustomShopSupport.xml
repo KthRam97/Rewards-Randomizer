@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<CustomShopSupport>
+	<SkinShop>
+		<Selector Level="1" Locator="L1M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="1" Locator="L1M4SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="1" Locator="L1M6SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="1" Locator="L1M7SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="2" Locator="L2M1SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="2" Locator="L2M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="2" Locator="L2M3SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="2" Locator="L2M4SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="2" Locator="L2M5SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="3" Locator="L3M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="3" Locator="L3M5SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="3" Locator="L3M6SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="4" Locator="L4M1SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="4" Locator="L4M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="4" Locator="L4M3SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="4" Locator="L4M4SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="4" Locator="L4M5SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="5" Locator="L5M1SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="5" Locator="L5M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="5" Locator="L5M3SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="5" Locator="L5M4SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="6" Locator="L6M1SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="6" Locator="L6M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="6" Locator="L6M3SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="6" Locator="L6M5SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="7" Locator="L7M1SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="7" Locator="L7M2SS"/>
+	</SkinShop>
+	
+	<SkinShop>
+		<Selector Level="7" Locator="L7M3SS"/>
+	</SkinShop>
+</CustomShopSupport>
