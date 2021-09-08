@@ -7,7 +7,7 @@ ThisMission = tonumber(ThisMission)
 
 if ThisLevel == 1 and ThisMission == 0 then
 	CompletedMissions = {}
-	CardCount = 6
+	CardCount = 0
 	CardHints = 0
 	for i=1,7 do
 		CompletedMissions[i] = {}
