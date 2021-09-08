@@ -122,8 +122,8 @@ function Seed.Generate()
 		end
 	end
 	
-	for j=#PossibleMissions,1,-1 do
-		for k=#PossibleMissions[j],1,-1 do
+	for k=#PossibleMissions[j],1,-1 do
+		for j=#PossibleMissions,1,-1 do
 			if PossibleMissions[j][k] then
 				local RewardIdx = math.random(#RemainingRewards)
 				if k >= 12 or (j == 7 and k == 7) then
