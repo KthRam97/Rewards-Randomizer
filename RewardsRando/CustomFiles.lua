@@ -486,8 +486,8 @@ if Settings.Debug then
 end
 
 Seed.Init()
-Seed.Generate()
+local InvalidCount = Seed.Generate()
 Seed.PrintSpoiler()
 
 local endTime = GetTime()
-print("Seeding configured in " .. (endTime - startTime) * 1000 .. "ms.")
+print("Seeding configured after " .. InvalidCount .. " attempts in " .. (endTime - startTime) * 1000 .. "ms.")

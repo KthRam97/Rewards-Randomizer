@@ -21,6 +21,20 @@ for PageIDX in ProjectChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Page) do
 			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. 19 + i))
 			MultiTextChunk:AddChunk(TextChunk:Output())
 		end
+		local ids = {}
+		for _,v in pairs(CustomRestrictionsIdx) do
+			ids[#ids + 1] = v[1]
+		end
+		table.sort(ids)
+		for i=1,#ids do
+			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. ids[i]))
+			MultiTextChunk:AddChunk(TextChunk:Output())
+		end
+		for i=1,7 do
+			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. FirstCoinHint + i))
+			MultiTextChunk:AddChunk(TextChunk:Output())
+			
+		end
 		LayerChunk:SetChunkAtIndex(MultiTextIDX, MultiTextChunk:Output())
 		PageChunk:SetChunkAtIndex(LayerIDX, LayerChunk:Output())
 		ProjectChunk:SetChunkAtIndex(PageIDX, PageChunk:Output())

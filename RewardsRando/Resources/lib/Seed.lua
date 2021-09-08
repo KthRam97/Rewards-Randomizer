@@ -24,6 +24,7 @@ function Seed.Base64dec(s)
 end
 
 local function ChooseLevelAndMission(Possible, IsCar)
+	local InvalidCount = 0
 	::RepickLevel::
 	local level = math.random(#Possible)
 	local missions = {}
@@ -40,6 +41,9 @@ local function ChooseLevelAndMission(Possible, IsCar)
 end
 
 function Seed.Generate()
+	local InvalidCount = 0
+	::RestartGenerator::
+	Seed.Spoiler = {}
 	--[[
 		SR1			8
 		SR2			9
@@ -67,7 +71,7 @@ function Seed.Generate()
 		MissionRewards[i] = {}
 	end
 	
-	local RemainingRestrictions = {}
+	--[[local RemainingRestrictions = {}
 	for i=1,#Restrictions do
 		for j=1,#Restrictions[i] do
 			local MissionRestricions = Restrictions[i][j]
@@ -120,9 +124,79 @@ function Seed.Generate()
 				end
 			end
 		end
+	end]]
+	
+	if false then
+		--[[
+		Awful order test:
+		L1M5 - Mr Plow
+		L2M7 - School Bus
+		L3M4 - Lisa Cool
+		L3M7 - Inmate Marge
+		L4M3 - Police Marge
+		L4M6 - Homer Dirty
+		L4M7 - Car Built For Homer
+		L5M3 - Apu American
+		L5M6 - Globex
+		L6M6 - Zombie Car
+		L7M4 - Dirty Homer
+		L7M5 - Evil Homer
+		L7M6 - Plow King
+		]]
+		
+		PossibleMissions[1][5] = false
+		PossibleMissions[2][7] = false
+		PossibleMissions[3][4] = false
+		PossibleMissions[3][7] = false
+		PossibleMissions[4][3] = false
+		PossibleMissions[4][6] = false
+		PossibleMissions[4][7] = false
+		PossibleMissions[5][3] = false
+		PossibleMissions[5][6] = false
+		PossibleMissions[6][6] = false
+		PossibleMissions[7][4] = false
+		PossibleMissions[7][5] = false
+		PossibleMissions[7][6] = false
+		MissionRewards[1][5] = "mrplo_v"
+		MissionRewards[2][7] = "otto_v"
+		MissionRewards[3][4] = "l_cool"
+		MissionRewards[3][7] = "m_prison"
+		MissionRewards[4][3] = "m_police"
+		MissionRewards[4][6] = "h_scuzzy"
+		MissionRewards[4][7] = "carhom_v"
+		MissionRewards[5][3] = "a_american"
+		MissionRewards[5][6] = "scorp_v"
+		MissionRewards[6][6] = "zombi_v"
+		MissionRewards[7][4] = "h_scuzzy"
+		MissionRewards[7][5] = "h_evil"
+		MissionRewards[7][6] = "plowk_v"
 	end
 	
-	for k=#PossibleMissions[j],1,-1 do
+	Seed.AddSpoiler("RESTRICTIONS:")
+	for i=1,#Restrictions do
+		for j=1,#Restrictions[i] do
+			local MissionRestricions = Restrictions[i][j]
+			for k=1,#MissionRestricions do
+				local level, mission = ChooseLevelAndMission(PossibleMissions, Cars[MissionRestricions[k]])
+				MissionRewards[level][mission] = MissionRestricions[k]
+				Seed.AddSpoiler(MissionRestricions[k] .. "|L" .. level .. "M" .. mission)
+				PossibleMissions[level][mission] = false
+				for l=1,#RemainingRewards do
+					if RemainingRewards[i] == MissionRestricions[k] then
+						table.remove(RemainingRewards, l)
+						break
+					end
+				end
+			end
+		end
+	end
+	
+	if not Seed.CheckSoftlock() then
+		InvalidCount = InvalidCount + 1
+		goto RestartGenerator
+	end
+	
+	for k=14,1,-1 do
 		for j=#PossibleMissions,1,-1 do
 			if PossibleMissions[j][k] then
 				local RewardIdx = math.random(#RemainingRewards)
@@ -143,6 +217,8 @@ function Seed.Generate()
 		end
 	end
 	
+	Seed.AddSpoiler("")
+	Seed.AddSpoiler("REWARDS:")
 	for i=1,#MissionRewards do
 		for j=1,#MissionRewards[i] do
 			if i ~= 7 or j ~= 7 then
@@ -151,6 +227,56 @@ function Seed.Generate()
 			end
 		end
 	end
+	
+	return InvalidCount
+end
+
+function Seed.CheckSoftlock()
+	if not MissionRewards then
+		print("Seed.Generate() hasn't yet been called.")
+		return
+	end
+	
+	local UnlockedRewards = {}
+	for i=1,7 do
+		for j=8,14 do
+			if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
+		end
+	end
+	
+	local Missions = {}
+	for i=1,7 do
+		Missions[i] = {}
+		for j=1,7 do
+			Missions[i][j] = false
+		end
+	end
+	
+	local loops = 0
+	local completedMissions = 0
+	while loops < 100 do
+		for i=1,7 do
+			for j=1,7 do
+				if not Missions[i][j] then
+					if #Restrictions[i][j] > 0 then
+						local haveReward = true
+						for k=1,#Restrictions[i][j] do
+							haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
+						end
+						if not haveReward then
+							break
+						end
+					end
+					if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
+					Missions[i][j] = true
+					completedMissions = completedMissions + 1
+					if completedMissions == 49 then return true end
+				end
+			end
+		end
+		loops = loops + 1
+	end
+	return false
 end
 
 function Seed.Init()
@@ -169,7 +295,7 @@ function Seed.Init()
 		end
 		Seed.SeedRaw = string.unpack("j", raw)
 	end
-	print("Initialising RNG with seed: " .. Seed.SeedRaw)
+	print("Initialising RNG with seed: " .. Settings.Seed .. " (" .. Seed.SeedRaw .. ")")
 	math.randomseed(Seed.SeedRaw)
 end
 

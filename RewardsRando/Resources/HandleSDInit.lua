@@ -7,6 +7,8 @@ ThisMission = tonumber(ThisMission)
 
 if ThisLevel == 1 and ThisMission == 0 then
 	CompletedMissions = {}
+	CardCount = 6
+	CardHints = 0
 	for i=1,7 do
 		CompletedMissions[i] = {}
 	end
@@ -24,8 +26,10 @@ if CompletedLevel and CompletedMission then
 		MFK = MFK or MFKLexer.Lexer:Parse(File)
 		if Costumes[Reward] then
 			print("UNLOCK|COSTUME|"..CompletedLevel.."|"..RewardNames[Reward])
-			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], 0, "interior"})
 			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", CompletedLevel, 0, "interior"})
+			if CompletedLevel ~= Costumes[Reward] then
+				MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], 0, "interior"})
+			end
 		elseif Cars[Reward] then
 			print("UNLOCK|CAR|"..CompletedLevel.."|"..RewardNames[Reward])
 			MFK:InsertFunction(1, "BindReward", {Reward, "art\\cars\\"..Reward..".p3d", "car", "forsale", CompletedLevel, 0, "simpson"})
@@ -85,14 +89,16 @@ elseif CustomRestrictions[ThisLevel][ThisMission] then
 	MFK = MFK or MFKLexer.Lexer:Parse(File)
 
 	local firstStage
+	local lastStage
 	local resetStage
 	for i=1,#MFK.Functions do
 		local name = MFK.Functions[i].Name:lower()
 		if name == "addstage" then
 			firstStage = firstStage or i
+			lastStage = i
 		elseif name == "reset_to_here" then
 			table.remove(MFK.Functions, i)
-			resetStage = i
+			resetStage = lastStage
 			break
 		end
 	end
@@ -139,6 +145,59 @@ elseif CustomRestrictions[ThisLevel][ThisMission] then
 	idx = idx + 1
 	MFK:InsertFunction(idx, "CloseStage")
 	idx = idx + 1
+end
+
+if CardCount > 0 and CardCount % 7 == 0 then
+	File = File or ReadFile(GamePath)
+	MFK = MFK or MFKLexer.Lexer:Parse(File)
+	
+	local firstStage
+	local lastStage
+	local resetStage
+	for i=1,#MFK.Functions do
+		local name = MFK.Functions[i].Name:lower()
+		if name == "addstage" then
+			firstStage = firstStage or i
+			lastStage = i
+		elseif name == "reset_to_here" then
+			table.remove(MFK.Functions, i)
+			resetStage = lastStage
+			break
+		end
+	end
+	
+	local idx = resetStage or firstStage
+	
+	MFK:InsertFunction(idx, "AddStage")
+	idx = idx + 1
+	if resetStage then
+		MFK:InsertFunction(idx, "RESET_TO_HERE")
+		idx = idx + 1
+	end
+	MFK:InsertFunction(idx, "AddObjective", "timer")
+	idx = idx + 1
+	MFK:InsertFunction(idx, "SetDurationTime", 5)
+	idx = idx + 1
+	MFK:InsertFunction(idx, "CloseObjective")
+	idx = idx + 1
+	MFK:InsertFunction(idx, "CloseStage")
+	idx = idx + 1
+
+	MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
+	idx = idx + 1
+	MFK:InsertFunction(idx, "SetStageMessageIndex", FirstCoinHint + CardHints)
+	idx = idx + 1
+	MFK:InsertFunction(idx, "AddObjective", "timer")
+	idx = idx + 1
+	MFK:InsertFunction(idx, "SetDurationTime", 0)
+	idx = idx + 1
+	MFK:InsertFunction(idx, "CloseObjective")
+	idx = idx + 1
+	MFK:InsertFunction(idx, "CloseStage")
+	idx = idx + 1
+	
+	CardCount = 0
+	CardHints = CardHints + 1
 end
 
 if AddCoins then
