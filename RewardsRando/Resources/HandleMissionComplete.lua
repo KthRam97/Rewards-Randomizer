@@ -1,0 +1,2 @@
+CompletedLevel = CurrLevel
+CompletedMission = CurrMission

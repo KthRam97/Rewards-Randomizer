@@ -1,0 +1,1 @@
+Redirect("/GameData/art/cars/" .. GetFileName(GetPath()))
