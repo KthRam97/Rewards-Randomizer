@@ -125,18 +125,18 @@ function Seed.Generate()
 	for j=#PossibleMissions,1,-1 do
 		for k=#PossibleMissions[j],1,-1 do
 			if PossibleMissions[j][k] then
-				if #RemainingRewards == 0 then
-					assert(k >= 12 or (j == 7 and k == 7), "No available cars left for L" .. j .. "M" .. k)
-					MissionRewards[j][k] = math.random(250)
-				else
-					local RewardIdx = math.random(#RemainingRewards)
-					if k >= 12 or (j == 7 and k == 7) then
-						while not Cars[RemainingRewards[RewardIdx]] do
-							RewardIdx = math.random(#RemainingRewards)
-						end
+				local RewardIdx = math.random(#RemainingRewards)
+				if k >= 12 or (j == 7 and k == 7) then
+					while not Cars[RemainingRewards[RewardIdx]] do
+						RewardIdx = math.random(#RemainingRewards)
 					end
-					MissionRewards[j][k] = RemainingRewards[RewardIdx]
-					table.remove(RemainingRewards, RewardIdx)
+				end
+				MissionRewards[j][k] = RemainingRewards[RewardIdx]
+				table.remove(RemainingRewards, RewardIdx)
+				if #RemainingRewards == 0 then
+					for i=1,#Rewards do
+						RemainingRewards[i] = Rewards[i]
+					end
 				end
 				PossibleMissions[j][k] = false
 			end
