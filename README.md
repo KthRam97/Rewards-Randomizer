@@ -49,4 +49,4 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 - Appel for creating the hook that allows the future tracker to read where each item was bound
 - Weasel, Maz, UnknownSteel and many others in the DonutTeam community for helping come up with many feature implementations, such as mission orders and unused cars
 - Timbs and Gibstack for teaching KthRam how to actually make a mod instead of blindly editing things and breaking his game 4 times before making the mod
-- Baconman12, Spruce37, Timbs, Gibstack, Greeny0359 and jpecimage for helping test the initial versions of the mod to ensure it's stability
+- Baconman12, Spruce37, Timbs, Gibstack, GuffMcGufferson, TehSpearmeister, Greeny0359 and jpecimage for helping test the initial versions of the mod to ensure it's stability
