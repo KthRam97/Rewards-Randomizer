@@ -224,7 +224,7 @@ function Seed.Generate()
 		for j=1,#MissionRewards[i] do
 			if i ~= 7 or j ~= 7 then
 				assert(MissionRewards[i][j], "Reward not generated for L" .. i .. "M" .. j)
-				Seed.AddSpoiler("L" .. i .. "M" .. j .. "|" .. MissionRewards[i][j])
+				Seed.AddSpoiler("L" .. i .. "M" .. j .. "|" .. MissionRewards[i][j] .. "|" .. RewardNames[MissionRewards[i][j]])
 			end
 		end
 	end

@@ -17,6 +17,7 @@ local RandoPauseInfo = "Seed: " .. Settings.Seed
 local CardHintText = {}
 local RestrictionNames = {}
 local RestrictionLevels = {}
+local ImportantRewards = {}
 for Level=1,7 do
 	for Mission=1,7 do
 		for RestrictionIdx=1,#Restrictions[Level][Mission] do
@@ -37,6 +38,7 @@ for Level=1,7 do
 			if RestrictionLevel > 0 then
 				RestrictionNames[#RestrictionNames + 1] = RewardNames[Restriction]
 				RestrictionLevels[#RestrictionLevels + 1] = RestrictionLevel
+				ImportantRewards[Restriction] = {Level, Mission}
 			end
 		end
 	end
@@ -61,11 +63,26 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 	if LanguageChunk.Language == lang then
 		LanguageChunk:AddValue("RandoInfo", RandoInfo)
 		LanguageChunk:AddValue("RandoPauseInfo", RandoPauseInfo)
+		local MissionInfo = {}
+		local MissionTitle = {}
+		for i=1,7 do
+			MissionInfo[i] = {}
+			MissionTitle[i] = {}
+			for j=1,7 do
+				MissionInfo[i][j] = LanguageChunk:GetValueFromName("MISSION_INFO_L"..i.."_M"..j)
+				MissionTitle[i][j] = LanguageChunk:GetValueFromName("MISSION_TITLE_L"..i.."_M"..j)
+			end
+		end
 		
 		local InGameIdx = 19
 		for i=1,#Rewards do
 			InGameIdx = InGameIdx + 1
-			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "New reward unlocked: " .. RewardNames[Rewards[i]])
+			if ImportantRewards[Rewards[i]] then
+				local Info = ImportantRewards[Rewards[i]]
+				LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "New reward unlocked:\n" .. RewardNames[Rewards[i]] .. "\n\nThis is a required reward for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")")
+			else
+				LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "New reward unlocked:\n" .. RewardNames[Rewards[i]])
+			end
 		end
 		
 		for i=1,7 do
@@ -90,25 +107,16 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		
 		for i=1,7 do
 			LockedMissionPrompts[i] = {}
-			local MissionInfo = {}
-			local MissionTitle = {}
-			for j=1,7 do
-				MissionInfo[j] = LanguageChunk:GetValueFromName("MISSION_INFO_L"..i.."_M"..j)
-				MissionTitle[j] = LanguageChunk:GetValueFromName("MISSION_TITLE_L"..i.."_M"..j)
-			end
-			
 			for j=1,7 do
 				if Settings.ReverseMissionOrder then
-					LanguageChunk:SetValue("MISSION_INFO_L"..i.."_M"..j, MissionInfo[MissionOrder[i][j]])
-					LanguageChunk:SetValue("MISSION_TITLE_L"..i.."_M"..j, MissionTitle[MissionOrder[i][j]])
+					LanguageChunk:SetValue("MISSION_INFO_L"..i.."_M"..j, MissionInfo[i][MissionOrder[i][j]])
+					LanguageChunk:SetValue("MISSION_TITLE_L"..i.."_M"..j, MissionTitle[i][MissionOrder[i][j]])
 				end
-				--INGAME_MESSAGE_19=You must finish the mission "S-M-R-T" before you can do this mission.
-				--MISSION_OBJECTIVE_276=Mission warp to "S-M-R-T".
 				InGameIdx = InGameIdx + 1
 				ObjectiveIdx = ObjectiveIdx + 1
 				LockedMissionPrompts[i][j] = {InGameIdx,ObjectiveIdx}
-				LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "You must first finish the mission \"" .. MissionTitle[MissionOrder[i][j]] .. "\" before you can do this mission.")
-				LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Mission warp to \"" .. MissionTitle[MissionOrder[i][j]] .. "\".")
+				LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "You must first finish the mission \"" .. MissionTitle[i][MissionOrder[i][j]] .. "\" before you can do this mission.")
+				LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Mission warp to \"" .. MissionTitle[i][MissionOrder[i][j]] .. "\".")
 			end
 		end
 		

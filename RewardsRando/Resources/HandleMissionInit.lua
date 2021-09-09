@@ -52,7 +52,7 @@ if not Settings.DisableIngamePopups then
 		MFK:AddFunction("CloseMission")
 	end
 
-	if ShowCardHint then
+	if ShowCardHint and CurrMission < 8 then
 		ShowCardHint = false
 		CardHintsGiven = CardHintsGiven + 1
 		
