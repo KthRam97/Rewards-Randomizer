@@ -49,7 +49,7 @@ for i=1,#RestrictionNames do
 	local RestrictionLevel = RestrictionLevels[RestrictionIdx]
 	table.remove(RestrictionNames, RestrictionIdx)
 	table.remove(RestrictionLevels, RestrictionIdx)
-	local HintText = "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
+	local HintText = "Congratulations! You have collected "..CardsPerHint.." cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
 	CardHintText[i] = HintText
 end
 CardHints = {}
