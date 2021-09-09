@@ -20,7 +20,7 @@ local AddCoins
 
 if CompletedLevel and CompletedMission then
 	print("L" .. CompletedLevel .. "M" .. CompletedMission, "Completed", CompletedMissions[CompletedLevel][CompletedMission] and "Not first time" or "First time")
-	if MissionRewards[CurrLevel][CurrMission] and not CompletedMissions[CompletedLevel][CompletedMission] then
+	if MissionRewards[CurrLevel][CurrMission] and not CompletedMissions[CompletedLevel][CompletedMission] and not (CompletedLevel == 7 and CompletedMission == 7) then
 		local Reward = MissionRewards[CompletedLevel][CompletedMission]
 		File = File or ReadFile(GamePath)
 		MFK = MFK or MFKLexer.Lexer:Parse(File)

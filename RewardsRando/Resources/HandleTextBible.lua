@@ -68,14 +68,20 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 	end
 	for i=1,7 do
 		InGameIdx = InGameIdx + 1
-		local RestrictionIdx = math.random(#RestrictionNames)
-		local Restriction = RestrictionNames[RestrictionIdx]
-		local RestrictionLevel = RestrictionLevels[RestrictionIdx]
-		table.remove(RestrictionNames, RestrictionIdx)
-		table.remove(RestrictionLevels, RestrictionIdx)
-		local HintText = "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
-		CardHintText[i] = HintText
-		LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, HintText)
+		if #RestrictionNames == 0 then
+			local HintText = "Congratulations! You have collected 7 cards... Unfortunately, I have no more hints to give you :/"
+			CardHintText[i] = HintText
+			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, HintText)
+		else
+			local RestrictionIdx = math.random(#RestrictionNames)
+			local Restriction = RestrictionNames[RestrictionIdx]
+			local RestrictionLevel = RestrictionLevels[RestrictionIdx]
+			table.remove(RestrictionNames, RestrictionIdx)
+			table.remove(RestrictionLevels, RestrictionIdx)
+			local HintText = "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
+			CardHintText[i] = HintText
+			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, HintText)
+		end
 	end
 	
 	BibleChunk:SetChunkAtIndex(idx, LanguageChunk:Output())

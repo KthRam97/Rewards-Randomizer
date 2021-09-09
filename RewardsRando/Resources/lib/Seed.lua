@@ -244,6 +244,7 @@ function Seed.CheckSoftlock()
 			if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
 		end
 	end
+	UnlockedRewards[MissionRewards[7][7]] = true
 	
 	local Missions = {}
 	for i=1,7 do
