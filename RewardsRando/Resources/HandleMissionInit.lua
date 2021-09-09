@@ -10,7 +10,7 @@ else
 	CurrMission = tonumber(Path:match("m(%d)"))
 end
 
-if MissionRewards[CurrLevel][CurrMission] and not CompletedMissions[CurrLevel][CurrMission] and not (CurrLevel == 7 and CurrMission == 7) then
+if MissionRewards[CurrLevel][CurrMission] and not CompletedMissions[CurrLevel][CurrMission] and not (CurrLevel == 7 and CurrMission == 7) and not Settings.DisableIngamePopups then
 	local File = ReadFile(GamePath)
 	local MFK = MFKLexer.Lexer:Parse(File)
 

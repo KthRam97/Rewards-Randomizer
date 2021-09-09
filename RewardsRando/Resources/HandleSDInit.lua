@@ -25,16 +25,16 @@ if CompletedLevel and CompletedMission then
 		File = File or ReadFile(GamePath)
 		MFK = MFK or MFKLexer.Lexer:Parse(File)
 		if Costumes[Reward] then
-			print("UNLOCK|COSTUME|"..CompletedLevel.."|"..RewardNames[Reward])
+			print("UNLOCK|COSTUME|"..CompletedLevel.."|"....CompletedMission.."|"..RewardNames[Reward])
 			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", CompletedLevel, 0, "interior"})
 			if CompletedLevel ~= Costumes[Reward] then
 				MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], 0, "interior"})
 			end
 		elseif Cars[Reward] then
-			print("UNLOCK|CAR|"..CompletedLevel.."|"..RewardNames[Reward])
+			print("UNLOCK|CAR|"..CompletedLevel.."|"....CompletedMission.."|"..RewardNames[Reward])
 			MFK:InsertFunction(1, "BindReward", {Reward, "art\\cars\\"..Reward..".p3d", "car", "forsale", CompletedLevel, 0, "simpson"})
 		elseif type(Reward) == "number" then
-			print("UNLOCK|COINS|"..CompletedLevel.."|"..Reward)
+			print("UNLOCK|COINS|"..CompletedLevel.."|"....CompletedMission.."|"..Reward)
 			AddCoins = Reward
 		else
 			error("Unknown reward for L"..CompletedLevel.."M"..CompletedMission..": "..Reward)
@@ -162,53 +162,56 @@ end
 
 if CardCount > 0 and CardCount % 7 == 0 then
 	CardHintsGiven = CardHintsGiven + 1
-	File = File or ReadFile(GamePath)
-	MFK = MFK or MFKLexer.Lexer:Parse(File)
 	
-	local firstStage
-	local lastStage
-	local resetStage
-	for i=1,#MFK.Functions do
-		local name = MFK.Functions[i].Name:lower()
-		if name == "addstage" then
-			firstStage = firstStage or i
-			lastStage = i
-		elseif name == "reset_to_here" then
-			table.remove(MFK.Functions, i)
-			resetStage = lastStage
-			break
+	if not Settings.DisableIngamePopups then
+		File = File or ReadFile(GamePath)
+		MFK = MFK or MFKLexer.Lexer:Parse(File)
+		
+		local firstStage
+		local lastStage
+		local resetStage
+		for i=1,#MFK.Functions do
+			local name = MFK.Functions[i].Name:lower()
+			if name == "addstage" then
+				firstStage = firstStage or i
+				lastStage = i
+			elseif name == "reset_to_here" then
+				table.remove(MFK.Functions, i)
+				resetStage = lastStage
+				break
+			end
 		end
-	end
-	
-	local idx = resetStage or firstStage
-	
-	MFK:InsertFunction(idx, "AddStage")
-	idx = idx + 1
-	if resetStage then
-		MFK:InsertFunction(idx, "RESET_TO_HERE")
+		
+		local idx = resetStage or firstStage
+		
+		MFK:InsertFunction(idx, "AddStage")
+		idx = idx + 1
+		if resetStage then
+			MFK:InsertFunction(idx, "RESET_TO_HERE")
+			idx = idx + 1
+		end
+		MFK:InsertFunction(idx, "AddObjective", "timer")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetDurationTime", 5)
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseObjective")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseStage")
+		idx = idx + 1
+
+		MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetStageMessageIndex", CardHints[CardHintsGiven][1])
+		idx = idx + 1
+		MFK:InsertFunction(idx, "AddObjective", "timer")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetDurationTime", 0)
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseObjective")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseStage")
 		idx = idx + 1
 	end
-	MFK:InsertFunction(idx, "AddObjective", "timer")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetDurationTime", 5)
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseObjective")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseStage")
-	idx = idx + 1
-
-	MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetStageMessageIndex", CardHints[CardHintsGiven][1])
-	idx = idx + 1
-	MFK:InsertFunction(idx, "AddObjective", "timer")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetDurationTime", 0)
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseObjective")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseStage")
-	idx = idx + 1
 	
 	CardCount = 0
 	print("HINT|" .. CardHints[CardHintsGiven][2]:gsub("\n", " "))
