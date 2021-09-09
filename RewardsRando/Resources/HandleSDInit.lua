@@ -164,7 +164,7 @@ if CardCount > 0 and CardCount >= CardsPerHint then
 	if CardHints[CardHintsGiven + 1] then
 		ShowCardHint = true	
 		CardCount = CardCount - CardsPerHint
-		print("HINT|" .. CardHints[CardHintsGiven + 1][2]:gsub("\n", " ")
+		print("HINT|" .. CardHints[CardHintsGiven + 1][2]:gsub("\n", " "))
 	end
 end
 
