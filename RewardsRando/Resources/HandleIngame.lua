@@ -21,6 +21,11 @@ for PageIDX in ProjectChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Page) do
 			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. 19 + i))
 			MultiTextChunk:AddChunk(TextChunk:Output())
 		end
+		for i=1,7 do
+			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. CardHints[i][1]))
+			MultiTextChunk:AddChunk(TextChunk:Output())
+			
+		end
 		local ids = {}
 		for _,v in pairs(CustomRestrictionsIdx) do
 			ids[#ids + 1] = v[1]
@@ -31,9 +36,10 @@ for PageIDX in ProjectChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Page) do
 			MultiTextChunk:AddChunk(TextChunk:Output())
 		end
 		for i=1,7 do
-			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. FirstCoinHint + i))
-			MultiTextChunk:AddChunk(TextChunk:Output())
-			
+			for j=1,7 do
+				local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. LockedMissionPrompts[i][j][1]))
+				MultiTextChunk:AddChunk(TextChunk:Output())
+			end
 		end
 		LayerChunk:SetChunkAtIndex(MultiTextIDX, MultiTextChunk:Output())
 		PageChunk:SetChunkAtIndex(LayerIDX, LayerChunk:Output())
@@ -53,6 +59,12 @@ for PageIDX in ProjectChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Page) do
 		for i=1,#ids do
 			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("MISSION_OBJECTIVE_" .. ids[i]))
 			MultiTextChunk:AddChunk(TextChunk:Output())
+		end
+		for i=1,7 do
+			for j=1,7 do
+				local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("MISSION_OBJECTIVE_" .. LockedMissionPrompts[i][j][2]))
+				MultiTextChunk:AddChunk(TextChunk:Output())
+			end
 		end
 		GroupChunk:SetChunkAtIndex(MultiTextIDX, MultiTextChunk:Output())
 		LayerChunk:SetChunkAtIndex(GroupIDX, GroupChunk:Output())
@@ -75,6 +87,12 @@ for PageIDX in ProjectChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Page) do
 						for i=1,#ids do
 							local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("MISSION_OBJECTIVE_" .. i))
 							MultiTextChunk:AddChunk(TextChunk:Output())
+						end
+						for i=1,7 do
+							for j=1,7 do
+								local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("MISSION_OBJECTIVE_" .. LockedMissionPrompts[i][j][2]))
+								MultiTextChunk:AddChunk(TextChunk:Output())
+							end
 						end
 						GroupChunk:SetChunkAtIndex(MultiTextIDX, MultiTextChunk:Output())
 						LayerChunk:SetChunkAtIndex(GroupIDX, GroupChunk:Output())

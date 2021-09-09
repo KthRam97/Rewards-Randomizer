@@ -244,7 +244,7 @@ function Seed.CheckSoftlock()
 			if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
 		end
 	end
-	UnlockedRewards[MissionRewards[7][7]] = true
+	if MissionRewards[7][7] then UnlockedRewards[MissionRewards[7][7]] = true end
 	
 	local Missions = {}
 	for i=1,7 do
@@ -256,62 +256,28 @@ function Seed.CheckSoftlock()
 	
 	local loops = 0
 	local completedMissions = 0
-	if Settings.ReverseMissionOrder then
-		local LevelMissions = {
-			{7, 6, 5, 4, 3, 2, 1},
-			{7, 6, 5, 4, 3, 2, 1},
-			{7, 6, 5, 4, 3, 2, 1},
-			{7, 6, 5, 4, 3, 2, 1},
-			{7, 6, 5, 4, 3, 2, 1},
-			{7, 6, 5, 4, 3, 2, 1},
-			{4, 3, 2, 1, 5, 6, 7},
-		}
-		while loops < 100 do
-			for i=7,1,-1 do
-				for l=1,7 do
-					j = LevelMissions[i][l]
-					if not Missions[i][j] then
-						if #Restrictions[i][j] > 0 then
-							local haveReward = true
-							for k=1,#Restrictions[i][j] do
-								haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
-							end
-							if not haveReward then
-								break
-							end
+	while loops < 100 do
+		for i=7,1,-1 do
+			for l=1,7 do
+				local j = MissionOrder[i][l]
+				if not Missions[i][j] then
+					if #Restrictions[i][j] > 0 then
+						local haveReward = true
+						for k=1,#Restrictions[i][j] do
+							haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
 						end
-						if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
-						Missions[i][j] = true
-						completedMissions = completedMissions + 1
-						if completedMissions == 49 then return true end
+						if not haveReward then
+							break
+						end
 					end
+					if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
+					Missions[i][j] = true
+					completedMissions = completedMissions + 1
+					if completedMissions == 49 then return true end
 				end
 			end
-			loops = loops + 1
 		end
-	else
-		while loops < 100 do
-			for i=1,7 do
-				for j=1,7 do
-					if not Missions[i][j] then
-						if #Restrictions[i][j] > 0 then
-							local haveReward = true
-							for k=1,#Restrictions[i][j] do
-								haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
-							end
-							if not haveReward then
-								break
-							end
-						end
-						if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
-						Missions[i][j] = true
-						completedMissions = completedMissions + 1
-						if completedMissions == 49 then return true end
-					end
-				end
-			end
-			loops = loops + 1
-		end
+		loops = loops + 1
 	end
 	return false
 end

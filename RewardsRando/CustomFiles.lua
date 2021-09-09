@@ -85,6 +85,23 @@ for i=1,7 do
 	CompletedMissions[i] = {}
 end
 
+if Settings.ReverseMissionOrder then
+	MissionOrder = {
+		{7, 6, 5, 4, 3, 2, 1},
+		{7, 6, 5, 4, 3, 2, 1},
+		{7, 6, 5, 4, 3, 2, 1},
+		{7, 6, 5, 4, 3, 2, 1},
+		{7, 6, 5, 4, 3, 2, 1},
+		{7, 6, 5, 4, 3, 2, 1},
+		{4, 3, 2, 1, 5, 6, 7},
+	}
+else
+	MissionOrder = {}
+	for i=1,7 do
+		MissionOrder[i] = {1,2,3,4,5,6,7}
+	end
+end
+
 print("Loading rewards...")
 local startTime = GetTime()
 Rewards = {}

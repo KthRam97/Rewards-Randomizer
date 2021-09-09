@@ -8,7 +8,7 @@ ThisMission = tonumber(ThisMission)
 if ThisLevel == 1 and ThisMission == 0 then
 	CompletedMissions = {}
 	CardCount = 0
-	CardHints = 0
+	CardHintsGiven = 0
 	for i=1,7 do
 		CompletedMissions[i] = {}
 	end
@@ -45,45 +45,58 @@ if CompletedLevel and CompletedMission then
 	CompletedMission = nil
 end
 
-if ThisMission > 1 and not CompletedMissions[ThisLevel][ThisMission-1] then
-	File = File or ReadFile(GamePath)
-	MFK = MFK or MFKLexer.Lexer:Parse(File)
-
-	local idx = nil
-	for i=1,#MFK.Functions do
-		local name = MFK.Functions[i].Name:lower()
-		if name == "addstage" then
-			idx = i
+local missionLocked = false
+if ThisMission > 0 and ThisMission < 8 and ThisMission ~= MissionOrder[ThisLevel][1] then
+	local requiredMission
+	for i=1,7 do
+		if MissionOrder[ThisLevel][i] == ThisMission then
 			break
 		end
+		requiredMission = MissionOrder[ThisLevel][i]
 	end
+	if not CompletedMissions[ThisLevel][requiredMission] then
+		missionLocked = true
+		File = File or ReadFile(GamePath)
+		MFK = MFK or MFKLexer.Lexer:Parse(File)
 
-	for i=#MFK.Functions,idx,-1 do
-		MFK.Functions[i] = nil
+		local idx = nil
+		for i=1,#MFK.Functions do
+			local name = MFK.Functions[i].Name:lower()
+			if name == "addstage" then
+				idx = i
+				break
+			end
+		end
+
+		for i=#MFK.Functions,idx,-1 do
+			MFK.Functions[i] = nil
+		end
+
+		MFK:AddFunction("AddStage")
+		MFK:AddFunction("RESET_TO_HERE")
+		MFK:AddFunction("AddObjective", "timer")
+		MFK:AddFunction("SetDurationTime", 5)
+		MFK:AddFunction("CloseObjective")
+		MFK:AddFunction("CloseStage")
+
+		MFK:AddFunction("AddStage", {"locked", "skin", "beeman"})
+		MFK:AddFunction("SetStageMessageIndex", LockedMissionPrompts[ThisLevel][Settings.ReverseMissionOrder and 8 - requiredMission or requiredMission][1])
+		MFK:AddFunction("AddObjective", "timer")
+		MFK:AddFunction("SetDurationTime", 0)
+		MFK:AddFunction("CloseObjective")
+		MFK:AddFunction("CloseStage")
+
+		MFK:AddFunction("AddStage")
+		MFK:AddFunction("SetStageMessageIndex", LockedMissionPrompts[ThisLevel][Settings.ReverseMissionOrder and 8 - requiredMission or requiredMission][2])
+		MFK:AddFunction("SetHUDIcon", "tshirt" )
+		MFK:AddFunction("AddObjective", {"buyskin", "beeman"})
+		MFK:AddFunction("CloseObjective")
+		MFK:AddFunction("CloseStage")
+		MFK:AddFunction("CloseMission")
 	end
+end
 
-	MFK:AddFunction("AddStage")
-	MFK:AddFunction("RESET_TO_HERE")
-	MFK:AddFunction("AddObjective", "timer")
-	MFK:AddFunction("SetDurationTime", 5)
-	MFK:AddFunction("CloseObjective")
-	MFK:AddFunction("CloseStage")
-
-	MFK:AddFunction("AddStage", {"locked", "skin", "beeman"})
-	MFK:AddFunction("SetStageMessageIndex", 19)
-	MFK:AddFunction("AddObjective", "timer")
-	MFK:AddFunction("SetDurationTime", 0)
-	MFK:AddFunction("CloseObjective")
-	MFK:AddFunction("CloseStage")
-
-	MFK:AddFunction("AddStage")
-	MFK:AddFunction("SetStageMessageIndex", 276)
-	MFK:AddFunction("SetHUDIcon", "tshirt" )
-	MFK:AddFunction("AddObjective", {"buyskin", "beeman"})
-	MFK:AddFunction("CloseObjective")
-	MFK:AddFunction("CloseStage")
-	MFK:AddFunction("CloseMission")
-elseif CustomRestrictions[ThisLevel][ThisMission] then
+if not missionLocked and CustomRestrictions[ThisLevel][ThisMission] then
 	local Restriction = CustomRestrictions[ThisLevel][ThisMission]
 	File = File or ReadFile(GamePath)
 	MFK = MFK or MFKLexer.Lexer:Parse(File)
@@ -148,6 +161,7 @@ elseif CustomRestrictions[ThisLevel][ThisMission] then
 end
 
 if CardCount > 0 and CardCount % 7 == 0 then
+	CardHintsGiven = CardHintsGiven + 1
 	File = File or ReadFile(GamePath)
 	MFK = MFK or MFKLexer.Lexer:Parse(File)
 	
@@ -185,7 +199,7 @@ if CardCount > 0 and CardCount % 7 == 0 then
 
 	MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
 	idx = idx + 1
-	MFK:InsertFunction(idx, "SetStageMessageIndex", FirstCoinHint + CardHints)
+	MFK:InsertFunction(idx, "SetStageMessageIndex", CardHints[CardHintsGiven][1])
 	idx = idx + 1
 	MFK:InsertFunction(idx, "AddObjective", "timer")
 	idx = idx + 1
@@ -197,8 +211,7 @@ if CardCount > 0 and CardCount % 7 == 0 then
 	idx = idx + 1
 	
 	CardCount = 0
-	CardHints = CardHints + 1
-	print("HINT|" .. CardHintText[CardHints]:gsub("\n", " "))
+	print("HINT|" .. CardHints[CardHintsGiven][2]:gsub("\n", " "))
 end
 
 if AddCoins then
