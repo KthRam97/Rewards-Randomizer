@@ -160,7 +160,7 @@ if not missionLocked and CustomRestrictions[ThisLevel][ThisMission] then
 	idx = idx + 1
 end
 
-if CardCount > 0 and CardCount % 7 == 0 then
+if CardCount > 0 and CardCount >= 7 then
 	CardHintsGiven = CardHintsGiven + 1
 	
 	if not Settings.DisableIngamePopups then
@@ -213,7 +213,7 @@ if CardCount > 0 and CardCount % 7 == 0 then
 		idx = idx + 1
 	end
 	
-	CardCount = 0
+	CardCount = CardCount - 7
 	print("HINT|" .. CardHints[CardHintsGiven][2]:gsub("\n", " "))
 end
 
