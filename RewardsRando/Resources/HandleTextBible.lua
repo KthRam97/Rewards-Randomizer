@@ -36,25 +36,13 @@ for Level=1,7 do
 				end
 			end
 			if RestrictionLevel > 0 then
-				RestrictionNames[#RestrictionNames + 1] = RewardNames[Restriction]
+				RestrictionNames[#RestrictionNames + 1] = Restriction
 				RestrictionLevels[#RestrictionLevels + 1] = RestrictionLevel
 				ImportantRewards[Restriction] = {Level, Mission}
 			end
 		end
 	end
 end
-
-CardsPerHint = math.floor(49 / #RestrictionNames)
-for i=1,#RestrictionNames do
-	local RestrictionIdx = math.random(#RestrictionNames)
-	local Restriction = RestrictionNames[RestrictionIdx]
-	local RestrictionLevel = RestrictionLevels[RestrictionIdx]
-	table.remove(RestrictionNames, RestrictionIdx)
-	table.remove(RestrictionLevels, RestrictionIdx)
-	local HintText = "Congratulations! You have collected "..CardsPerHint.." cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
-	CardHintText[i] = HintText
-end
-CardHints = {}
 LockedMissionPrompts = {}
 local lang = GetGameLanguage()
 for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
@@ -85,7 +73,19 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			end
 		end
 		
-		for i=1,7 do
+		CardsPerHint = math.floor(49 / #RestrictionNames)
+		for i=1,#RestrictionNames do
+			local RestrictionIdx = math.random(#RestrictionNames)
+			local Restriction = RestrictionNames[RestrictionIdx]
+			local RestrictionLevel = RestrictionLevels[RestrictionIdx]
+			table.remove(RestrictionNames, RestrictionIdx)
+			table.remove(RestrictionLevels, RestrictionIdx)
+			local Info = ImportantRewards[Restriction]
+			local HintText = "Congratulations! You have collected "..CardsPerHint.." cards, so here is a hint:\n\nYou can find \"" .. RewardNames[Restriction] .. "\" in Level " .. RestrictionLevel .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")"
+			CardHintText[i] = HintText
+		end
+		CardHints = {}
+		for i=1,#CardHintText do
 			InGameIdx = InGameIdx + 1
 			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, CardHintText[i])
 			CardHints[#CardHints + 1] = {InGameIdx, CardHintText[i]}

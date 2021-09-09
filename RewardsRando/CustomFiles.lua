@@ -16,6 +16,7 @@ Paths.ModPath = GetModPath()
 Paths.Resources = Paths.ModPath .. "/Resources/"
 dofile(Paths.Resources .. "lib/MFKLexer.lua")
 dofile(Paths.Resources .. "lib/P3D.lua")
+dofile(Paths.Resources .. "lib/RMS.lua")
 dofile(Paths.Resources .. "lib/Seed.lua")
 
 Cache = {}
