@@ -11,7 +11,7 @@ local BibleIdx = Chunk:GetChunkIndex(P3D.Identifiers.Frontend_Text_Bible)
 if not BibleIdx then return end
 local BibleChunk = P3D.FrontendTextBibleP3DChunk:new{Raw = Chunk:GetChunkAtIndex(BibleIdx)}
 
-local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nPrice Multiplier: " .. Settings.PriceMultiplier--[[ .. "\nBanned Cars: " .. ((Settings.BanCars and Settings.BannedCars ~= "") and Settings.BannedCars or "NONE")]] .. "\nSeed: " .. Settings.Seed
+local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\nReverse Mission Order: " .. tostring(Settings.ReverseMissionOrder) .. "\nSeed: " .. Settings.Seed
 local RandoPauseInfo = "Seed: " .. Settings.Seed
 
 for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
@@ -39,13 +39,30 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		end
 	end
 	FirstCoinHint = InGameIdx + 1
+	CardHintText = {}
 	local RestrictionNames = {}
 	local RestrictionLevels = {}
 	for Level=1,7 do
 		for Mission=1,7 do
 			for RestrictionIdx=1,#Restrictions[Level][Mission] do
-				RestrictionNames[#RestrictionNames + 1] = RewardNames[Restrictions[Level][Mission][RestrictionIdx]]
-				RestrictionLevels[#RestrictionLevels + 1] = Level
+				local Restriction = Restrictions[Level][Mission][RestrictionIdx]
+				local RestrictionLevel = 0
+				for i=1,7 do
+					for j=1,7 do
+						if MissionRewards[i][j] == Restriction then
+							if i == 7 and j == 7 then
+								--Idk?
+							else
+								RestrictionLevel = i
+							end
+							break
+						end
+					end
+				end
+				if RestrictionLevel > 0 then
+					RestrictionNames[#RestrictionNames + 1] = RewardNames[Restriction]
+					RestrictionLevels[#RestrictionLevels + 1] = RestrictionLevel
+				end
 			end
 		end
 	end
@@ -56,7 +73,9 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		local RestrictionLevel = RestrictionLevels[RestrictionIdx]
 		table.remove(RestrictionNames, RestrictionIdx)
 		table.remove(RestrictionLevels, RestrictionIdx)
-		LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!")
+		local HintText = "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
+		CardHintText[i] = HintText
+		LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, HintText)
 	end
 	
 	BibleChunk:SetChunkAtIndex(idx, LanguageChunk:Output())

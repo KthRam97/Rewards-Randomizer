@@ -2,6 +2,9 @@ if IsHackLoaded("NoAudio") then
 	Alert("Unfortunately, some of the logic in this randomiser requires audio to be loaded.\nYou have the \"No Audio\" hack loaded, which renders this impossible.\nThe game will now exit.")
 	os.exit()
 end
+if not IsHackLoaded("Console") and not Confirm("This mod uses the console to print unlocked rewards, and other useful information.\nIf you want to continue with the console disabled, click OK. Otherwise, click Cancel to close the game.") then
+	os.exit()
+end
 
 ModName = GetModName()
 ModTitle = GetModTitle()

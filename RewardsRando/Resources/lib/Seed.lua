@@ -175,14 +175,14 @@ function Seed.Generate()
 	Seed.AddSpoiler("RESTRICTIONS:")
 	for i=1,#Restrictions do
 		for j=1,#Restrictions[i] do
-			local MissionRestricions = Restrictions[i][j]
-			for k=1,#MissionRestricions do
-				local level, mission = ChooseLevelAndMission(PossibleMissions, Cars[MissionRestricions[k]])
-				MissionRewards[level][mission] = MissionRestricions[k]
-				Seed.AddSpoiler(MissionRestricions[k] .. "|L" .. level .. "M" .. mission)
+			local MissionRestrictions = Restrictions[i][j]
+			for k=1,#MissionRestrictions do
+				local level, mission = ChooseLevelAndMission(PossibleMissions, Cars[MissionRestrictions[k]])
+				MissionRewards[level][mission] = MissionRestrictions[k]
+				Seed.AddSpoiler(MissionRestrictions[k] .. "|L" .. level .. "M" .. mission)
 				PossibleMissions[level][mission] = false
 				for l=1,#RemainingRewards do
-					if RemainingRewards[i] == MissionRestricions[k] then
+					if RemainingRewards[l] == MissionRestrictions[k] then
 						table.remove(RemainingRewards, l)
 						break
 					end
@@ -208,6 +208,7 @@ function Seed.Generate()
 				MissionRewards[j][k] = RemainingRewards[RewardIdx]
 				table.remove(RemainingRewards, RewardIdx)
 				if #RemainingRewards == 0 then
+					print("Re-filling the rewards table - may cause duplicte rewards")
 					for i=1,#Rewards do
 						RemainingRewards[i] = Rewards[i]
 					end
@@ -254,27 +255,62 @@ function Seed.CheckSoftlock()
 	
 	local loops = 0
 	local completedMissions = 0
-	while loops < 100 do
-		for i=1,7 do
-			for j=1,7 do
-				if not Missions[i][j] then
-					if #Restrictions[i][j] > 0 then
-						local haveReward = true
-						for k=1,#Restrictions[i][j] do
-							haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
+	if Settings.ReverseMissionOrder then
+		local LevelMissions = {
+			{7, 6, 5, 4, 3, 2, 1},
+			{7, 6, 5, 4, 3, 2, 1},
+			{7, 6, 5, 4, 3, 2, 1},
+			{7, 6, 5, 4, 3, 2, 1},
+			{7, 6, 5, 4, 3, 2, 1},
+			{7, 6, 5, 4, 3, 2, 1},
+			{4, 3, 2, 1, 5, 6, 7},
+		}
+		while loops < 100 do
+			for i=7,1,-1 do
+				for l=1,7 do
+					j = LevelMissions[i][l]
+					if not Missions[i][j] then
+						if #Restrictions[i][j] > 0 then
+							local haveReward = true
+							for k=1,#Restrictions[i][j] do
+								haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
+							end
+							if not haveReward then
+								break
+							end
 						end
-						if not haveReward then
-							break
-						end
+						if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
+						Missions[i][j] = true
+						completedMissions = completedMissions + 1
+						if completedMissions == 49 then return true end
 					end
-					if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
-					Missions[i][j] = true
-					completedMissions = completedMissions + 1
-					if completedMissions == 49 then return true end
 				end
 			end
+			loops = loops + 1
 		end
-		loops = loops + 1
+	else
+		while loops < 100 do
+			for i=1,7 do
+				for j=1,7 do
+					if not Missions[i][j] then
+						if #Restrictions[i][j] > 0 then
+							local haveReward = true
+							for k=1,#Restrictions[i][j] do
+								haveReward = haveReward and UnlockedRewards[Restrictions[i][j][k]]
+							end
+							if not haveReward then
+								break
+							end
+						end
+						if MissionRewards[i][j] then UnlockedRewards[MissionRewards[i][j]] = true end
+						Missions[i][j] = true
+						completedMissions = completedMissions + 1
+						if completedMissions == 49 then return true end
+					end
+				end
+			end
+			loops = loops + 1
+		end
 	end
 	return false
 end

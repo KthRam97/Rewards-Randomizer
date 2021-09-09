@@ -198,6 +198,7 @@ if CardCount > 0 and CardCount % 7 == 0 then
 	
 	CardCount = 0
 	CardHints = CardHints + 1
+	print("HINT|" .. CardHintText[CardHints]:gsub("\n", " "))
 end
 
 if AddCoins then
