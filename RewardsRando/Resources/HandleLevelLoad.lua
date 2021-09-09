@@ -12,32 +12,9 @@ for i=1,#MFK.Functions do
 		func.Arguments[1] = "art\\cars\\" .. MissionRewards[7][7] .. ".p3d"
 		func.Arguments[2] = MissionRewards[7][7]
 	elseif Settings.ReverseMissionOrder and name == "addmission" then
-		if Level ~= 7 then
-			if func.Arguments[1] == "m1" then
-				func.Arguments[1] = "m7"
-			elseif func.Arguments[1] == "m2" then
-				func.Arguments[1] = "m6"
-			elseif func.Arguments[1] == "m3" then
-				func.Arguments[1] = "m5"
-			elseif func.Arguments[1] == "m4" then
-				func.Arguments[1] = "m4"
-			elseif func.Arguments[1] == "m5" then
-				func.Arguments[1] = "m3"
-			elseif func.Arguments[1] == "m6" then
-				func.Arguments[1] = "m2"
-			elseif func.Arguments[1] == "m7" then
-				func.Arguments[1] = "m1"
-			end
-		else
-			if func.Arguments[1] == "m1" then
-				func.Arguments[1] = "m4"
-			elseif func.Arguments[1] == "m2" then
-				func.Arguments[1] = "m3"
-			elseif func.Arguments[1] == "m3" then
-				func.Arguments[1] = "m2"
-			elseif func.Arguments[1] == "m4" then
-				func.Arguments[1] = "m1"
-			end
+		local Mission = tonumber(func.Arguments[1]:match("m(%d)"))
+		if Mission and Mission > 0 and Mission < 8 then
+			func.Arguments[1] = "m" .. MissionOrder[Level][Mission]
 		end
 	end
 end

@@ -41,19 +41,16 @@ for Level=1,7 do
 		end
 	end
 end
-for i=1,7 do
-	if #RestrictionNames == 0 then
-		local HintText = "Congratulations! You have collected 7 cards... Unfortunately, I have no more hints to give you :/"
-		CardHintText[i] = HintText
-	else
-		local RestrictionIdx = math.random(#RestrictionNames)
-		local Restriction = RestrictionNames[RestrictionIdx]
-		local RestrictionLevel = RestrictionLevels[RestrictionIdx]
-		table.remove(RestrictionNames, RestrictionIdx)
-		table.remove(RestrictionLevels, RestrictionIdx)
-		local HintText = "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
-		CardHintText[i] = HintText
-	end
+
+CardsPerHint = math.floor(49 / #RestrictionNames)
+for i=1,#RestrictionNames do
+	local RestrictionIdx = math.random(#RestrictionNames)
+	local Restriction = RestrictionNames[RestrictionIdx]
+	local RestrictionLevel = RestrictionLevels[RestrictionIdx]
+	table.remove(RestrictionNames, RestrictionIdx)
+	table.remove(RestrictionLevels, RestrictionIdx)
+	local HintText = "Congratulations! You have collected 7 cards, so here is a hint:\n\nYou can find \"" .. Restriction .. "\" in Level " .. RestrictionLevel .. "!"
+	CardHintText[i] = HintText
 end
 CardHints = {}
 LockedMissionPrompts = {}
