@@ -115,7 +115,7 @@ namespace RewardsRandoTracker
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(235, 23);
             this.button2.TabIndex = 4;
-            this.button2.Text = "Hide Tracker";
+            this.button2.Text = "Hide Restrictions Tracker";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -127,7 +127,7 @@ namespace RewardsRandoTracker
             this.BtnShowTracker.Name = "BtnShowTracker";
             this.BtnShowTracker.Size = new System.Drawing.Size(235, 23);
             this.BtnShowTracker.TabIndex = 3;
-            this.BtnShowTracker.Text = "Show Tracker";
+            this.BtnShowTracker.Text = "Show Restrictions Tracker";
             this.BtnShowTracker.UseVisualStyleBackColor = true;
             this.BtnShowTracker.Click += new System.EventHandler(this.BtnShowTracker_Click);
             // 

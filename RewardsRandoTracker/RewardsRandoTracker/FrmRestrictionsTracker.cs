@@ -75,24 +75,31 @@ namespace RewardsRandoTracker
                 {
                     case 1:
                         PnlUnlocked1.Controls.Add(pb);
+                        PnlUnlocked1.Controls.SetChildIndex(pb, 0);
                         break;
                     case 2:
                         PnlUnlocked2.Controls.Add(pb);
+                        PnlUnlocked2.Controls.SetChildIndex(pb, 0);
                         break;
                     case 3:
                         PnlUnlocked3.Controls.Add(pb);
+                        PnlUnlocked3.Controls.SetChildIndex(pb, 0);
                         break;
                     case 4:
                         PnlUnlocked4.Controls.Add(pb);
+                        PnlUnlocked4.Controls.SetChildIndex(pb, 0);
                         break;
                     case 5:
                         PnlUnlocked5.Controls.Add(pb);
+                        PnlUnlocked5.Controls.SetChildIndex(pb, 0);
                         break;
                     case 6:
                         PnlUnlocked6.Controls.Add(pb);
+                        PnlUnlocked6.Controls.SetChildIndex(pb, 0);
                         break;
                     case 7:
                         PnlUnlocked7.Controls.Add(pb);
+                        PnlUnlocked7.Controls.SetChildIndex(pb, 0);
                         break;
                 }
             }

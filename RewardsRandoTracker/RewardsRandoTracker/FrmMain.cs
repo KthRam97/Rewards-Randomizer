@@ -138,18 +138,21 @@ namespace RewardsRandoTracker
                 await Task.Delay(100);
             }
 
-            SetStatus("Configuring tracker...");
+            SetStatus("Found Simpsons.exe. Configuring events...");
 
             simpsons.EnableRaisingEvents = true;
             simpsons.Exited += Simpsons_Exited;
 
+            SetStatus("Setting up hook...");
             SHARConsoleHook.ServerInterface sif = new SHARConsoleHook.ServerInterface();
             sif.Message += Sif_Message;
 
+            SetStatus("Configuring hook...");
             string channelName = null;
             EasyHook.RemoteHooking.IpcCreateServer(ref channelName, System.Runtime.Remoting.WellKnownObjectMode.Singleton, sif);
             string injectionLibrary = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "SHARConsoleHook.dll");
 
+            SetStatus("Injecting hook...");
             EasyHook.RemoteHooking.Inject(simpsons.Id, injectionLibrary, injectionLibrary, channelName);
 
             ClearLogs();
@@ -303,8 +306,8 @@ namespace RewardsRandoTracker
         {
             restrictionsTracker.Show();
             restrictionsTracker.Hide();
-            SetStatus("Waiting for Simpsons.exe...");
             ResetLookup();
+            SetStatus("Waiting for Simpsons.exe...");
             HookSimpsons();
         }
 

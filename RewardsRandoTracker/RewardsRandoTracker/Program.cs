@@ -14,6 +14,8 @@ namespace RewardsRandoTracker
         [STAThread]
         static void Main()
         {
+            string exeFolder = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetEntryAssembly().Location);
+            System.IO.Directory.SetCurrentDirectory(exeFolder);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmMain());
