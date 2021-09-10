@@ -4,6 +4,7 @@ local pack = string.pack
 local unpack = string.unpack
 local concat = table.concat
 
+
 RMS.Value = {}
 function RMS.Value:new(RMSFile, Address)
 	local RetVal = {}
@@ -13,6 +14,7 @@ function RMS.Value:new(RMSFile, Address)
 	self.__index = self
 	return setmetatable(RetVal, self)
 end
+
 
 RMS.File = {}
 function RMS.File:new(Raw)
@@ -24,12 +26,20 @@ function RMS.File:new(Raw)
 	idx = References[#References]
 	RetVal.References = {}
 	for i=1,#References - 1 do
-		RetVal.References[i] = {References[i], math.maxinteger}
+		RetVal.References[i] = {References[i]}
 	end
 	local bits, idx = unpack("I", Raw, idx)
 	RetVal.Data = Raw:sub(idx, idx + bits / 8 - 1)
 	
 	--RetVal.Project = GetValue(0).GetInterface
+	for i=1,#RetVal.References do
+		RetVal.References[i][2] = RetVal.References[i][2] or unpack("I", RetVal.Data, RetVal.References[i][1] / 8 + 1)
+	end
+	for i=1,#RetVal.References do
+		local Reference = RetVal.References[i]
+		local StartPos = Reference[1] / 8 + 1
+		local Data = RetVal.Data:sub(StartPos, StartPos + Reference[2] - 1)
+	end
 	
 	self.__index = self
 	return setmetatable(RetVal, self)
