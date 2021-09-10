@@ -56,16 +56,17 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 - Adding a Card Counter to the Tracker. This will only count the ones that are actually registered to keep better track of your Hint despite the bugs with card counting
 - A setting to randomize mission order within each level
 
-## Authors
+## Credits
+### Authors
 - KthRam (https://www.twitch.tv/kthram)
 - Proddy (https://zhbot.org)
 
-## LuaP3DEditor
+### LuaP3DEditor
 - Proddy (https://github.com/Hampo/LuaP3DEditor) (P3D Class System - P3D Functions)
 - EnAppelsin (https://github.com/EnAppelsin) (Original P3D Lua idea - P3D Functions)
 - Lucas Cardellini (https://lucasstuff.com/) (P3D Functions Performance Improvements)
 
-## Credits
+### Everyone else who made the Rando Possible
 - Bamford (https://www.twitch/tv/bamford) (Assisted KthRam in understanding how SHAR works)
 - EnAppelsin (https://github.com/EnAppelsin) (Created the SHARConsoleHook that enables the external tracker to work)
 - Timbs (https://www.twitch.tv/da_timbsII) and Gibstack (https://www.twitch.tv/Gibstack) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
