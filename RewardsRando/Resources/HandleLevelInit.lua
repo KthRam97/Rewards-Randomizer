@@ -15,7 +15,7 @@ end
 for i=1,#CarShops[Level] do
 	local Shop = CarShops[Level][i]
 	MFK:AddFunction("AddPurchaseCarReward", {"simpson", Shop[1], "npd", Shop[2], 1.3, Shop[3]})
-	MFK:AddFunction("AddPurchaseCarNPCWaypoint", {Shop[1], Shop[4]})
+	--MFK:AddFunction("AddPurchaseCarNPCWaypoint", {Shop[1], Shop[4]})
 end
 
 MFK:Output()
