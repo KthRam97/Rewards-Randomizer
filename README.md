@@ -56,12 +56,19 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 - Adding a Card Counter to the Tracker. This will only count the ones that are actually registered to keep better track of your Hint despite the bugs with card counting
 - A setting to randomize mission order within each level
 
+## Authors
+- KthRam (https://www.twitch.tv/kthram)
+- Proddy (https://zhbot.org)
+
+## LuaP3DEditor
+- Proddy (https://github.com/Hampo/LuaP3DEditor) (P3D Class System - P3D Functions)
+- EnAppelsin (https://github.com/EnAppelsin) (Original P3D Lua idea - P3D Functions)
+- Lucas Cardellini (https://lucasstuff.com/) (P3D Functions Performance Improvements)
+
 ## Credits
-- KthRam for making the mod
-- Proddy for fixing/remaking so many broken/scuffed things about the mod, designing and implementing Reverse Rando, the Hint System and the current Tracker
-- Bamford for helping KthRam actually understand half of what was happening in the SHAR code
-- Appel for creating the hook that allows the current tracker to read where each item was bound
-- Weasel, Maz, UnknownSteel and many others in the DonutTeam community for helping come up with many feature implementations, such as mission orders and unused cars
-- Timbs and Gibstack for teaching KthRam how to actually make a mod instead of blindly editing things and breaking his game 4 times before making the mod
-- Baconman12, Spruce37, Timbs, Gibstack, GuffMcGufferson, TehSpearmeister, Greeny0359 and jpecimage for helping test the initial versions of the mod to ensure it's stability
-- TheTicker and dtops24 for being legends :) 
+- Bamford (https://www.twitch/tv/bamford) (Assisted KthRam in understanding how SHAR works)
+- EnAppelsin (https://github.com/EnAppelsin) (Created the SHARConsoleHook that enables the external tracker to work)
+- Timbs (https://www.twitch.tv/da_timbsII) and Gibstack (https://www.twitch.tv/Gibstack) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
+- Weasel, Max, UnknownSteel and more in the DonutTeam community (Helped come up with many feature implementations)
+- Baconman12, Spruce37, Timbs, Gibstack, GuffMcGufferson, TehSpearmeister, Greeny0359 and jpecimage (Helped test the initial versions of the mod to ensure stability)
+- TheTicker, Axington123 and dtops24 for being legends :)
