@@ -261,7 +261,7 @@ namespace RewardsRandoTracker
                                 Match m = r.Match(parts[1]);
                                 int Level = int.Parse(m.Groups[1].Value);
                                 int Mission = int.Parse(m.Groups[2].Value);
-                                if (Mission > 11)
+                                if (Mission > 11 || (Level == 7 && Mission == 7))
                                 {
                                     TrackReward(Level, parts[0]);
                                 }
