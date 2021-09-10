@@ -50,7 +50,9 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
   - Banned Cars (Default: fone_v, smith_v, cHears): Specifies the cars to be removed from the pool when Ban Cars is ticked. Type the filenames of the cars you wish to remove separated by a comma. Filenames for all cars of interest are listed here: https://docs.google.com/document/d/12CfjZz_jJPPA1jTHEURepX-O2SyTu_7a34ZBJg5IrQ0/edit?usp=sharing
 
 ## Current Problems/Errors: 
-- If you swap to a costume that you would not normally get in the level, you will softlock the game upon trying to start a mission. For most missions this can be fixed with a MMW but in a few exceptions you will have to quit the game, losing all progress no matter when you saved. __DO NOT DO THIS!!!__
+- If you collect a card while your character is saying another voiceline it won't count to the cards for hints. This means by chance you may need more than 3 cards per hint
+- Some users have reported empty loading screens between levels (with no newspapers). If this happens, it should load but may take up to 1-2 mins.
+- The ingame popups for Hints can be inaccurate. It is recommended that you read the hints in the console rather than in the popups
 
 ## Plans for the future
 - Adding a Card Counter to the Tracker. This will only count the ones that are actually registered to keep better track of your Hint despite the bugs with card counting
