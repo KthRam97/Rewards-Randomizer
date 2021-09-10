@@ -11,7 +11,7 @@ for i=1,#MFK.Functions do
 	if name == "loaddisposablecar" and func.Arguments[3] == "DEFAULT" then
 		func.Arguments[1] = "art\\cars\\" .. MissionRewards[7][7] .. ".p3d"
 		func.Arguments[2] = MissionRewards[7][7]
-	elseif Settings.ReverseMissionOrder and name == "addmission" then
+	elseif (Settings.ReverseMissionOrder or Settings.RandomMissionOrder) and name == "addmission" then
 		local Mission = tonumber(func.Arguments[1]:match("m(%d)"))
 		if Mission and Mission > 0 and Mission < 8 then
 			func.Arguments[1] = "m" .. MissionOrder[Level][Mission]

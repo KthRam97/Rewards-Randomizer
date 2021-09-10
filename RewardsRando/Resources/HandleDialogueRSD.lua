@@ -1,4 +1,4 @@
-if Settings.ReverseMissionOrder then
+if Settings.ReverseMissionOrder or Settings.RandomMissionOrder then
 	local Path = GetPath()
 	local GamePath = GetGamePath(Path)
 	if not Exists(GamePath, true, false) then

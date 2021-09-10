@@ -113,6 +113,25 @@ if Settings.ReverseMissionOrder then
 		{7, 6, 5, 4, 3, 2, 1},
 		{4, 3, 2, 1, 5, 6, 7},
 	}
+elseif Settings.RandomMissionOrder then
+	MissionOrder = {}
+	
+	for i=1,7 do
+		MissionOrder[i] = {}
+		local AvailableMissions = {}
+		for j=1,(i == 7 and 4 or 7) do
+			AvailableMissions[j] = j
+		end
+		for j=1,#AvailableMissions do
+			local NextMissionIdx = math.random(#AvailableMissions)
+			MissionOrder[i][j] = AvailableMissions[NextMissionIdx]
+			table.remove(AvailableMissions, NextMissionIdx)
+		end
+	end
+	
+	for i=5,7 do
+		MissionOrder[7][i] = i
+	end
 else
 	MissionOrder = {}
 	for i=1,7 do
@@ -526,7 +545,8 @@ end
 
 Seed.Init()
 local InvalidCount = Seed.Generate()
-Seed.PrintSpoiler()
 
 local endTime = GetTime()
 print("Seeding configured after " .. InvalidCount .. " attempts in " .. (endTime - startTime) * 1000 .. "ms.")
+
+Seed.PrintSpoiler()

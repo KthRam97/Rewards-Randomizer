@@ -11,7 +11,14 @@ local BibleIdx = Chunk:GetChunkIndex(P3D.Identifiers.Frontend_Text_Bible)
 if not BibleIdx then return end
 local BibleChunk = P3D.FrontendTextBibleP3DChunk:new{Raw = Chunk:GetChunkAtIndex(BibleIdx)}
 
-local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\nReverse Mission Order: " .. tostring(Settings.ReverseMissionOrder) .. "\nSeed: " .. Settings.Seed
+local MissionOrderType = "Normal"
+if Settings.ReverseMissionOrder then
+	MissionOrderType = "Reversed"
+elseif Settings.RandomMissionOrder then
+	MissionOrderType = "Random"
+end
+
+local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\nMission Order: " .. MissionOrderType .. "\nSeed: " .. Settings.Seed
 local RandoPauseInfo = "Seed: " .. Settings.Seed
 
 local CardHintText = {}
@@ -108,7 +115,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		for i=1,7 do
 			LockedMissionPrompts[i] = {}
 			for j=1,7 do
-				if Settings.ReverseMissionOrder then
+				if Settings.ReverseMissionOrder or Settings.RandomMissionOrder then
 					LanguageChunk:SetValue("MISSION_INFO_L"..i.."_M"..j, MissionInfo[i][MissionOrder[i][j]])
 					LanguageChunk:SetValue("MISSION_TITLE_L"..i.."_M"..j, MissionTitle[i][MissionOrder[i][j]])
 				end

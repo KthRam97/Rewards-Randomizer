@@ -1,4 +1,7 @@
-if Settings.ReverseMissionOrder and Settings.MusicFix then
+if Settings.DisableMusicFix then
+	return
+end
+if Settings.ReverseMissionOrder or Settings.RandomMissionOrder then
 	local Path = GetPath()
 	local GamePath = GetGamePath(Path)
 	local Level = tonumber(Path:match("[lL](%d)"))
