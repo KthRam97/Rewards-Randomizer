@@ -2,8 +2,25 @@ if IsHackLoaded("NoAudio") then
 	Alert("Unfortunately, some of the logic in this randomiser requires audio to be loaded.\nYou have the \"No Audio\" hack loaded, which renders this impossible.\nThe game will now exit.")
 	os.exit()
 end
-if not IsHackLoaded("Console") and not Confirm("This mod uses the console to print unlocked rewards, and other useful information.\nIf you want to continue with the console disabled, click OK. Otherwise, click Cancel to close the game.") then
-	os.exit()
+if not IsHackLoaded("Console") then
+	if not Confirm("This mod uses the console to print unlocked rewards, and other useful information.\nIf you want to continue with the console disabled, click OK. Otherwise, click Cancel to close the game.") then
+		os.exit()
+	end
+else
+	local ConsoleSettings = GetSettings("Console")
+	if not ConsoleSettings.Console then
+		if not Confirm("You have the Console hack enabled, but have it disable in the Console's Mod Settings.\nIf you want to continue with the console disabled, click OK. Otherwise, click Cancel to close the game.") then
+			os.exit()
+		end
+	elseif not ConsoleSettings.IncludeMods then
+		if not Confirm("You have the Console hack enabled, but do not have Mods checked in the Console's Mod Settings Include section.\nIf you want to continue with the console disabled, click OK. Otherwise, click Cancel to close the game.") then
+			os.exit()
+		end
+	else
+		if ConsoleSettings.IncludeGame or ConsoleSettings.IncludeHacks then
+			Alert("You have the Console hack enabled, but also have Game and Hacks checked in the Console's Mod Settings Include section.\nThis may cause issues with the tracker, so if any occur, try disabling these includes.")
+		end
+	end
 end
 
 ModName = GetModName()
@@ -469,7 +486,7 @@ CustomRestrictions = {
 	{false, false, false, false, false, false, false}, -- Level 4
 	{false, false, false, false, false, false, false}, -- Level 5
 	{false, false, false, false, false, false, false}, -- Level 6
-	{false, false, false, false, {"h_scuzzy","You need to look Scuzzy. Purchase Homer's DIRTY HOMER at a Clothing Shop if you've unlocked it. Otherwise Scuzz it up in other missions.\nYou must show your Proof of Scuzzy to continue!"}, {"h_evil","You need to descend into hell! Purchase Homer's EVIL HOMER at a Clothing Shop if you've unlocked it. Otherwise head out and commit some sins in other missions.\You must show your Proof of Hell to continue!"}, {"h_donut","You need to make a deal with the devil. Purchase Homer's DONUT HOMER at a clothing Shop if you've unlocked it. Otherwise track down Devil Flanders in other missions.\nYou must show your Proof of Gluttony to continue!"}}, -- Level 7
+	{false, false, false, false, {"h_scuzzy","You need to look Scuzzy. Purchase Homer's DIRTY HOMER at a Clothing Shop if you've unlocked it. Otherwise Scuzz it up in other missions.\nYou must show your Proof of Scuzzy to continue!"}, {"h_evil","You need to descend into hell! Purchase Homer's EVIL HOMER at a Clothing Shop if you've unlocked it. Otherwise head out and commit some sins in other missions.\nYou must show your Proof of Hell to continue!"}, {"h_donut","You need to make a deal with the devil. Purchase Homer's DONUT HOMER at a clothing Shop if you've unlocked it. Otherwise track down Devil Flanders in other missions.\nYou must show your Proof of Gluttony to continue!"}}, -- Level 7
 }
 CustomRestrictionsIdx = {}
 Restrictions = {}
