@@ -1,5 +1,5 @@
-if IsHackLoaded("NoAudio") then
-	Alert("Unfortunately, some of the logic in this randomiser requires audio to be loaded.\nYou have the \"No Audio\" hack loaded, which renders this impossible.\nThe game will now exit.")
+if IsModEnabled("NoAudio") and not IsHackLoaded("NoAudio") then
+	Alert("Unfortunately, some of the logic in this randomiser requires audio to be loaded.\nYou have the \"No Audio\" mod loaded, which renders this impossible.\nThe game will now exit.")
 	os.exit()
 end
 if not IsHackLoaded("Console") then

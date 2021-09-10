@@ -1,4 +1,4 @@
-if Settings.ReverseMissionOrder and Settings.HackyMusicFix then
+if Settings.ReverseMissionOrder and Settings.MusicFix then
 	local Path = GetPath()
 	local GamePath = GetGamePath(Path)
 	local Level = tonumber(Path:match("[lL](%d)"))
@@ -6,16 +6,25 @@ if Settings.ReverseMissionOrder and Settings.HackyMusicFix then
 		Output(Cache["L"..Level.."RMS"])
 		return
 	end
-
-	local File = ReadFile(GamePath)
-	local RMSFile = RMS.File:new(File)
-
-	for i=1,7 do
-		if MissionOrder[Level][i] ~= i then
-			RMSFile.Data = RMSFile.Data:gsub("M"..i, "M"..MissionOrder[Level][i])
+	
+	local startTime = GetTime()
+	
+	local function DataModifier(Data)
+		local Mission = Data:match("^M(%d)_")
+		if Mission then
+			Mission = tonumber(Mission)
+			if MissionOrder[Level][Mission] and MissionOrder[Level][Mission] ~= Mission then
+				return "M" .. MissionOrder[Level][Mission] .. "_" .. Data:sub(4)
+			end
 		end
+		return Data
 	end
 	
+	local File = ReadFile(GamePath)
+	local RMSFile = RMS.File:new(File, DataModifier)
+	
 	Cache["L"..Level.."RMS"] = RMSFile:Output()
+	local endTime = GetTime()
+	print("Fixed mission music for level " .. Level .. " in " .. (endTime-startTime) * 1000 .. "ms")
 	Output(Cache["L"..Level.."RMS"])
 end
