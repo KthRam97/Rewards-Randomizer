@@ -34,12 +34,13 @@ namespace RewardsRandoTracker
             this.LblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.LBLog = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.CBTrackerTopmost = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.BtnShowTracker = new System.Windows.Forms.Button();
             this.BtnLookup = new System.Windows.Forms.Button();
             this.CBLookup = new System.Windows.Forms.ComboBox();
             this.LblLookup = new System.Windows.Forms.Label();
-            this.CBTrackerTopmost = new System.Windows.Forms.CheckBox();
+            this.LblCards = new System.Windows.Forms.Label();
             this.statusStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -80,6 +81,7 @@ namespace RewardsRandoTracker
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.LblCards);
             this.splitContainer1.Panel1.Controls.Add(this.CBTrackerTopmost);
             this.splitContainer1.Panel1.Controls.Add(this.button2);
             this.splitContainer1.Panel1.Controls.Add(this.BtnShowTracker);
@@ -93,6 +95,17 @@ namespace RewardsRandoTracker
             this.splitContainer1.Size = new System.Drawing.Size(800, 428);
             this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // CBTrackerTopmost
+            // 
+            this.CBTrackerTopmost.AutoSize = true;
+            this.CBTrackerTopmost.Location = new System.Drawing.Point(16, 125);
+            this.CBTrackerTopmost.Name = "CBTrackerTopmost";
+            this.CBTrackerTopmost.Size = new System.Drawing.Size(168, 17);
+            this.CBTrackerTopmost.TabIndex = 5;
+            this.CBTrackerTopmost.Text = "Make tracker window topmost";
+            this.CBTrackerTopmost.UseVisualStyleBackColor = true;
+            this.CBTrackerTopmost.CheckedChanged += new System.EventHandler(this.CBTrackerTopmost_CheckedChanged);
             // 
             // button2
             // 
@@ -150,16 +163,14 @@ namespace RewardsRandoTracker
             this.LblLookup.TabIndex = 0;
             this.LblLookup.Text = "Reward Lookup:";
             // 
-            // CBTrackerTopmost
+            // LblCards
             // 
-            this.CBTrackerTopmost.AutoSize = true;
-            this.CBTrackerTopmost.Location = new System.Drawing.Point(16, 125);
-            this.CBTrackerTopmost.Name = "CBTrackerTopmost";
-            this.CBTrackerTopmost.Size = new System.Drawing.Size(168, 17);
-            this.CBTrackerTopmost.TabIndex = 5;
-            this.CBTrackerTopmost.Text = "Make tracker window topmost";
-            this.CBTrackerTopmost.UseVisualStyleBackColor = true;
-            this.CBTrackerTopmost.CheckedChanged += new System.EventHandler(this.CBTrackerTopmost_CheckedChanged);
+            this.LblCards.AutoSize = true;
+            this.LblCards.Location = new System.Drawing.Point(16, 149);
+            this.LblCards.Name = "LblCards";
+            this.LblCards.Size = new System.Drawing.Size(93, 13);
+            this.LblCards.TabIndex = 6;
+            this.LblCards.Text = "Collected Cards: 0";
             // 
             // FrmMain
             // 
@@ -196,6 +207,7 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button BtnShowTracker;
         private System.Windows.Forms.CheckBox CBTrackerTopmost;
+        private System.Windows.Forms.Label LblCards;
     }
 }
 

@@ -19,6 +19,7 @@ namespace RewardsRandoTracker
         private readonly FrmRestrictionsTracker restrictionsTracker = new FrmRestrictionsTracker();
         private bool IsLoading = false;
         private bool IsSeedSpoiler = false;
+        private int CollectedCards = 0;
 
         public readonly Dictionary<string, string> Rewards = new Dictionary<string, string>();
         public readonly Dictionary<string, string> Restrictions = new Dictionary<string, string>();
@@ -152,6 +153,7 @@ namespace RewardsRandoTracker
             EasyHook.RemoteHooking.Inject(simpsons.Id, injectionLibrary, injectionLibrary, channelName);
 
             ClearLogs();
+            CollectedCards = 0;
             ResetLookup();
             ResetTracker();
 
@@ -219,6 +221,15 @@ namespace RewardsRandoTracker
                         ProcessHint(parts[1]);
                     }
                     break;
+                case "CARD":
+                    if (parts.Length == 3)
+                    {
+                        if (parts[1] == "Collected")
+                        {
+                            ProcessCard();
+                        }
+                    }
+                    break;
             }
         }
 
@@ -280,6 +291,12 @@ namespace RewardsRandoTracker
         private void ProcessHint(string Hint)
         {
             AddLog($"Hint received! {Hint}");
+        }
+
+        private void ProcessCard()
+        {
+            CollectedCards++;
+            LblCards.Text = "Collected Cards: " + CollectedCards;
         }
 
         private void Form1_Load(object sender, EventArgs e)
