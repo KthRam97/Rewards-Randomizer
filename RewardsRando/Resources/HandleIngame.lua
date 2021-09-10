@@ -21,7 +21,7 @@ for PageIDX in ProjectChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Page) do
 			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. 19 + i))
 			MultiTextChunk:AddChunk(TextChunk:Output())
 		end
-		for i=1,7 do
+		for i=1,#CardHints do
 			local TextChunk = P3D.FrontendStringTextBibleP3DChunk:create("srr2", P3D.MakeP3DString("INGAME_MESSAGE_" .. CardHints[i][1]))
 			MultiTextChunk:AddChunk(TextChunk:Output())
 			

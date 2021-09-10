@@ -88,7 +88,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		for i=1,#CardHintText do
 			InGameIdx = InGameIdx + 1
 			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, CardHintText[i])
-			CardHints[#CardHints + 1] = {InGameIdx, CardHintText[i]}
+			CardHints[i] = {InGameIdx, CardHintText[i]}
 		end
 		
 		local ObjectiveIdx = 299
@@ -98,9 +98,9 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 					InGameIdx = InGameIdx + 1
 					ObjectiveIdx = ObjectiveIdx + 1
 					local Restriction = CustomRestrictions[i][j]
-					CustomRestrictionsIdx[Restriction] = {InGameIdx,ObjectiveIdx}
-					LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "You must purchase \"" .. RewardNames[Restriction] .. "\" to start this level.")
-					LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Purchase \"" .. RewardNames[Restriction] .. "\" to continue.")
+					CustomRestrictionsIdx[Restriction[1]] = {InGameIdx,ObjectiveIdx}
+					LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, Restriction[2])
+					LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Purchase \"" .. RewardNames[Restriction[1]] .. "\" to continue.")
 				end
 			end
 		end

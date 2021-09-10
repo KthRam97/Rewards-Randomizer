@@ -24,23 +24,20 @@ function RMS.File:new(Raw)
 	idx = References[#References]
 	RetVal.References = {}
 	for i=1,#References - 1 do
-		RetVal.References[i] = {References[i]}
+		RetVal.References[i] = {References[i], math.maxinteger}
 	end
 	local bits, idx = unpack("I", Raw, idx)
 	RetVal.Data = Raw:sub(idx, idx + bits / 8 - 1)
+	
+	--RetVal.Project = GetValue(0).GetInterface
 	
 	self.__index = self
 	return setmetatable(RetVal, self)
 end
 
 function RMS.File:GetValue(Address)
-	if not self.ValuesByAddress[Address] then
-		
-	end
+	self.ValuesByAddress[Address] = self.ValuesByAddress[Address] or RMS.Value:new(self, Addres)
 	return self.ValuesByAddress[Address]
-end
-
-function RMS.File:ProcessData()
 end
 
 function RMS.File:Output()

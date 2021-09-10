@@ -26,10 +26,7 @@ if CompletedLevel and CompletedMission then
 		MFK = MFK or MFKLexer.Lexer:Parse(File)
 		if Costumes[Reward] then
 			print("UNLOCK|COSTUME|"..CompletedLevel.."|"..CompletedMission.."|"..RewardNames[Reward])
-			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", CompletedLevel, 0, "interior"})
-			if CompletedLevel ~= Costumes[Reward] then
-				MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], 0, "interior"})
-			end
+			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], 0, "interior"})
 		elseif Cars[Reward] then
 			print("UNLOCK|CAR|"..CompletedLevel.."|"..CompletedMission.."|"..RewardNames[Reward])
 			MFK:InsertFunction(1, "BindReward", {Reward, "art\\cars\\"..Reward..".p3d", "car", "forsale", CompletedLevel, 0, "simpson"})
@@ -48,11 +45,13 @@ end
 local missionLocked = false
 if ThisMission > 0 and ThisMission < 8 and ThisMission ~= MissionOrder[ThisLevel][1] then
 	local requiredMission
+	local requiredMissionIdx
 	for i=1,7 do
 		if MissionOrder[ThisLevel][i] == ThisMission then
 			break
 		end
 		requiredMission = MissionOrder[ThisLevel][i]
+		requiredMissionIdx = i
 	end
 	if not CompletedMissions[ThisLevel][requiredMission] then
 		missionLocked = true
@@ -80,14 +79,14 @@ if ThisMission > 0 and ThisMission < 8 and ThisMission ~= MissionOrder[ThisLevel
 		MFK:AddFunction("CloseStage")
 
 		MFK:AddFunction("AddStage", {"locked", "skin", "beeman"})
-		MFK:AddFunction("SetStageMessageIndex", LockedMissionPrompts[ThisLevel][Settings.ReverseMissionOrder and 8 - requiredMission or requiredMission][1])
+		MFK:AddFunction("SetStageMessageIndex", LockedMissionPrompts[ThisLevel][requiredMissionIdx][1])
 		MFK:AddFunction("AddObjective", "timer")
 		MFK:AddFunction("SetDurationTime", 0)
 		MFK:AddFunction("CloseObjective")
 		MFK:AddFunction("CloseStage")
 
 		MFK:AddFunction("AddStage")
-		MFK:AddFunction("SetStageMessageIndex", LockedMissionPrompts[ThisLevel][Settings.ReverseMissionOrder and 8 - requiredMission or requiredMission][2])
+		MFK:AddFunction("SetStageMessageIndex", LockedMissionPrompts[ThisLevel][requiredMissionIdx][2])
 		MFK:AddFunction("SetHUDIcon", "tshirt" )
 		MFK:AddFunction("AddObjective", {"buyskin", "beeman"})
 		MFK:AddFunction("CloseObjective")
@@ -97,7 +96,7 @@ if ThisMission > 0 and ThisMission < 8 and ThisMission ~= MissionOrder[ThisLevel
 end
 
 if not missionLocked and CustomRestrictions[ThisLevel][ThisMission] then
-	local Restriction = CustomRestrictions[ThisLevel][ThisMission]
+	local Restriction = CustomRestrictions[ThisLevel][ThisMission][1]
 	File = File or ReadFile(GamePath)
 	MFK = MFK or MFKLexer.Lexer:Parse(File)
 

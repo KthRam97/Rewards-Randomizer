@@ -110,6 +110,7 @@ RewardsIdx = {}
 RewardNames = {}
 local CustomRewardNames = {
 	["CBONE"]="Bonestorm Truck",
+	["CPOLICE"]="Hit and Run Police",
 	["GLASTRUC"]="Glass Truck",
 	["REDBRICK"]="Redbrick Car",
 	["TT"]="Audi TT",
@@ -187,7 +188,7 @@ DirectoryGetEntries("/GameData/art/cars", function(Name, IsDir)
 			local CompositeDrawableIDX = P3DFile:GetChunkIndex(P3D.Identifiers.Composite_Drawable)
 			local CompositeDrawableChunk = P3D.CompositeDrawableP3DChunk:new{Raw = P3DFile:GetChunkAtIndex(CompositeDrawableIDX)}
 			local CompName = P3D.CleanP3DString(CompositeDrawableChunk.Name):upper()
-			RewardNames[fileName] = LanguageChunk:GetValueFromName(CompName) or (CustomRewardNames[CompName] or CompName)
+			RewardNames[fileName] = CustomRewardNames[CompName] or (LanguageChunk:GetValueFromName(CompName) or CompName)
 		end
 	end
 	return true
@@ -468,7 +469,7 @@ CustomRestrictions = {
 	{false, false, false, false, false, false, false}, -- Level 4
 	{false, false, false, false, false, false, false}, -- Level 5
 	{false, false, false, false, false, false, false}, -- Level 6
-	{false, false, false, false, "h_scuzzy", "h_evil", "h_donut"}, -- Level 7
+	{false, false, false, false, {"h_scuzzy","You need to look Scuzzy. Purchase Homer's DIRTY HOMER at a Clothing Shop if you've unlocked it. Otherwise Scuzz it up in other missions.\nYou must show your Proof of Scuzzy to continue!"}, {"h_evil","You need to descend into hell! Purchase Homer's EVIL HOMER at a Clothing Shop if you've unlocked it. Otherwise head out and commit some sins in other missions.\You must show your Proof of Hell to continue!"}, {"h_donut","You need to make a deal with the devil. Purchase Homer's DONUT HOMER at a clothing Shop if you've unlocked it. Otherwise track down Devil Flanders in other missions.\nYou must show your Proof of Gluttony to continue!"}}, -- Level 7
 }
 CustomRestrictionsIdx = {}
 Restrictions = {}
@@ -485,7 +486,7 @@ for Level=1,7 do
 			end
 		end
 		if #MissionRestricions == 0 and CustomRestrictions[Level][Mission] then
-			MissionRestricions[1] = CustomRestrictions[Level][Mission]
+			MissionRestricions[1] = CustomRestrictions[Level][Mission][1]
 		else
 			CustomRestrictions[Level][Mission] = false
 		end
