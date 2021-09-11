@@ -44,6 +44,7 @@ for Level=1,7 do
 	end
 end
 LockedMissionPrompts = {}
+UnluckyCards = {}
 local lang = GetGameLanguage()
 for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 	local LanguageChunk = P3D.FrontendLanguageP3DChunk:new{Raw = BibleChunk:GetChunkAtIndex(idx)}
@@ -91,6 +92,11 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				LanguageChunk:SetValue("CARD_DESC_" .. AvailableHints[i], "Unlucky! Unfortunately, this card doesn't contain a hint.")
 				LanguageChunk:SetValue("CARD_TITLE_" .. AvailableHints[i], "Unlucky :(")
 				LanguageChunk:SetValue("CARD_EPISODE_" .. AvailableHints[i], "Better Luck Next Time")
+				local hint = AvailableHints[i]
+				local level = math.ceil((hint + 1)/8)
+				local mission = hint % 8 + 1
+				UnluckyCards[level] = UnluckyCards[level] or {}
+				UnluckyCards[level][mission] = true
 			end
 		end
 		
