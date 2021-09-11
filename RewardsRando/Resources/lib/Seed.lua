@@ -60,7 +60,6 @@ function Seed.Generate()
 			PossibleMissions[i][j] = true
 		end
 	end
-	--PossibleMissions[7][7] = false
 	local RemainingRewards = {}
 	for i=1,#Rewards do
 		RemainingRewards[i] = Rewards[i]
@@ -69,107 +68,6 @@ function Seed.Generate()
 	MissionRewards = {}
 	for i=1,7 do
 		MissionRewards[i] = {}
-	end
-	
-	--[[local RemainingRestrictions = {}
-	for i=1,#Restrictions do
-		for j=1,#Restrictions[i] do
-			local MissionRestricions = Restrictions[i][j]
-			for k=1,#MissionRestricions do
-				local Restriction = {}
-				Restriction.Name = MissionRestricions[k]
-				Restriction.Level = i
-				Restriction.Mission = j
-				local AvailableMissions = {}
-				for l=1,7 do
-					AvailableMissions[l] = {}
-					for m=1,14 do
-						AvailableMissions[l][m] = true
-					end
-				end
-				AvailableMissions[7][7] = false
-				for l=j,7 do
-					AvailableMissions[i][l] = false
-				end
-				Restriction.AvailableMissions = AvailableMissions
-				RemainingRestrictions[#RemainingRestrictions + 1] = Restriction
-			end
-		end
-	end
-	
-	for i=1,#RemainingRestrictions do
-		local Restriction = RemainingRestrictions[i]
-		for j=1,#PossibleMissions do
-			for k=1,#PossibleMissions[j] do
-				if not PossibleMissions[j][k] then
-					Restriction.AvailableMissions[j][k] = false
-				end
-			end
-		end
-		local level, mission = ChooseLevelAndMission(Restriction.AvailableMissions, Cars[Restriction.Name])
-		MissionRewards[level][mission] = Restriction.Name
-		for j=1,#RemainingRewards do
-			if RemainingRewards[j] == Restriction.Name then
-				table.remove(RemainingRewards, j)
-			end
-		end
-		PossibleMissions[level][mission] = false
-		for j=1,#RemainingRestrictions do
-			if i ~= j then
-				local Restriction2 = RemainingRestrictions[j]
-				if Restriction2.Level >= level then
-					for k=mission,7 do
-						Restriction2.AvailableMissions[level][k] = false
-					end
-				end
-			end
-		end
-	end]]
-	
-	if false then
-		--[[
-		Awful order test:
-		L1M5 - Mr Plow
-		L2M7 - School Bus
-		L3M4 - Lisa Cool
-		L3M7 - Inmate Marge
-		L4M3 - Police Marge
-		L4M6 - Homer Dirty
-		L4M7 - Car Built For Homer
-		L5M3 - Apu American
-		L5M6 - Globex
-		L6M6 - Zombie Car
-		L7M4 - Dirty Homer
-		L7M5 - Evil Homer
-		L7M6 - Plow King
-		]]
-		
-		PossibleMissions[1][5] = false
-		PossibleMissions[2][7] = false
-		PossibleMissions[3][4] = false
-		PossibleMissions[3][7] = false
-		PossibleMissions[4][3] = false
-		PossibleMissions[4][6] = false
-		PossibleMissions[4][7] = false
-		PossibleMissions[5][3] = false
-		PossibleMissions[5][6] = false
-		PossibleMissions[6][6] = false
-		PossibleMissions[7][4] = false
-		PossibleMissions[7][5] = false
-		PossibleMissions[7][6] = false
-		MissionRewards[1][5] = "mrplo_v"
-		MissionRewards[2][7] = "otto_v"
-		MissionRewards[3][4] = "l_cool"
-		MissionRewards[3][7] = "m_prison"
-		MissionRewards[4][3] = "m_police"
-		MissionRewards[4][6] = "h_scuzzy"
-		MissionRewards[4][7] = "carhom_v"
-		MissionRewards[5][3] = "a_american"
-		MissionRewards[5][6] = "scorp_v"
-		MissionRewards[6][6] = "zombi_v"
-		MissionRewards[7][4] = "h_scuzzy"
-		MissionRewards[7][5] = "h_evil"
-		MissionRewards[7][6] = "plowk_v"
 	end
 	
 	Seed.AddSpoiler("RESTRICTIONS:")
@@ -283,7 +181,7 @@ function Seed.CheckSoftlock()
 end
 
 function Seed.Init()
-	if not Settings.Seeded or not Settings.Seed or Settings.Seed == "" then
+	if not Settings.FixedSeed or not Settings.Seed or Settings.Seed == "" then
 		local number = math.random(math.maxinteger)
 		Settings.Seed = Seed.Base64(string.pack("j", number))
 		Seed.SeedRaw = number

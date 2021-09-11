@@ -16,7 +16,7 @@ for i=1,7 do
 	MFK:AddFunction("BindReward", {MissionRewards[i][14], "art\\cars\\" .. MissionRewards[i][14] .. ".p3d", "car", "forsale", i, math.floor(Settings.PriceMultiplier*Prices[i][3]), "gil"})
 	
 	MFK:AddFunction("BindReward", {DefaultCharacters[i], "art\\chars\\"..DefaultCharacters[i]:sub(1,6).."_m.p3d", "skin", "defaultskin", i})
-	MFK:AddFunction("BindReward", {"beeman", "art\\chars\\beeman_m.p3d", "skin", "forsale", i, 42069, "interior"})
+	MFK:AddFunction("BindReward", {"beeman", "art\\chars\\beeman_m.p3d", "skin", "forsale", i, 69420, "interior"})
 	
 	MFK:AddFunction("SetTotalGags", {i, TotalGags[i]})
 end
