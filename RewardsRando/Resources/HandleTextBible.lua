@@ -14,8 +14,46 @@ local BibleChunk = P3D.FrontendTextBibleP3DChunk:new{Raw = Chunk:GetChunkAtIndex
 local MissionOrderType = ({"Normal", "Reversed", "Random"})[Settings.MissionOrderType]
 local HintType = ({"None", "Collect X", "Dispersed"})[Settings.HintType]
 
-local SeedInfo = Settings.HashSeed and ("Hash: " .. sha1.hex(Settings.Seed):gsub("(.)...", "%1")) or ("Seed: " .. Settings.Seed)
-local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nMission Order: " .. MissionOrderType .. " | Hints: " .. HintType .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\n" .. SeedInfo
+local SeedInfoTbl = {}
+if Settings.HashSeed then
+	SeedInfoTbl[#SeedInfoTbl + 1] = "Hash"
+else
+	SeedInfoTbl[#SeedInfoTbl + 1] = "Seed"
+end
+if Settings.FixedSeed then
+	SeedInfoTbl[#SeedInfoTbl + 1] = " (Fixed)"
+end
+SeedInfoTbl[#SeedInfoTbl + 1] = ": "
+if Settings.HashSeed then
+	SeedInfoTbl[#SeedInfoTbl + 1] = sha1.hex(Settings.Seed):gsub("(.)...", "%1")
+else
+	SeedInfoTbl[#SeedInfoTbl + 1] = Settings.Seed:sub(1, 11)
+end
+local SeedInfo = table.concat(SeedInfoTbl)
+local RandoInfoTbl = {}
+--RandoInfoTbl[#RandoInfoTbl + 1] = os.date("[%Y-%m-%d]")
+--RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+RandoInfoTbl[#RandoInfoTbl + 1] = ModTitle
+RandoInfoTbl[#RandoInfoTbl + 1] = " v"
+RandoInfoTbl[#RandoInfoTbl + 1] = ModVersion
+RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+RandoInfoTbl[#RandoInfoTbl + 1] = "Mission Order: "
+RandoInfoTbl[#RandoInfoTbl + 1] = MissionOrderType
+RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+RandoInfoTbl[#RandoInfoTbl + 1] = "Hints: "
+RandoInfoTbl[#RandoInfoTbl + 1] = HintType
+if Settings.HintType == 3 and Settings.RemoveUnluckyCards then
+	RandoInfoTbl[#RandoInfoTbl + 1] = " (Rem Unlucky)"
+end
+RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+RandoInfoTbl[#RandoInfoTbl + 1] = "Price Multiplier: "
+RandoInfoTbl[#RandoInfoTbl + 1] = Settings.PriceMultiplier
+RandoInfoTbl[#RandoInfoTbl + 1] = " | "
+RandoInfoTbl[#RandoInfoTbl + 1] = "Ban Cars: "
+RandoInfoTbl[#RandoInfoTbl + 1] = tostring(Settings.BanCars)
+RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+RandoInfoTbl[#RandoInfoTbl + 1] = SeedInfo
+local RandoInfo = table.concat(RandoInfoTbl)
 local RandoPauseInfo = SeedInfo
 
 local CardHintText = {}
