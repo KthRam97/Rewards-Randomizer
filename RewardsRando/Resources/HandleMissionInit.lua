@@ -14,7 +14,7 @@ local File
 local MFK
 
 if not Settings.DisableIngamePopups then
-	if MissionRewards[CurrLevel][CurrMission] and not CompletedMissions[CurrLevel][CurrMission] and not (CurrLevel == 7 and CurrMission == 7) and not CurrMission == 11 then
+	if MissionRewards[CurrLevel][CurrMission] and not CompletedMissions[CurrLevel][CurrMission] and not (CurrLevel == 7 and CurrMission == 7) and CurrMission ~= 11 then
 		File = File or ReadFile(GamePath)
 		MFK = MFK or MFKLexer.Lexer:Parse(File)
 

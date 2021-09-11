@@ -28,6 +28,8 @@ ModTitle = GetModTitle()
 ModVersion = GetModVersion()
 Settings = GetSettings()
 
+print(ModTitle .. " v" .. ModVersion .. ": Initialising...")
+
 Paths = {}
 Paths.ModPath = GetModPath()
 Paths.Resources = Paths.ModPath .. "/Resources/"

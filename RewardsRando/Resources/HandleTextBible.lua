@@ -12,7 +12,7 @@ if not BibleIdx then return end
 local BibleChunk = P3D.FrontendTextBibleP3DChunk:new{Raw = Chunk:GetChunkAtIndex(BibleIdx)}
 
 local MissionOrderType = ({"Normal", "Reversed", "Random"})[Settings.MissionOrderType]
-local HintType = ({"None", "Dispersed", "Collect X"})[Settings.HintType]
+local HintType = ({"None", "Collect X", "Dispersed"})[Settings.HintType]
 
 local SeedInfo = Settings.HashSeed and ("Hash: " .. sha1.hex(Settings.Seed):gsub("(.)...", "%1")) or ("Seed: " .. Settings.Seed)
 local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nMission Order: " .. MissionOrderType .. " | Hints: " .. HintType .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\n" .. SeedInfo
