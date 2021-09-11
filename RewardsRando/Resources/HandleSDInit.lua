@@ -163,7 +163,7 @@ if not missionLocked and CustomRestrictions[ThisLevel][ThisMission] then
 	idx = idx + 1
 end
 
-if not ShowCardHint and CardCount > 0 and CardCount >= CardsPerHint then
+if Settings.HintType == 2 and not ShowCardHint and CardCount > 0 and CardCount >= CardsPerHint then
 	if CardHints[CardHintsGiven + 1] then
 		ShowCardHint = true	
 		CardCount = CardCount - CardsPerHint

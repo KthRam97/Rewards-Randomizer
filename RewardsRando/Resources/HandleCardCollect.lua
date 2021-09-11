@@ -1,2 +1,2 @@
-CardCount = CardCount + 1
-print("CARD|Collected|" .. CardCount)
+CardCount = (CardCount or 0) + 1
+print("CARD|Collected|"..CardCount)

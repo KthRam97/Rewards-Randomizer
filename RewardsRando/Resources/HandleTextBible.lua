@@ -11,15 +11,12 @@ local BibleIdx = Chunk:GetChunkIndex(P3D.Identifiers.Frontend_Text_Bible)
 if not BibleIdx then return end
 local BibleChunk = P3D.FrontendTextBibleP3DChunk:new{Raw = Chunk:GetChunkAtIndex(BibleIdx)}
 
-local MissionOrderType = "Normal"
-if Settings.ReverseMissionOrder then
-	MissionOrderType = "Reversed"
-elseif Settings.RandomMissionOrder then
-	MissionOrderType = "Random"
-end
+local MissionOrderType = ({"Normal", "Reversed", "Random"})[Settings.MissionOrderType]
+local HintType = ({"None", "Dispersed", "Collect X"})[Settings.HintType]
 
-local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\nMission Order: " .. MissionOrderType .. "\nSeed: " .. Settings.Seed
-local RandoPauseInfo = "Seed: " .. Settings.Seed
+local SeedInfo = Settings.HashSeed and ("Hash: " .. sha1.hex(Settings.Seed):gsub("(.)...", "%1")) or ("Seed: " .. Settings.Seed)
+local RandoInfo = os.date("[%Y-%m-%d]") .. "\n" .. ModTitle .. " v" .. ModVersion .. "\nMission Order: " .. MissionOrderType .. " | Hints: " .. HintType .. "\nPrice Multiplier: " .. Settings.PriceMultiplier .. "\n" .. SeedInfo
+local RandoPauseInfo = SeedInfo
 
 local CardHintText = {}
 local RestrictionNames = {}
@@ -66,6 +63,33 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			for j=1,7 do
 				MissionInfo[i][j] = LanguageChunk:GetValueFromName("MISSION_INFO_L"..i.."_M"..j)
 				MissionTitle[i][j] = LanguageChunk:GetValueFromName("MISSION_TITLE_L"..i.."_M"..j)
+			end
+		end
+		
+		if Settings.HintType == 3 then
+			LanguageChunk:SetValue("CARD_GET", "HINT CARD!")
+			local Hints = {}
+			local AvailableHints = {}
+			for i=1,55 do
+				if i % 8 ~= 0 then
+					AvailableHints[#AvailableHints + 1] = string.format("%.2i", i - 1)
+				end
+			end
+			
+			for i=1,#RestrictionNames do
+				local HintIdx = math.random(#AvailableHints)
+				local Hint = AvailableHints[HintIdx]
+				local RestrictionLevel = RestrictionLevels[i]
+				table.remove(AvailableHints, HintIdx)
+				local Info = ImportantRewards[RestrictionNames[i]]
+				LanguageChunk:SetValue("CARD_DESC_" .. Hint, "You got a lucky collector card, so here is a hint:\n\nYou can find \"" .. RewardNames[RestrictionNames[i]] .. "\" in Level " .. RestrictionLevel .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")")
+				LanguageChunk:SetValue("CARD_TITLE_" .. Hint, RewardNames[RestrictionNames[i]])
+				LanguageChunk:SetValue("CARD_EPISODE_" .. Hint, "Congratulations!")
+			end
+			for i=1,#AvailableHints do
+				LanguageChunk:SetValue("CARD_DESC_" .. AvailableHints[i], "Unlucky! Unfortunately, this card doesn't contain a hint.")
+				LanguageChunk:SetValue("CARD_TITLE_" .. AvailableHints[i], "Unlucky :(")
+				LanguageChunk:SetValue("CARD_EPISODE_" .. AvailableHints[i], "Better Luck Next Time")
 			end
 		end
 		
@@ -127,7 +151,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		for i=1,7 do
 			LockedMissionPrompts[i] = {}
 			for j=1,7 do
-				if Settings.ReverseMissionOrder or Settings.RandomMissionOrder then
+				if Settings.MissionOrderType > 1 then
 					LanguageChunk:SetValue("MISSION_INFO_L"..i.."_M"..j, MissionInfo[i][MissionOrder[i][j]])
 					LanguageChunk:SetValue("MISSION_TITLE_L"..i.."_M"..j, MissionTitle[i][MissionOrder[i][j]])
 				end
@@ -140,6 +164,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		end
 		
 		BibleChunk:SetChunkAtIndex(idx, LanguageChunk:Output())
+		break
 	end
 end
 Chunk:SetChunkAtIndex(BibleIdx, BibleChunk:Output())

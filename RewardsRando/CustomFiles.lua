@@ -35,6 +35,7 @@ dofile(Paths.Resources .. "lib/MFKLexer.lua")
 dofile(Paths.Resources .. "lib/P3D.lua")
 dofile(Paths.Resources .. "lib/RMS.lua")
 dofile(Paths.Resources .. "lib/Seed.lua")
+dofile(Paths.Resources .. "lib/sha1.lua")
 
 Cache = {}
 
@@ -103,7 +104,7 @@ for i=1,7 do
 	CompletedMissions[i] = {}
 end
 
-if Settings.ReverseMissionOrder then
+if Settings.MissionOrderType == 2 then
 	MissionOrder = {
 		{7, 6, 5, 4, 3, 2, 1},
 		{7, 6, 5, 4, 3, 2, 1},
@@ -113,7 +114,7 @@ if Settings.ReverseMissionOrder then
 		{7, 6, 5, 4, 3, 2, 1},
 		{4, 3, 2, 1, 5, 6, 7},
 	}
-elseif Settings.RandomMissionOrder then
+elseif Settings.MissionOrderType == 3 then
 	MissionOrder = {}
 	
 	for i=1,7 do
@@ -254,8 +255,8 @@ local CarLocators = {
 		{"L1M4CS_carspawn",-87.089508056641,0.0,298.19549560547,4.8266711235046},
 		{"L1M4CS_npcspawn",-85.551208496094,0.0,313.25131225586,0.18729692697525},
 		{"L1M6CS_carspawn",-26.671329498291,-0.62109380960464,-506.16390991211,3.0120360851288},
-		--{"L1M6CS_npcspawn",-6.4629039764404,-0.16601559519768,-504.60681152344,1.6461844444275},
-		{"L1M6CS_npcwalk",-23.839490890503,-0.2919921875,-503.99789428711,1.6314237117767},
+		{"L1M6CS_npcspawn",-6.4629039764404,-0.16601559519768,-504.60681152344,1.6461844444275},
+		--{"L1M6CS_npcwalk",-23.839490890503,-0.2919921875,-503.99789428711,1.6314237117767},
 		{"L1M7CS_carspawn",-26.671329498291,-0.62109380960464,-506.16390991211,3.0120360851288},
 	},
 	{
