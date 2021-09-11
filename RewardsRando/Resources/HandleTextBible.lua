@@ -20,28 +20,24 @@ local RandoPauseInfo = SeedInfo
 
 local CardHintText = {}
 local RestrictionNames = {}
-local RestrictionLevels = {}
+local RestrictionMissions = {}
 local ImportantRewards = {}
 for Level=1,7 do
 	for Mission=1,7 do
 		for RestrictionIdx=1,#Restrictions[Level][Mission] do
 			local Restriction = Restrictions[Level][Mission][RestrictionIdx]
-			local RestrictionLevel = 0
+			local RestrictionMission
 			for i=1,7 do
 				for j=1,14 do
 					if MissionRewards[i][j] == Restriction then
-						if i == 7 and j == 7 then
-							--Idk?
-						else
-							RestrictionLevel = i
-						end
+						RestrictionMission = {i, j}
 						break
 					end
 				end
 			end
-			if RestrictionLevel > 0 then
+			if RestrictionMission then
 				RestrictionNames[#RestrictionNames + 1] = Restriction
-				RestrictionLevels[#RestrictionLevels + 1] = RestrictionLevel
+				RestrictionMissions[#RestrictionMissions + 1] = RestrictionMission
 				ImportantRewards[Restriction] = {Level, Mission}
 			end
 		end
@@ -79,12 +75,17 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			for i=1,#RestrictionNames do
 				local HintIdx = math.random(#AvailableHints)
 				local Hint = AvailableHints[HintIdx]
-				local RestrictionLevel = RestrictionLevels[i]
+				local RestrictionMission = RestrictionMissions[i]
 				table.remove(AvailableHints, HintIdx)
 				local Info = ImportantRewards[RestrictionNames[i]]
-				LanguageChunk:SetValue("CARD_DESC_" .. Hint, "You got a lucky collector card, so here is a hint:\n\nYou can find \"" .. RewardNames[RestrictionNames[i]] .. "\" in Level " .. RestrictionLevel .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")")
+				if RestrictionMission[1] == 7 and RestrictionMissions[2] == 7 then
+					LanguageChunk:SetValue("CARD_DESC_" .. Hint, "This would have been a lucky collector card hint for \"" .. RewardNames[RestrictionNames[i]] .. "\", but it's the default car...\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")")
+					LanguageChunk:SetValue("CARD_EPISODE_" .. Hint, "Well that's unfortunate!")
+				else
+					LanguageChunk:SetValue("CARD_DESC_" .. Hint, "You got a lucky collector card, so here is a hint:\n\nYou can find \"" .. RewardNames[RestrictionNames[i]] .. "\" in Level " .. RestrictionMission[1] .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")")
+					LanguageChunk:SetValue("CARD_EPISODE_" .. Hint, "Congratulations!")
+				end
 				LanguageChunk:SetValue("CARD_TITLE_" .. Hint, RewardNames[RestrictionNames[i]])
-				LanguageChunk:SetValue("CARD_EPISODE_" .. Hint, "Congratulations!")
 			end
 			for i=1,#AvailableHints do
 				LanguageChunk:SetValue("CARD_DESC_" .. AvailableHints[i], "Unlucky! Unfortunately, this card doesn't contain a hint.")
@@ -120,11 +121,16 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		for i=1,#RestrictionNames do
 			local RestrictionIdx = math.random(#RestrictionNames)
 			local Restriction = RestrictionNames[RestrictionIdx]
-			local RestrictionLevel = RestrictionLevels[RestrictionIdx]
+			local RestrictionMission = RestrictionMissions[RestrictionIdx]
 			table.remove(RestrictionNames, RestrictionIdx)
-			table.remove(RestrictionLevels, RestrictionIdx)
+			table.remove(RestrictionMissions, RestrictionIdx)
 			local Info = ImportantRewards[Restriction]
-			local HintText = "Congratulations! You have collected "..CardsPerHint.." cards, so here is a hint:\n\nYou can find \"" .. RewardNames[Restriction] .. "\" in Level " .. RestrictionLevel .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")"
+			local HintText
+			if RestrictionMission[1] == 7 and RestrictionMission[2] == 7 then
+				HintText = "Well that's unfortunate... You have collected "..CardsPerHint.." cards, so this would have been a hint...\n\nYou can find \"" .. RewardNames[Restriction] .. "\" as the default car!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")"
+			else
+				HintText = "Congratulations! You have collected "..CardsPerHint.." cards, so here is a hint:\n\nYou can find \"" .. RewardNames[Restriction] .. "\" in Level " .. RestrictionMission[1] .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")"
+			end
 			CardHintText[i] = HintText
 		end
 		CardHints = {}
