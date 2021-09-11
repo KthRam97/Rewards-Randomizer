@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,10 @@ namespace RewardsRandoTracker
 {
     public partial class FrmRestrictionsTracker : Form
     {
+        private static readonly string ImageRoot = Path.Combine(Program.ExeDirectory, "Images");
+        private static readonly string LevelImageRoot = Path.Combine(ImageRoot, "Levels");
+        private static readonly string RewardsImageRoot = Path.Combine(ImageRoot, "Rewards");
+
         public FrmRestrictionsTracker()
         {
             InitializeComponent();
@@ -19,15 +24,15 @@ namespace RewardsRandoTracker
 
         private void FrmRestrictionsTracker_Load(object sender, EventArgs e)
         {
-            PBL1.Image = Image.FromFile("Images/Levels/1.png");
-            PBL2.Image = Image.FromFile("Images/Levels/2.png");
-            PBL3.Image = Image.FromFile("Images/Levels/3.png");
-            PBL4.Image = Image.FromFile("Images/Levels/4.png");
-            PBL5.Image = Image.FromFile("Images/Levels/5.png");
-            PBL6.Image = Image.FromFile("Images/Levels/6.png");
-            PBL7.Image = Image.FromFile("Images/Levels/7.png");
+            PBL1.Image = Image.FromFile(Path.Combine(LevelImageRoot, "1.png"));
+            PBL2.Image = Image.FromFile(Path.Combine(LevelImageRoot, "2.png"));
+            PBL3.Image = Image.FromFile(Path.Combine(LevelImageRoot, "3.png"));
+            PBL4.Image = Image.FromFile(Path.Combine(LevelImageRoot, "4.png"));
+            PBL5.Image = Image.FromFile(Path.Combine(LevelImageRoot, "5.png"));
+            PBL6.Image = Image.FromFile(Path.Combine(LevelImageRoot, "6.png"));
+            PBL7.Image = Image.FromFile(Path.Combine(LevelImageRoot, "7.png"));
 
-            string[] rewardFiles = System.IO.Directory.GetFiles("Images/Rewards/", "*.png");
+            string[] rewardFiles = System.IO.Directory.GetFiles(RewardsImageRoot, "*.png");
             for (var i = 0; i < rewardFiles.Length; i++)
             {
                 string fileName = System.IO.Path.GetFileNameWithoutExtension(rewardFiles[i]);

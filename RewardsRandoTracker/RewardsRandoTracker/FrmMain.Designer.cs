@@ -30,39 +30,23 @@ namespace RewardsRandoTracker
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.LblStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.LBLog = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.BtnStop = new System.Windows.Forms.Button();
+            this.BtnStart = new System.Windows.Forms.Button();
+            this.LblCards = new System.Windows.Forms.Label();
             this.CBTrackerTopmost = new System.Windows.Forms.CheckBox();
             this.button2 = new System.Windows.Forms.Button();
             this.BtnShowTracker = new System.Windows.Forms.Button();
             this.BtnLookup = new System.Windows.Forms.Button();
             this.CBLookup = new System.Windows.Forms.ComboBox();
             this.LblLookup = new System.Windows.Forms.Label();
-            this.LblCards = new System.Windows.Forms.Label();
-            this.statusStrip1.SuspendLayout();
+            this.BtnExport = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.LblStatus});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
-            this.statusStrip1.TabIndex = 0;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // LblStatus
-            // 
-            this.LblStatus.Name = "LblStatus";
-            this.LblStatus.Size = new System.Drawing.Size(97, 17);
-            this.LblStatus.Text = "Status: Loading...";
             // 
             // LBLog
             // 
@@ -70,7 +54,7 @@ namespace RewardsRandoTracker
             this.LBLog.FormattingEnabled = true;
             this.LBLog.Location = new System.Drawing.Point(0, 0);
             this.LBLog.Name = "LBLog";
-            this.LBLog.Size = new System.Drawing.Size(530, 428);
+            this.LBLog.Size = new System.Drawing.Size(530, 450);
             this.LBLog.TabIndex = 1;
             // 
             // splitContainer1
@@ -81,6 +65,9 @@ namespace RewardsRandoTracker
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.BtnExport);
+            this.splitContainer1.Panel1.Controls.Add(this.BtnStop);
+            this.splitContainer1.Panel1.Controls.Add(this.BtnStart);
             this.splitContainer1.Panel1.Controls.Add(this.LblCards);
             this.splitContainer1.Panel1.Controls.Add(this.CBTrackerTopmost);
             this.splitContainer1.Panel1.Controls.Add(this.button2);
@@ -92,14 +79,48 @@ namespace RewardsRandoTracker
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.LBLog);
-            this.splitContainer1.Size = new System.Drawing.Size(800, 428);
+            this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // BtnStop
+            // 
+            this.BtnStop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnStop.Enabled = false;
+            this.BtnStop.Location = new System.Drawing.Point(16, 41);
+            this.BtnStop.Name = "BtnStop";
+            this.BtnStop.Size = new System.Drawing.Size(235, 23);
+            this.BtnStop.TabIndex = 8;
+            this.BtnStop.Text = "Stop Tracking Log File";
+            this.BtnStop.UseVisualStyleBackColor = true;
+            this.BtnStop.Click += new System.EventHandler(this.BtnStop_Click);
+            // 
+            // BtnStart
+            // 
+            this.BtnStart.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnStart.Location = new System.Drawing.Point(16, 12);
+            this.BtnStart.Name = "BtnStart";
+            this.BtnStart.Size = new System.Drawing.Size(235, 23);
+            this.BtnStart.TabIndex = 7;
+            this.BtnStart.Text = "Start Tracking Log File";
+            this.BtnStart.UseVisualStyleBackColor = true;
+            this.BtnStart.Click += new System.EventHandler(this.BtnStart_Click);
+            // 
+            // LblCards
+            // 
+            this.LblCards.AutoSize = true;
+            this.LblCards.Location = new System.Drawing.Point(16, 238);
+            this.LblCards.Name = "LblCards";
+            this.LblCards.Size = new System.Drawing.Size(93, 13);
+            this.LblCards.TabIndex = 6;
+            this.LblCards.Text = "Collected Cards: 0";
             // 
             // CBTrackerTopmost
             // 
             this.CBTrackerTopmost.AutoSize = true;
-            this.CBTrackerTopmost.Location = new System.Drawing.Point(16, 125);
+            this.CBTrackerTopmost.Location = new System.Drawing.Point(16, 214);
             this.CBTrackerTopmost.Name = "CBTrackerTopmost";
             this.CBTrackerTopmost.Size = new System.Drawing.Size(168, 17);
             this.CBTrackerTopmost.TabIndex = 5;
@@ -111,7 +132,7 @@ namespace RewardsRandoTracker
             // 
             this.button2.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.button2.Location = new System.Drawing.Point(16, 95);
+            this.button2.Location = new System.Drawing.Point(16, 184);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(235, 23);
             this.button2.TabIndex = 4;
@@ -123,7 +144,7 @@ namespace RewardsRandoTracker
             // 
             this.BtnShowTracker.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnShowTracker.Location = new System.Drawing.Point(16, 66);
+            this.BtnShowTracker.Location = new System.Drawing.Point(16, 155);
             this.BtnShowTracker.Name = "BtnShowTracker";
             this.BtnShowTracker.Size = new System.Drawing.Size(235, 23);
             this.BtnShowTracker.TabIndex = 3;
@@ -135,7 +156,7 @@ namespace RewardsRandoTracker
             // 
             this.BtnLookup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnLookup.Location = new System.Drawing.Point(16, 37);
+            this.BtnLookup.Location = new System.Drawing.Point(16, 126);
             this.BtnLookup.Name = "BtnLookup";
             this.BtnLookup.Size = new System.Drawing.Size(235, 23);
             this.BtnLookup.TabIndex = 2;
@@ -149,7 +170,7 @@ namespace RewardsRandoTracker
             | System.Windows.Forms.AnchorStyles.Right)));
             this.CBLookup.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.CBLookup.FormattingEnabled = true;
-            this.CBLookup.Location = new System.Drawing.Point(105, 10);
+            this.CBLookup.Location = new System.Drawing.Point(105, 99);
             this.CBLookup.Name = "CBLookup";
             this.CBLookup.Size = new System.Drawing.Size(146, 21);
             this.CBLookup.TabIndex = 1;
@@ -157,20 +178,23 @@ namespace RewardsRandoTracker
             // LblLookup
             // 
             this.LblLookup.AutoSize = true;
-            this.LblLookup.Location = new System.Drawing.Point(13, 13);
+            this.LblLookup.Location = new System.Drawing.Point(13, 102);
             this.LblLookup.Name = "LblLookup";
             this.LblLookup.Size = new System.Drawing.Size(86, 13);
             this.LblLookup.TabIndex = 0;
             this.LblLookup.Text = "Reward Lookup:";
             // 
-            // LblCards
+            // BtnExport
             // 
-            this.LblCards.AutoSize = true;
-            this.LblCards.Location = new System.Drawing.Point(16, 149);
-            this.LblCards.Name = "LblCards";
-            this.LblCards.Size = new System.Drawing.Size(93, 13);
-            this.LblCards.TabIndex = 6;
-            this.LblCards.Text = "Collected Cards: 0";
+            this.BtnExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnExport.Location = new System.Drawing.Point(16, 70);
+            this.BtnExport.Name = "BtnExport";
+            this.BtnExport.Size = new System.Drawing.Size(235, 23);
+            this.BtnExport.TabIndex = 9;
+            this.BtnExport.Text = "Export Tracker Log";
+            this.BtnExport.UseVisualStyleBackColor = true;
+            this.BtnExport.Click += new System.EventHandler(this.BtnExport_Click);
             // 
             // FrmMain
             // 
@@ -178,27 +202,20 @@ namespace RewardsRandoTracker
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.splitContainer1);
-            this.Controls.Add(this.statusStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FrmMain";
             this.Text = "Rewards Rando Tracker";
             this.Load += new System.EventHandler(this.Form1_Load);
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.StatusStrip statusStrip1;
-        private System.Windows.Forms.ToolStripStatusLabel LblStatus;
         private System.Windows.Forms.ListBox LBLog;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.ComboBox CBLookup;
@@ -208,6 +225,9 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Button BtnShowTracker;
         private System.Windows.Forms.CheckBox CBTrackerTopmost;
         private System.Windows.Forms.Label LblCards;
+        private System.Windows.Forms.Button BtnStart;
+        private System.Windows.Forms.Button BtnStop;
+        private System.Windows.Forms.Button BtnExport;
     }
 }
 

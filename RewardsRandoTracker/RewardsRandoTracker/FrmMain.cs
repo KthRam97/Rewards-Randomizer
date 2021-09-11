@@ -15,7 +15,9 @@ namespace RewardsRandoTracker
 {
     public partial class FrmMain : Form
     {
-        static Process simpsons;
+        private static bool Tracking = false;
+        private static string LogFile;
+
         private readonly FrmRestrictionsTracker restrictionsTracker = new FrmRestrictionsTracker();
         private bool IsLoading = false;
         private bool IsSeedSpoiler = false;
@@ -30,16 +32,16 @@ namespace RewardsRandoTracker
             InitializeComponent();
         }
 
-        private void SetStatus(string text)
+        private void SetEnabled(Control ctrl, bool enabled)
         {
-            if (statusStrip1.InvokeRequired)
+            if (ctrl.InvokeRequired)
             {
-                Action a = delegate { SetStatus(text); };
-                statusStrip1.Invoke(a);
+                Action a = delegate { SetEnabled(ctrl, enabled); };
+                ctrl.Invoke(a);
             }
             else
             {
-                LblStatus.Text = "Status: " + text;
+                ctrl.Enabled = enabled;
             }
         }
 
@@ -125,56 +127,72 @@ namespace RewardsRandoTracker
             }
         }
 
-        private async void HookSimpsons()
+        private long lastSize = 0;
+        private async void TrackFile()
         {
-            simpsons = null;
-            while (true)
+            SetEnabled(BtnStart, false);
+            SetEnabled(BtnStop, true);
+
+            lastSize = 0;
+            while(Tracking && File.Exists(LogFile))
             {
-                Process[] processes = Process.GetProcessesByName("Simpsons");
-                if (processes.Length > 0)
-                    simpsons = processes[0];
-                if (simpsons != null)
-                    break;
-                await Task.Delay(100);
+                try
+                {
+                    FileStream fs = new FileStream(LogFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    if (fs.Length != lastSize)
+                    {
+                        long length = fs.Length - lastSize;
+                        lastSize = fs.Length;
+                        if (length < 0)
+                        {
+                            ClearLogs();
+                            CollectedCards = 0;
+                            ResetLookup();
+                            ResetTracker();
+                            length = fs.Length;
+                        }
+                        using (StreamReader sr = new StreamReader(fs))
+                        {
+                            fs.Seek(length * -1, SeekOrigin.End);
+                            byte[] bytes = new byte[length];
+                            fs.Read(bytes, 0, (int)length);
+                            string s = Encoding.UTF8.GetString(bytes);
+                            foreach (string line in s.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                            {
+                                Sif_Message(line);
+                            }
+                        }
+                    }
+                    fs.Close();
+                    fs.Dispose();
+                }
+                catch (Exception ex)
+                {
+                    AddLog("ERROR READING LOG FILE: " + ex.Message);
+                    foreach (string line in ex.ToString().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        Sif_Message(line);
+                    }
+                }
+
+                await Task.Delay(1000);
             }
 
-            SetStatus("Found Simpsons.exe. Configuring events...");
-
-            simpsons.EnableRaisingEvents = true;
-            simpsons.Exited += Simpsons_Exited;
-
-            SetStatus("Setting up hook...");
-            SHARConsoleHook.ServerInterface sif = new SHARConsoleHook.ServerInterface();
-            sif.Message += Sif_Message;
-
-            SetStatus("Configuring hook...");
-            string channelName = null;
-            EasyHook.RemoteHooking.IpcCreateServer(ref channelName, System.Runtime.Remoting.WellKnownObjectMode.Singleton, sif);
-            string injectionLibrary = Path.Combine(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location), "SHARConsoleHook.dll");
-
-            SetStatus("Injecting hook...");
-            EasyHook.RemoteHooking.Inject(simpsons.Id, injectionLibrary, injectionLibrary, channelName);
-
-            ClearLogs();
-            CollectedCards = 0;
-            ResetLookup();
-            ResetTracker();
-
-            SetStatus("Monitoring rewards...");
+            SetEnabled(BtnStop, false);
+            SetEnabled(BtnStart, true);
         }
 
-        private void Simpsons_Exited(object sender, EventArgs e)
-        {
-            SetStatus("Simpsons exited. Waiting for Simpsons.exe...");
-            HookSimpsons();
-        }
-
+        private Regex TimestampsRegex = new Regex(@"^\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}\.[0-9]{3}\] (.*?)$");
+        private Regex InitialisingRegex = new Regex(@"Rewards Randomiser .*?: Initialising\.\.\.");
         private void Sif_Message(string message)
         {
+            if (TimestampsRegex.IsMatch(message))
+                message = TimestampsRegex.Match(message).Groups[1].Value;
+
             if (string.IsNullOrWhiteSpace(message))
                 return;
 
-            if (message == "Loading rewards...")
+            if (InitialisingRegex.IsMatch(message))
                 IsLoading = true;
 
             if (IsLoading)
@@ -235,6 +253,8 @@ namespace RewardsRandoTracker
                     break;
             }
         }
+
+
 
         private void ProcessSpoiler(string Spoiler)
         {
@@ -304,11 +324,12 @@ namespace RewardsRandoTracker
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            Text = Text + " v" + Program.Version;
             restrictionsTracker.Show();
             restrictionsTracker.Hide();
             ResetLookup();
-            SetStatus("Waiting for Simpsons.exe...");
-            HookSimpsons();
+            /*SetStatus("Waiting for Simpsons.exe...");
+            HookSimpsons();*/
         }
 
         private void BtnLookup_Click(object sender, EventArgs e)
@@ -342,6 +363,51 @@ namespace RewardsRandoTracker
         private void CBTrackerTopmost_CheckedChanged(object sender, EventArgs e)
         {
             restrictionsTracker.TopMost = CBTrackerTopmost.Checked;
+        }
+
+        private void BtnStart_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog openFileDialog = new OpenFileDialog()
+            {
+                InitialDirectory = Program.MLDocumentsDirectory,
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*",
+                Multiselect = false
+            })
+            {
+                if (openFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    LogFile = openFileDialog.FileName;
+                    Tracking = true;
+                    TrackFile();
+                }
+            }
+        }
+
+        private void BtnStop_Click(object sender, EventArgs e)
+        {
+            Tracking = false;
+            LogFile = null;
+        }
+
+        private void BtnExport_Click(object sender, EventArgs e)
+        {
+            using (SaveFileDialog saveFileDialog = new SaveFileDialog()
+            {
+                Filter = "Text Files (*.txt)|*.txt|All Files (*.*)|*.*"
+            })
+            {
+                try
+                {
+                    if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        File.WriteAllLines(saveFileDialog.FileName, LBLog.Items.Cast<string>(), Encoding.UTF8);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("There was an error saving the log file: " + ex.Message, "Error saving", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                }
+            }
         }
     }
 }
