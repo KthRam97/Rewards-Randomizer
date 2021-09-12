@@ -11,12 +11,12 @@ local Prices = {
 	{500, 1000, 750},
 }
 for i=1,7 do
-	if Settings.CanGetNPCRewards then
+	if Settings["CanGetNPCRewardsL"..i] then
 		MFK:AddFunction("BindReward", {MissionRewards[i][12], "art\\cars\\" .. MissionRewards[i][12] .. ".p3d", "car", "forsale", i, math.floor(Settings.PriceMultiplier * (Settings.RandomBasePrice and math.random(100, 1000) or Prices[i][1])), "simpson"})
 	else
 		MFK:AddFunction("BindReward", {"huskA", "art\\cars\\huskA.p3d", "car", "forsale", i, 69420, "simpson"})
 	end
-	if Settings.CanGetGilRewards then
+	if Settings["CanGetGilRewardsL"..i] then
 		MFK:AddFunction("BindReward", {MissionRewards[i][13], "art\\cars\\" .. MissionRewards[i][13] .. ".p3d", "car", "forsale", i, math.floor(Settings.PriceMultiplier * (Settings.RandomBasePrice and math.random(100, 1000) or Prices[i][2])), "gil"})
 		MFK:AddFunction("BindReward", {MissionRewards[i][14], "art\\cars\\" .. MissionRewards[i][14] .. ".p3d", "car", "forsale", i, math.floor(Settings.PriceMultiplier * (Settings.RandomBasePrice and math.random(100, 1000) or Prices[i][3])), "gil"})
 	else

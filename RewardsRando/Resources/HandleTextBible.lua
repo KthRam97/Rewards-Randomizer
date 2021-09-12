@@ -87,7 +87,7 @@ for Level=1,7 do
 end
 LockedMissionPrompts = {}
 UnluckyCards = {}
-local UnluckyTitles = {"Unlucky :(", "Never Lucky BabyRage", "Sucks To Be You", "Better Luck Next Time"}
+local UnluckyTitles = {"Unlucky :(", "Never Lucky BabyRage", "Sucks To Be You", "Better Luck Next Time", "Not This One", "Try Another Card", "Your Hint Is In Another Castle", "FeelsBadMan"}
 local lang
 if GetGameLanguage then
 	lang = GetGameLanguage()
@@ -113,7 +113,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			LanguageChunk:SetValue("CARD_GET", "HINT CARD!")
 			local Hints = {}
 			local AvailableHints = {}
-			for i=1,55 do
+			for i=1,56 do
 				if i % 8 ~= 0 then
 					AvailableHints[#AvailableHints + 1] = string.format("%.2i", i - 1)
 				end
@@ -185,7 +185,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		local BMIdx = 12
 		for i=1,7 do
 			local Reward = MissionRewards[i][11]
-			if not Settings.CanGetBonusRewards then
+			if not Settings["CanGetBonusRewardsL"..i] then
 				LanguageChunk:SetValue("INGAME_MESSAGE_" .. BMIdx,  "YOU GET NOTHING!\n\nYOU LOSE!\n\nGOOD DAY SIR!\n\n- Willy Wonka (1971)")
 			elseif ImportantRewards[Reward] then
 				local Info = ImportantRewards[Reward]
