@@ -42,6 +42,7 @@ namespace RewardsRandoTracker
             this.CBLookup = new System.Windows.Forms.ComboBox();
             this.LblLookup = new System.Windows.Forms.Label();
             this.BtnExport = new System.Windows.Forms.Button();
+            this.CBTimestamps = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -65,6 +66,7 @@ namespace RewardsRandoTracker
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.CBTimestamps);
             this.splitContainer1.Panel1.Controls.Add(this.BtnExport);
             this.splitContainer1.Panel1.Controls.Add(this.BtnStop);
             this.splitContainer1.Panel1.Controls.Add(this.BtnStart);
@@ -111,7 +113,7 @@ namespace RewardsRandoTracker
             // LblCards
             // 
             this.LblCards.AutoSize = true;
-            this.LblCards.Location = new System.Drawing.Point(16, 238);
+            this.LblCards.Location = new System.Drawing.Point(13, 257);
             this.LblCards.Name = "LblCards";
             this.LblCards.Size = new System.Drawing.Size(93, 13);
             this.LblCards.TabIndex = 6;
@@ -196,6 +198,16 @@ namespace RewardsRandoTracker
             this.BtnExport.UseVisualStyleBackColor = true;
             this.BtnExport.Click += new System.EventHandler(this.BtnExport_Click);
             // 
+            // CBTimestamps
+            // 
+            this.CBTimestamps.AutoSize = true;
+            this.CBTimestamps.Location = new System.Drawing.Point(16, 237);
+            this.CBTimestamps.Name = "CBTimestamps";
+            this.CBTimestamps.Size = new System.Drawing.Size(129, 17);
+            this.CBTimestamps.TabIndex = 10;
+            this.CBTimestamps.Text = "Add timestamps to log";
+            this.CBTimestamps.UseVisualStyleBackColor = true;
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -228,6 +240,7 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Button BtnStart;
         private System.Windows.Forms.Button BtnStop;
         private System.Windows.Forms.Button BtnExport;
+        private System.Windows.Forms.CheckBox CBTimestamps;
     }
 }
 

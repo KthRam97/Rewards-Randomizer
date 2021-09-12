@@ -54,6 +54,10 @@ namespace RewardsRandoTracker
             }
             else
             {
+                if (CBTimestamps.Checked)
+                {
+                    text = DateTime.Now.ToString("[yyyy-MM-dd HH:mm:ss.fff] ") + text;
+                }
                 LBLog.TopIndex = LBLog.Items.Add(text);
             }
         }
@@ -145,10 +149,6 @@ namespace RewardsRandoTracker
                         lastSize = fs.Length;
                         if (length < 0)
                         {
-                            ClearLogs();
-                            CollectedCards = 0;
-                            ResetLookup();
-                            ResetTracker();
                             length = fs.Length;
                         }
                         using (StreamReader sr = new StreamReader(fs))
@@ -182,18 +182,30 @@ namespace RewardsRandoTracker
             SetEnabled(BtnStart, true);
         }
 
-        private Regex TimestampsRegex = new Regex(@"^\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}\.[0-9]{3}\] (.*?)$");
+        private Regex ConsoleRegex = new Regex(@"^(\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}\.[0-9]{3}\] )?(\[(MOD|GAME|HACK)\] )?(.*?)$");
         private Regex InitialisingRegex = new Regex(@"Rewards Randomiser .*?: Initialising\.\.\.");
         private void Sif_Message(string message)
         {
-            if (TimestampsRegex.IsMatch(message))
-                message = TimestampsRegex.Match(message).Groups[1].Value;
+            if (ConsoleRegex.IsMatch(message))
+            {
+                Match m = ConsoleRegex.Match(message);
+                if (m.Groups[3].Success && m.Groups[3].Length > 0 && m.Groups[3].Value != "MOD")
+                    return;
+                message = ConsoleRegex.Match(message).Groups[4].Value;
+            }
+                
 
             if (string.IsNullOrWhiteSpace(message))
                 return;
 
             if (InitialisingRegex.IsMatch(message))
+            {
+                ClearLogs();
+                CollectedCards = 0;
+                ResetLookup();
+                ResetTracker();
                 IsLoading = true;
+            }
 
             if (IsLoading)
                 AddLog(message);
