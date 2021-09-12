@@ -58,23 +58,23 @@ function Seed.Generate()
 	local PossibleMissions = {}
 	for i=1,7 do
 		PossibleMissions[i] = {}
-		if Settings.CanGetMissionRewards ~= false then
+		if Settings["CanGetMissionRewardsL" .. i] then
 			for j=1,7 do
 				PossibleMissions[i][j] = true
 			end
 		end
-		if Settings.CanGetRaceRewards then
+		if Settings["CanGetRaceRewardsL" .. i] then
 			for j=8,10 do
 				PossibleMissions[i][j] = true
 			end
 		end
-		if Settings.CanGetBonusRewards then
+		if Settings["CanGetBonusRewardsL" .. i] then
 			PossibleMissions[i][11] = true
 		end
-		if Settings.CanGetNPCRewards then
+		if Settings["CanGetNPCRewardsL" .. i] then
 			PossibleMissions[i][12] = true
 		end
-		if Settings.CanGetGilRewards then
+		if Settings["CanGetGilRewardsL" .. i] then
 			for j=13,14 do
 				PossibleMissions[i][j] = true
 			end

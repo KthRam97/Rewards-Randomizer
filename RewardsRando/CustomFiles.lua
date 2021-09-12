@@ -128,17 +128,22 @@ if Settings.RandomSettings then
 	Settings.RandomBasePrice = math.random(2) == 1
 	Seed.AddSpoiler("RandomBasePrice|" .. tostring(Settings.RandomBasePrice))
 	
-	Settings.CanGetRaceRewards = math.random(2) == 1
-	Seed.AddSpoiler("CanGetRaceRewards|" .. tostring(Settings.CanGetRaceRewards))
-	
-	Settings.CanGetBonusRewards = math.random(2) == 1
-	Seed.AddSpoiler("CanGetBonusRewards|" .. tostring(Settings.CanGetBonusRewards))
-	
-	Settings.CanGetNPCRewards = math.random(2) == 1
-	Seed.AddSpoiler("CanGetNPCRewards|" .. tostring(Settings.CanGetNPCRewards))
-	
-	Settings.CanGetGilRewards = math.random(2) == 1
-	Seed.AddSpoiler("CanGetGilRewards|" .. tostring(Settings.CanGetGilRewards))
+	for i=1,7 do
+		Settings["CanGetMissionRewardsL" .. i] = math.random(2) == 1
+		Seed.AddSpoiler("CanGetMissionRewardsL" .. i .. "|" .. tostring(Settings["CanGetMissionRewardsL" .. i]))
+		
+		Settings["CanGetRaceRewardsL" .. i] = math.random(2) == 1
+		Seed.AddSpoiler("CanGetRaceRewardsL" .. i .. "|" .. tostring(Settings["CanGetRaceRewardsL" .. i]))
+		
+		Settings["CanGetBonusRewardsL" .. i] = math.random(2) == 1
+		Seed.AddSpoiler("CanGetBonusRewardsL" .. i .. "|" .. tostring(Settings["CanGetBonusRewardsL" .. i]))
+		
+		Settings["CanGetNPCRewardsL" .. i] = math.random(2) == 1
+		Seed.AddSpoiler("CanGetNPCRewardsL" .. i .. "|" .. tostring(Settings["CanGetNPCRewardsL" .. i]))
+		
+		Settings["CanGetGilRewardsL" .. i] = math.random(2) == 1
+		Seed.AddSpoiler("CanGetGilRewardsL" .. i .. "|" .. tostring(Settings["CanGetGilRewardsL" .. i]))
+	end
 	
 	Seed.AddSpoiler("")
 end
