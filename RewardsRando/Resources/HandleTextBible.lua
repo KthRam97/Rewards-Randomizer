@@ -87,11 +87,14 @@ for Level=1,7 do
 end
 LockedMissionPrompts = {}
 UnluckyCards = {}
-local lang = GetGameLanguage()
+local lang
+if GetGameLanguage then
+	lang = GetGameLanguage()
+end
 for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 	local LanguageChunk = P3D.FrontendLanguageP3DChunk:new{Raw = BibleChunk:GetChunkAtIndex(idx)}
 	
-	if LanguageChunk.Language == lang then
+	if lang == nil or LanguageChunk.Language == lang then
 		LanguageChunk:AddValue("RandoInfo", RandoInfo)
 		LanguageChunk:AddValue("RandoPauseInfo", RandoPauseInfo)
 		local MissionInfo = {}

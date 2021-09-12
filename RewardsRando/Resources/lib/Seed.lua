@@ -86,12 +86,11 @@ function Seed.Generate()
 		RemainingRewards[i] = Rewards[i]
 	end
 	
+	local RestrictionLocations = {}
 	MissionRewards = {}
 	for i=1,7 do
 		MissionRewards[i] = {}
 	end
-	
-	Seed.AddSpoiler("RESTRICTIONS:")
 	for i=1,#Restrictions do
 		for j=1,#Restrictions[i] do
 			local MissionRestrictions = Restrictions[i][j]
@@ -102,7 +101,7 @@ function Seed.Generate()
 					goto RestartGenerator
 				end
 				MissionRewards[level][mission] = MissionRestrictions[k]
-				Seed.AddSpoiler(MissionRestrictions[k] .. "|L" .. level .. "M" .. mission)
+				RestrictionLocations[#RestrictionLocations + 1] = {MissionRestrictions[k],"L" .. level .. "M" .. mission}
 				PossibleMissions[level][mission] = false
 				for l=1,#RemainingRewards do
 					if RemainingRewards[l] == MissionRestrictions[k] then
@@ -113,7 +112,6 @@ function Seed.Generate()
 			end
 		end
 	end
-	Seed.AddSpoiler("")
 	
 	if not Seed.CheckSoftlock() then
 		InvalidCount = InvalidCount + 1
@@ -141,6 +139,12 @@ function Seed.Generate()
 			end
 		end
 	end
+	
+	Seed.AddSpoiler("RESTRICTIONS:")
+	for i=1,#RestrictionLocations do
+		Seed.AddSpoiler(RestrictionLocations[i][1] .. "|" .. RestrictionLocations[i][2])
+	end
+	Seed.AddSpoiler("")
 	
 	Seed.AddSpoiler("REWARDS:")
 	for i=1,#MissionRewards do
