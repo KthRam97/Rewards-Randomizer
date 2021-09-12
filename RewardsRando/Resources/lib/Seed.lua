@@ -26,28 +26,28 @@ end
 local function ChooseLevelAndMission(Possible, IsCar)
 	local InvalidCount = 0
 	::RepickLevel::
-	local level = math.random(#Possible)
-	local missions = {}
-	for i=1,#Possible[level] do
-		if Possible[level][i] and (i < 12 or IsCar) and ((level ~= 7 and i ~= 7) or IsCar) then
-			missions[#missions + 1] = i
+	local PossibleValues = {}
+	for i=1,#Possible do
+		for j=1,#Possible[i] do
+			if Possible[i][j] and (j < 12 or IsCar) and ((i ~= 7 and j ~= 7) or IsCar) then
+				PossibleValues[#PossibleValues + 1] = {i,j}
+			end
 		end
 	end
-	if #missions == 0 then
-		InvalidCount = InvalidCount + 1
-		if InvalidCount > 1000 then
-			Alert("Unfortunately, a working reward order couldn't be generated with this seed and settings. The game will now exit.")
-			os.exit()
-		end
-		goto RepickLevel
+	if #PossibleValues == 0 then
+		return
 	end
-	local mission = missions[math.random(#missions)]
-	return level, mission
+	local value = PossibleValues[math.random(#PossibleValues)]
+	return value[1], value[2]
 end
 
 function Seed.Generate()
 	local InvalidCount = 0
 	::RestartGenerator::
+	if InvalidCount > 1000 then
+		error("Unfortunately, a working reward order couldn't be generated in over 1000 attempts with this seed and settings. The game will now exit.")
+		os.exit()
+	end
 	--[[
 		SR1			8
 		SR2			9
@@ -60,7 +60,7 @@ function Seed.Generate()
 	local PossibleMissions = {}
 	for i=1,7 do
 		PossibleMissions[i] = {}
-		if Settings.CanGetMissionRewards then
+		if Settings.CanGetMissionRewards ~= false then
 			for j=1,7 do
 				PossibleMissions[i][j] = true
 			end
@@ -99,6 +99,10 @@ function Seed.Generate()
 			local MissionRestrictions = Restrictions[i][j]
 			for k=1,#MissionRestrictions do
 				local level, mission = ChooseLevelAndMission(PossibleMissions, Cars[MissionRestrictions[k]])
+				if not level then
+					InvalidCount = InvalidCount + 1
+					goto RestartGenerator
+				end
 				MissionRewards[level][mission] = MissionRestrictions[k]
 				Seed.AddSpoiler(MissionRestrictions[k] .. "|L" .. level .. "M" .. mission)
 				PossibleMissions[level][mission] = false
@@ -115,10 +119,6 @@ function Seed.Generate()
 	
 	if not Seed.CheckSoftlock() then
 		InvalidCount = InvalidCount + 1
-		if InvalidCount > 250 then
-			Alert("Unfortunately, a working reward order couldn't be generated in over 250 attempts with this seed and settings. The game will now exit.")
-			os.exit()
-		end
 		goto RestartGenerator
 	end
 	
