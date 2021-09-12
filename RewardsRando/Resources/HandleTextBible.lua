@@ -152,7 +152,9 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 		local BMIdx = 12
 		for i=1,7 do
 			local Reward = MissionRewards[i][11]
-			if ImportantRewards[Reward] then
+			if not Settings.CanGetBonusRewards then
+				LanguageChunk:SetValue("INGAME_MESSAGE_" .. BMIdx,  "YOU GET NOTHING!\n\nYOU LOSE!\n\nGOOD DAY SIR!\n\n- Willy Wonka (1971)")
+			elseif ImportantRewards[Reward] then
 				local Info = ImportantRewards[Reward]
 				LanguageChunk:SetValue("INGAME_MESSAGE_" .. BMIdx, "New reward unlocked:\n" .. RewardNames[Reward] .. "\n\nThis is a required reward for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")")
 			else

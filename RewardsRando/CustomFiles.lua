@@ -477,6 +477,17 @@ local CostumeLocators = {
 	},
 }
 
+local GilLocators = {
+	--{{GilX, GilY, GilZ, GilRot}, {CarX, CarY, CarZ, CarRot}}
+	{{348.18325805664,-2.1373701095581,323.3405456543,1.5558816194534}, {349.13119506836,0.031514313071966,283.71127319336,0.022701511159539}},
+	{{-48.071712493896,28.879844665527,450.22415161133,0.55437678098679}, {-56.992111206055,28.948745727539,448.3293762207,1.5189247131348}},
+	{{-409.39016723633,-68.420616149902,28.553377151489,-3.1359648704529}, {-375.75811767578,-68.440551757813,38.340282440186,1.5646686553955}},
+	{{348.42568969727,-2.1154587268829,322.50494384766,1.5549010038376}, {349.04272460938,0.036078821867704,283.59701538086,-0.036410633474588}},
+	{{-174.96795654297,28.948745727539,415.6257019043,-2.0161354541779}, {-164.5602722168,28.948745727539,401.63531494141,0.6631218791008}},
+	{{-389.61614990234,-68.448837280273,35.093616485596,-0.0}, {-374.60986328125,-68.440727233887,38.449356079102,-1.6105577945709}},
+	{{286.79837036133,0.59050196409225,-404.02044677734,2.9567441940308}, {275.78332519531,0.59050130844116,-400.34979248047,1.5781652927399}},
+}
+
 for i=1,7 do
 	local P3DFile = P3D.P3DChunk:new{Raw = ReadFile("/GameData/art/missions/level0"..i.."/level.p3d")}
 	
@@ -491,6 +502,18 @@ for i=1,7 do
 		LocatorChunk:AddChunk(P3D.TriggerVolumeP3DChunk:create(Locator[1] .. " Trigger",0,{X=2.5,Y=2.5,Z=2.5},{M11=0,M12=0,M13=0,M14=0,M21=0,M22=0,M23=0,M24=0,M31=0,M32=0,M33=0,M34=0,M41=Locator[2],M42=Locator[3],M43=Locator[4],M44=0}):Output())
 		P3DFile:AddChunk(LocatorChunk:Output())
 	end
+	
+	for idx in P3DFile:GetChunkIndexes(P3D.Identifiers.Locator) do
+		local LocatorChunk = P3D.LocatorP3DChunk:new{Raw = P3DFile:GetChunkAtIndex(idx)}
+		if P3D.CleanP3DString(LocatorChunk.Name) == "gil_loc" and LocatorChunk.Type == 3 then
+			local Locator = GilLocators[i][1]
+			P3DFile:SetChunkAtIndex(idx, P3D.LocatorP3DChunk:createType3(LocatorChunk.Name, {X=Locator[1],Y=Locator[2],Z=Locator[3]}, Locator[4]):Output())
+		elseif P3D.CleanP3DString(LocatorChunk.Name) == "gil_car" and LocatorChunk.Type == 3 then
+			local Locator = GilLocators[i][2]
+			P3DFile:SetChunkAtIndex(idx, P3D.LocatorP3DChunk:createType3(LocatorChunk.Name, {X=Locator[1],Y=Locator[2],Z=Locator[3]}, Locator[4]):Output())
+		end
+	end
+	
 	
 	Cache["Level" .. i] = P3DFile:Output()
 end

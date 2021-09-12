@@ -34,6 +34,11 @@ local function ChooseLevelAndMission(Possible, IsCar)
 		end
 	end
 	if #missions == 0 then
+		InvalidCount = InvalidCount + 1
+		if InvalidCount > 1000 then
+			Alert("Unfortunately, a working reward order couldn't be generated with this seed and settings. The game will now exit.")
+			os.exit()
+		end
 		goto RepickLevel
 	end
 	local mission = missions[math.random(#missions)]
@@ -56,10 +61,29 @@ function Seed.Generate()
 	local PossibleMissions = {}
 	for i=1,7 do
 		PossibleMissions[i] = {}
-		for j=1,14 do
-			PossibleMissions[i][j] = true
+		if Settings.CanGetMissionRewards then
+			for j=1,7 do
+				PossibleMissions[i][j] = true
+			end
+		end
+		if Settings.CanGetRaceRewards then
+			for j=8,10 do
+				PossibleMissions[i][j] = true
+			end
+		end
+		if Settings.CanGetBonusRewards then
+			PossibleMissions[i][11] = true
+		end
+		if Settings.CanGetNPCRewards then
+			PossibleMissions[i][12] = true
+		end
+		if Settings.CanGetGilRewards then
+			for j=13,14 do
+				PossibleMissions[i][j] = true
+			end
 		end
 	end
+	PossibleMissions[7][7] = true
 	local RemainingRewards = {}
 	for i=1,#Rewards do
 		RemainingRewards[i] = Rewards[i]
@@ -91,6 +115,10 @@ function Seed.Generate()
 	
 	if not Seed.CheckSoftlock() then
 		InvalidCount = InvalidCount + 1
+		if InvalidCount > 250 then
+			Alert("Unfortunately, a working reward order couldn't be generated in over 250 attempts with this seed and settings. The game will now exit.")
+			os.exit()
+		end
 		goto RestartGenerator
 	end
 	

@@ -1,3 +1,5 @@
 CompletedLevel = CurrLevel
 CompletedMission = CurrMission
-GameStarted = true
+if CompletedLevel > 1 or CompletedMission < 8 then
+	GameStarted = true
+end
