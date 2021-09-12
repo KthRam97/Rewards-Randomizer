@@ -92,5 +92,6 @@ Lets you the ability to disable certain places from granting rewards.
 - Timbs (https://www.twitch.tv/da_timbsII) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
 - Gibstack (https://www.twitch.tv/Gibstack) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
 - Weasel, Max, UnknownSteel and more in the Donut Team community (Helped come up with many feature implementations)
-- Baconman12, Spruce37, Timbs, Gibstack, GuffMcGufferson, TehSpearmeister, Greeny0359 and jpecimage (Helped test the initial versions of the mod to ensure stability)
+- Baconman12, Spruce37, Timbs, Gibstack, GuffMcGufferson, TehSpearmeister and jpecimage (Helped test the initial versions of the mod to ensure stability)
 - TheTicker, Axington123 and dtops24 (Being legends)
+- Clifforus and Greeny0359 (Whinging about Wine support and various other things)
