@@ -29,8 +29,68 @@ for i=1,7 do
 	MFK:AddFunction("SetTotalGags", {i, TotalGags[i]})
 end
 
-for k in pairs(Cars) do
-	MFK:AddFunction("SetCarAttributes", {k, 0, 0, 0, 0, 0})
+local function SetCarAttributes(CarName)
+	local CONFile = ReadFile("/GameData/scripts/cars/" .. CarName .. ".con")
+	local CON = MFKLexer.Lexer:Parse(CONFile)
+	local Speed, GasScale, TireGrip, Mass, HitPoints, NormalSteering
+	for i=1,#CON.Functions do
+		local func = CON.Functions[i]
+		local name = func.Name:lower()
+		if name == "settopspeedkmh" then
+			Speed = tonumber(func.Arguments[1])
+		elseif name == "setgasscale" then
+			GasScale = tonumber(func.Arguments[1])
+		elseif name == "settiregrip" then
+			TireGrip = tonumber(func.Arguments[1])
+		elseif name == "setmass" then
+			Mass = tonumber(func.Arguments[1])
+		elseif name == "sethitpoints" then
+			HitPoints = tonumber(func.Arguments[1])
+		elseif name == "setnormalsteering" then
+			NormalSteering = tonumber(func.Arguments[1])
+		end
+	end
+	local SpeedAttribute
+	if Speed == nil then
+		SpeedAttribute = 0
+	else
+		SpeedAttribute = 5 * ((Speed - 120) / 50)
+		SpeedAttribute = math.max(0.1, SpeedAttribute)
+		SpeedAttribute = math.min(5, SpeedAttribute)
+	end
+	
+	local AccelerationAttribute
+	if GasScale == nil or TireGrip == nil then
+		AccelerationAttribute = 0
+	else
+		AccelerationAttribute = 5 * ((GasScale * TireGrip) / 32)
+		AccelerationAttribute = math.max(0.1, AccelerationAttribute)
+		AccelerationAttribute = math.min(5, AccelerationAttribute)
+	end
+	
+	local ToughnessAttribute
+	if HitPoints == nil or Mass == nil then
+		ToughnessAttribute = 0
+	else
+		ToughnessAttribute = 5 * (((Mass / 100) + HitPoints) / 60)
+		ToughnessAttribute = math.max(0.1, ToughnessAttribute)
+		ToughnessAttribute = math.min(5, ToughnessAttribute)
+	end
+	
+	local HandlingAttribute
+	if NormalSteering == nil then
+		HandlingAttribute = 0
+	else
+		HandlingAttribute = 5 * ((NormalSteering - 50) / 50)
+		HandlingAttribute = math.max(0.1, HandlingAttribute)
+		HandlingAttribute = math.min(5, HandlingAttribute)
+	end
+	MFK:AddFunction("SetCarAttributes", {CarName, SpeedAttribute, AccelerationAttribute, ToughnessAttribute, HandlingAttribute})
 end
+
+for k in pairs(Cars) do
+	SetCarAttributes(k)
+end
+SetCarAttributes("huskA")
 
 MFK:Output()
