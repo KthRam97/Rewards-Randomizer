@@ -300,6 +300,7 @@ namespace RewardsRandoTracker
             bool restrictions = true;
             bool rewards = true;
             Regex r = new Regex("L([0-9])M([0-9]+)");
+            List<(int, string)> restrictionList = new List<(int, string)>();
             foreach (string line in lines)
             {
                 switch (line)
@@ -307,6 +308,7 @@ namespace RewardsRandoTracker
                     case "RESTRICTIONS:":
                         restrictions = true;
                         rewards = false;
+                        restrictionList.Clear();
                         break;
                     case "REWARDS:":
                         restrictions = false;
@@ -324,7 +326,7 @@ namespace RewardsRandoTracker
                                 int Mission = int.Parse(m.Groups[2].Value);
                                 if (Mission > 11 || (Level == 7 && Mission == 7))
                                 {
-                                    TrackReward(Level, parts[0]);
+                                    restrictionList.Add((Level, parts[0]));
                                 }
                             }
                         }
@@ -339,6 +341,10 @@ namespace RewardsRandoTracker
                         }
                         break;
                 }
+            }
+            foreach ((int, string) restriction in restrictionList)
+            {
+                TrackReward(restriction.Item1, restriction.Item2);
             }
             PopulateLookup();
         }
