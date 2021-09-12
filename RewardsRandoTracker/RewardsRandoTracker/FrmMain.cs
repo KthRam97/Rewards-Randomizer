@@ -19,7 +19,7 @@ namespace RewardsRandoTracker
         private static string LogFile;
 
         private readonly FrmRestrictionsTracker restrictionsTracker = new FrmRestrictionsTracker();
-        private bool IsLoading = false;
+        private bool IsLoading = true;
         private bool IsSeedSpoiler = false;
         public static int CollectedCards = 0;
 
@@ -303,8 +303,9 @@ namespace RewardsRandoTracker
         private void ProcessSpoiler(string Spoiler)
         {
             string[] lines = Spoiler.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            bool restrictions = true;
-            bool rewards = true;
+            bool settings = false;
+            bool restrictions = false;
+            bool rewards = false;
             Regex r = new Regex("L([0-9])M([0-9]+)");
             List<int> restrictionLevels = new List<int>();
             List<string> restrictionNames = new List<string>();
@@ -312,13 +313,20 @@ namespace RewardsRandoTracker
             {
                 switch (line)
                 {
+                    case "RANDOM SETTINGS:":
+                        settings = true;
+                        restrictions = false;
+                        rewards = false;
+                        break;
                     case "RESTRICTIONS:":
+                        settings = false;
                         restrictions = true;
                         rewards = false;
                         restrictionLevels.Clear();
                         restrictionNames.Clear();
                         break;
                     case "REWARDS:":
+                        settings = false;
                         restrictions = false;
                         rewards = true;
                         break;
