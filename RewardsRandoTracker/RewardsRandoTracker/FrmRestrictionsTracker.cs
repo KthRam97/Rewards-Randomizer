@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -14,6 +15,7 @@ namespace RewardsRandoTracker
     public partial class FrmRestrictionsTracker : Form
     {
         private static readonly string ImageRoot = Path.Combine(Program.ExeDirectory, "Images");
+        private static readonly string CardImageRoot = Path.Combine(ImageRoot, "Cards");
         private static readonly string LevelImageRoot = Path.Combine(ImageRoot, "Levels");
         private static readonly string RewardsImageRoot = Path.Combine(ImageRoot, "Rewards");
 
@@ -31,6 +33,7 @@ namespace RewardsRandoTracker
             PBL5.Image = Image.FromFile(Path.Combine(LevelImageRoot, "5.png"));
             PBL6.Image = Image.FromFile(Path.Combine(LevelImageRoot, "6.png"));
             PBL7.Image = Image.FromFile(Path.Combine(LevelImageRoot, "7.png"));
+            PBCards.Image = Image.FromFile(Path.Combine(CardImageRoot, "Base.png"));
 
             string[] rewardFiles = System.IO.Directory.GetFiles(RewardsImageRoot, "*.png");
             for (var i = 0; i < rewardFiles.Length; i++)
@@ -110,6 +113,16 @@ namespace RewardsRandoTracker
             }
         }
 
+        public void HintUnlocked(string Hint)
+        {
+
+        }
+
+        public void CardCollected()
+        {
+            PBCards.Refresh();
+        }
+
         private void Pnl_SizeChanged(object sender, EventArgs e)
         {
             Control ctrl = (Control)sender;
@@ -124,6 +137,19 @@ namespace RewardsRandoTracker
         {
             e.Cancel = true;
             Hide();
+        }
+
+        private void PBCards_Paint(object sender, PaintEventArgs e)
+        {
+            e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
+            e.Graphics.InterpolationMode = InterpolationMode.HighQualityBicubic;
+            GraphicsPath p = new GraphicsPath();
+            p.AddString(FrmMain.CollectedCards.ToString(), FontFamily.GenericSansSerif, (int)FontStyle.Bold, e.Graphics.DpiY * (PBCards.Height / 4) / 72, new Point(0, 0), new StringFormat());
+            using (Pen pen = new Pen(Brushes.Black, 3))
+            {
+                e.Graphics.DrawPath(pen, p);
+                e.Graphics.FillPath(Brushes.White, p);
+            }
         }
     }
 }

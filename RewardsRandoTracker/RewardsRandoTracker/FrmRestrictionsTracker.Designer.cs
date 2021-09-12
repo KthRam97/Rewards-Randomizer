@@ -46,6 +46,7 @@ namespace RewardsRandoTracker
             this.PnlUnlocked2 = new System.Windows.Forms.Panel();
             this.PnlLocked = new System.Windows.Forms.Panel();
             this.PnlUnlocked1 = new System.Windows.Forms.Panel();
+            this.PBCards = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PBL1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL3)).BeginInit();
@@ -54,6 +55,7 @@ namespace RewardsRandoTracker
             ((System.ComponentModel.ISupportInitialize)(this.PBL6)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL7)).BeginInit();
             this.PnlLayout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.PBCards)).BeginInit();
             this.SuspendLayout();
             // 
             // PBL1
@@ -144,6 +146,7 @@ namespace RewardsRandoTracker
             this.PnlLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.PnlLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.PnlLayout.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.PnlLayout.Controls.Add(this.PBCards, 0, 7);
             this.PnlLayout.Controls.Add(this.PnlUnlocked7, 1, 6);
             this.PnlLayout.Controls.Add(this.PnlUnlocked6, 1, 5);
             this.PnlLayout.Controls.Add(this.PnlUnlocked5, 1, 4);
@@ -157,7 +160,7 @@ namespace RewardsRandoTracker
             this.PnlLayout.Controls.Add(this.PBL3, 0, 2);
             this.PnlLayout.Controls.Add(this.PBL2, 0, 1);
             this.PnlLayout.Controls.Add(this.PBL1, 0, 0);
-            this.PnlLayout.Controls.Add(this.PnlLocked, 0, 7);
+            this.PnlLayout.Controls.Add(this.PnlLocked, 1, 7);
             this.PnlLayout.Controls.Add(this.PnlUnlocked1, 1, 0);
             this.PnlLayout.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PnlLayout.Location = new System.Drawing.Point(0, 0);
@@ -171,6 +174,7 @@ namespace RewardsRandoTracker
             this.PnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.4123F));
             this.PnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.429F));
             this.PnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 13.09723F));
+            this.PnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
             this.PnlLayout.Size = new System.Drawing.Size(579, 743);
             this.PnlLayout.TabIndex = 0;
             // 
@@ -237,12 +241,11 @@ namespace RewardsRandoTracker
             // PnlLocked
             // 
             this.PnlLocked.AutoScroll = true;
-            this.PnlLayout.SetColumnSpan(this.PnlLocked, 2);
             this.PnlLocked.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlLocked.Location = new System.Drawing.Point(3, 647);
+            this.PnlLocked.Location = new System.Drawing.Point(95, 647);
             this.PnlLocked.Name = "PnlLocked";
             this.PnlLocked.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.PnlLocked.Size = new System.Drawing.Size(573, 93);
+            this.PnlLocked.Size = new System.Drawing.Size(481, 93);
             this.PnlLocked.TabIndex = 56;
             this.PnlLocked.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
             // 
@@ -255,6 +258,18 @@ namespace RewardsRandoTracker
             this.PnlUnlocked1.Size = new System.Drawing.Size(481, 86);
             this.PnlUnlocked1.TabIndex = 57;
             this.PnlUnlocked1.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
+            // 
+            // PBCards
+            // 
+            this.PBCards.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.PBCards.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PBCards.Location = new System.Drawing.Point(3, 647);
+            this.PBCards.Name = "PBCards";
+            this.PBCards.Size = new System.Drawing.Size(86, 93);
+            this.PBCards.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.PBCards.TabIndex = 64;
+            this.PBCards.TabStop = false;
+            this.PBCards.Paint += new System.Windows.Forms.PaintEventHandler(this.PBCards_Paint);
             // 
             // FrmRestrictionsTracker
             // 
@@ -278,6 +293,7 @@ namespace RewardsRandoTracker
             ((System.ComponentModel.ISupportInitialize)(this.PBL6)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL7)).EndInit();
             this.PnlLayout.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.PBCards)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -300,5 +316,6 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Panel PnlUnlocked2;
         private System.Windows.Forms.Panel PnlLocked;
         private System.Windows.Forms.Panel PnlUnlocked1;
+        private System.Windows.Forms.PictureBox PBCards;
     }
 }

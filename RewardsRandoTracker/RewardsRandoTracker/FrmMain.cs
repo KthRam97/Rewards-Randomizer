@@ -21,7 +21,7 @@ namespace RewardsRandoTracker
         private readonly FrmRestrictionsTracker restrictionsTracker = new FrmRestrictionsTracker();
         private bool IsLoading = false;
         private bool IsSeedSpoiler = false;
-        private int CollectedCards = 0;
+        public static int CollectedCards = 0;
 
         public readonly Dictionary<string, string> Rewards = new Dictionary<string, string>();
         public readonly Dictionary<string, string> Restrictions = new Dictionary<string, string>();
@@ -128,6 +128,32 @@ namespace RewardsRandoTracker
             else
             {
                 restrictionsTracker.RewardUnlocked(Level, Reward);
+            }
+        }
+
+        private void TrackHint(string Hint)
+        {
+            if (restrictionsTracker.InvokeRequired)
+            {
+                Action a = delegate { TrackHint(Hint); };
+                restrictionsTracker.Invoke(a);
+            }
+            else
+            {
+                restrictionsTracker.HintUnlocked(Hint);
+            }
+        }
+
+        private void TrackCard()
+        {
+            if (restrictionsTracker.InvokeRequired)
+            {
+                Action a = delegate { TrackCard(); };
+                restrictionsTracker.Invoke(a);
+            }
+            else
+            {
+                restrictionsTracker.CardCollected();
             }
         }
 
@@ -326,12 +352,14 @@ namespace RewardsRandoTracker
         private void ProcessHint(string Hint)
         {
             AddLog($"Hint received! {Hint}");
+            TrackHint(Hint);
         }
 
         private void ProcessCard()
         {
             CollectedCards++;
             LblCards.Text = "Collected Cards: " + CollectedCards;
+            TrackCard();
         }
 
         private void Form1_Load(object sender, EventArgs e)
