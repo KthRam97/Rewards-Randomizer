@@ -32,6 +32,7 @@ namespace RewardsRandoTracker
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.LBLog = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.LblInfo = new System.Windows.Forms.Label();
             this.CBTimestamps = new System.Windows.Forms.CheckBox();
             this.BtnExport = new System.Windows.Forms.Button();
             this.BtnStop = new System.Windows.Forms.Button();
@@ -43,7 +44,6 @@ namespace RewardsRandoTracker
             this.BtnLookup = new System.Windows.Forms.Button();
             this.CBLookup = new System.Windows.Forms.ComboBox();
             this.LblLookup = new System.Windows.Forms.Label();
-            this.LblInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -58,6 +58,7 @@ namespace RewardsRandoTracker
             this.LBLog.Name = "LBLog";
             this.LBLog.Size = new System.Drawing.Size(530, 450);
             this.LBLog.TabIndex = 1;
+            this.LBLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LBLog_KeyDown);
             // 
             // splitContainer1
             // 
@@ -86,6 +87,17 @@ namespace RewardsRandoTracker
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // LblInfo
+            // 
+            this.LblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.LblInfo.Location = new System.Drawing.Point(13, 272);
+            this.LblInfo.Name = "LblInfo";
+            this.LblInfo.Size = new System.Drawing.Size(238, 169);
+            this.LblInfo.TabIndex = 11;
+            this.LblInfo.Text = resources.GetString("LblInfo.Text");
             // 
             // CBTimestamps
             // 
@@ -209,17 +221,6 @@ namespace RewardsRandoTracker
             this.LblLookup.Size = new System.Drawing.Size(86, 13);
             this.LblLookup.TabIndex = 0;
             this.LblLookup.Text = "Reward Lookup:";
-            // 
-            // LblInfo
-            // 
-            this.LblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.LblInfo.Location = new System.Drawing.Point(13, 272);
-            this.LblInfo.Name = "LblInfo";
-            this.LblInfo.Size = new System.Drawing.Size(238, 169);
-            this.LblInfo.TabIndex = 11;
-            this.LblInfo.Text = resources.GetString("LblInfo.Text");
             // 
             // FrmMain
             // 

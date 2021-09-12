@@ -306,7 +306,8 @@ namespace RewardsRandoTracker
             bool restrictions = true;
             bool rewards = true;
             Regex r = new Regex("L([0-9])M([0-9]+)");
-            List<(int, string)> restrictionList = new List<(int, string)>();
+            List<int> restrictionLevels = new List<int>();
+            List<string> restrictionNames = new List<string>();
             foreach (string line in lines)
             {
                 switch (line)
@@ -314,7 +315,8 @@ namespace RewardsRandoTracker
                     case "RESTRICTIONS:":
                         restrictions = true;
                         rewards = false;
-                        restrictionList.Clear();
+                        restrictionLevels.Clear();
+                        restrictionNames.Clear();
                         break;
                     case "REWARDS:":
                         restrictions = false;
@@ -332,7 +334,8 @@ namespace RewardsRandoTracker
                                 int Mission = int.Parse(m.Groups[2].Value);
                                 if (Mission > 11 || (Level == 7 && Mission == 7))
                                 {
-                                    restrictionList.Add((Level, parts[0]));
+                                    restrictionLevels.Add(Level);
+                                    restrictionNames.Add(parts[0]);
                                 }
                             }
                         }
@@ -348,9 +351,9 @@ namespace RewardsRandoTracker
                         break;
                 }
             }
-            foreach ((int, string) restriction in restrictionList)
+            for (int i = 0; i < restrictionLevels.Count; i++)
             {
-                TrackReward(restriction.Item1, restriction.Item2);
+                TrackReward(restrictionLevels[i], restrictionNames[i]);
             }
             PopulateLookup();
         }
@@ -459,6 +462,14 @@ namespace RewardsRandoTracker
                 {
                     MessageBox.Show("There was an error saving the log file: " + ex.Message, "Error saving", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 }
+            }
+        }
+
+        private void LBLog_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (LBLog.SelectedIndex >= 0 && e.Control && e.KeyCode == Keys.C)
+            {
+                Clipboard.SetText(LBLog.SelectedItem.ToString());
             }
         }
     }
