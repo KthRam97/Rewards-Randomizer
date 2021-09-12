@@ -194,10 +194,10 @@ namespace RewardsRandoTracker
                 }
                 catch (Exception ex)
                 {
-                    AddLog("ERROR READING LOG FILE: " + ex.Message);
+                    AddLog("ERROR READING LOG FILE:");
                     foreach (string line in ex.ToString().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
                     {
-                        Sif_Message(line);
+                        AddLog(line);
                     }
                 }
 
@@ -208,8 +208,8 @@ namespace RewardsRandoTracker
             SetEnabled(BtnStart, true);
         }
 
-        private Regex ConsoleRegex = new Regex(@"^(\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}\.[0-9]{3}\] )?(\[(MOD|GAME|HACK)\] )?(.*?)$");
-        private Regex InitialisingRegex = new Regex(@"Rewards Randomiser .*?: Initialising\.\.\.");
+        private static readonly Regex ConsoleRegex = new Regex(@"^(\[[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}-[0-9]{2}-[0-9]{2}\.[0-9]{3}\] )?(\[(MOD|GAME|HACK)\] )?(.*?)$");
+        private static readonly Regex InitialisingRegex = new Regex(@"Rewards Randomiser .*?: Initialising\.\.\.");
         private void Sif_Message(string message)
         {
             if (ConsoleRegex.IsMatch(message))
@@ -253,13 +253,19 @@ namespace RewardsRandoTracker
                     {
                         byte[] base64bytes = Convert.FromBase64String(message);
                         string base64dec = Encoding.UTF8.GetString(base64bytes);
-                        if (base64dec.Contains("L1M1"))
+                        if (base64dec.Contains("REWARDS:"))
                         {
                             ProcessSpoiler(base64dec);
                         }
                     }
-                    catch
-                    {}
+                    catch (Exception ex)
+                    {
+                        AddLog("ERROR READING SPOILER:");
+                        foreach (string line in ex.ToString().Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries))
+                        {
+                            AddLog(line);
+                        }
+                    }
                 }
             }
 
