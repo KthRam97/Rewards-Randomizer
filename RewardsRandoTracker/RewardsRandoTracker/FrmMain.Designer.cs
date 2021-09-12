@@ -32,6 +32,8 @@ namespace RewardsRandoTracker
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
             this.LBLog = new System.Windows.Forms.ListBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.CBTimestamps = new System.Windows.Forms.CheckBox();
+            this.BtnExport = new System.Windows.Forms.Button();
             this.BtnStop = new System.Windows.Forms.Button();
             this.BtnStart = new System.Windows.Forms.Button();
             this.LblCards = new System.Windows.Forms.Label();
@@ -41,8 +43,7 @@ namespace RewardsRandoTracker
             this.BtnLookup = new System.Windows.Forms.Button();
             this.CBLookup = new System.Windows.Forms.ComboBox();
             this.LblLookup = new System.Windows.Forms.Label();
-            this.BtnExport = new System.Windows.Forms.Button();
-            this.CBTimestamps = new System.Windows.Forms.CheckBox();
+            this.LblInfo = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -66,6 +67,7 @@ namespace RewardsRandoTracker
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.LblInfo);
             this.splitContainer1.Panel1.Controls.Add(this.CBTimestamps);
             this.splitContainer1.Panel1.Controls.Add(this.BtnExport);
             this.splitContainer1.Panel1.Controls.Add(this.BtnStop);
@@ -84,6 +86,28 @@ namespace RewardsRandoTracker
             this.splitContainer1.Size = new System.Drawing.Size(800, 450);
             this.splitContainer1.SplitterDistance = 266;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // CBTimestamps
+            // 
+            this.CBTimestamps.AutoSize = true;
+            this.CBTimestamps.Location = new System.Drawing.Point(16, 237);
+            this.CBTimestamps.Name = "CBTimestamps";
+            this.CBTimestamps.Size = new System.Drawing.Size(129, 17);
+            this.CBTimestamps.TabIndex = 10;
+            this.CBTimestamps.Text = "Add timestamps to log";
+            this.CBTimestamps.UseVisualStyleBackColor = true;
+            // 
+            // BtnExport
+            // 
+            this.BtnExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnExport.Location = new System.Drawing.Point(16, 70);
+            this.BtnExport.Name = "BtnExport";
+            this.BtnExport.Size = new System.Drawing.Size(235, 23);
+            this.BtnExport.TabIndex = 9;
+            this.BtnExport.Text = "Export Tracker Log";
+            this.BtnExport.UseVisualStyleBackColor = true;
+            this.BtnExport.Click += new System.EventHandler(this.BtnExport_Click);
             // 
             // BtnStop
             // 
@@ -186,27 +210,16 @@ namespace RewardsRandoTracker
             this.LblLookup.TabIndex = 0;
             this.LblLookup.Text = "Reward Lookup:";
             // 
-            // BtnExport
+            // LblInfo
             // 
-            this.BtnExport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.LblInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.BtnExport.Location = new System.Drawing.Point(16, 70);
-            this.BtnExport.Name = "BtnExport";
-            this.BtnExport.Size = new System.Drawing.Size(235, 23);
-            this.BtnExport.TabIndex = 9;
-            this.BtnExport.Text = "Export Tracker Log";
-            this.BtnExport.UseVisualStyleBackColor = true;
-            this.BtnExport.Click += new System.EventHandler(this.BtnExport_Click);
-            // 
-            // CBTimestamps
-            // 
-            this.CBTimestamps.AutoSize = true;
-            this.CBTimestamps.Location = new System.Drawing.Point(16, 237);
-            this.CBTimestamps.Name = "CBTimestamps";
-            this.CBTimestamps.Size = new System.Drawing.Size(129, 17);
-            this.CBTimestamps.TabIndex = 10;
-            this.CBTimestamps.Text = "Add timestamps to log";
-            this.CBTimestamps.UseVisualStyleBackColor = true;
+            this.LblInfo.Location = new System.Drawing.Point(13, 272);
+            this.LblInfo.Name = "LblInfo";
+            this.LblInfo.Size = new System.Drawing.Size(238, 169);
+            this.LblInfo.TabIndex = 11;
+            this.LblInfo.Text = resources.GetString("LblInfo.Text");
             // 
             // FrmMain
             // 
@@ -241,6 +254,7 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Button BtnStop;
         private System.Windows.Forms.Button BtnExport;
         private System.Windows.Forms.CheckBox CBTimestamps;
+        private System.Windows.Forms.Label LblInfo;
     }
 }
 

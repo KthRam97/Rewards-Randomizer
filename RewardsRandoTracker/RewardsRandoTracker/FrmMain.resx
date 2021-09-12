@@ -117,6 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="LblInfo.Text" xml:space="preserve">
+    <value>1) Make sure the Console and Logging hack is enabled, with "Mods" being the only Include option ticked.
+2) Launch the Reward Randomiser with your chosen settings.
+3) Click "Start Tracking Log File".
+4) In the window that opens, browse and find the correct log file. Depending on your "Console and Logging" settings, it will either be a file called "Log.txt" in the directory that opens, or the latest file in the "Logs" directory.
+5) Click "Show Restrictions Tracker" to show the automated tracker window.</value>
+  </data>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
