@@ -16,9 +16,9 @@ else
 		if not Confirm("You have the Console hack enabled, but do not have Mods checked in the Console's Mod Settings Include section.\nIf you want to continue with the console disabled, click OK. Otherwise, click Cancel to close the game.") then
 			os.exit()
 		end
-	else
-		if ConsoleSettings.IncludeGame or ConsoleSettings.IncludeHacks then
-			Alert("You have the Console hack enabled, but also have Game and Hacks checked in the Console's Mod Settings Include section.\nThis may cause issues with the tracker, so if any occur, try disabling these includes.")
+	elseif not ConsoleSettings.Logging then
+		if not Confirm("You have the Console hack enabled, but do not have Logging enabled in the Console's Mod Settings.\nLogging is required for the tracker to function.\nIf you want to continue with the logging disabled, click OK. Otherwise, click Cancel to close the game.") then
+			os.exit()
 		end
 	end
 end
@@ -99,6 +99,45 @@ function base64dec(s, bs, bsi)
 		return string.char((n >> 16) & 255, (n >> 8) & 255, n & 255)
 	end)
 	return s:sub(1, #s - #p)
+end
+
+Seed.Init()
+
+if Settings.RandomSettings then
+	Seed.AddSpoiler("RANDOM SETTINGS:")
+	
+	Settings.MissionOrderType = math.random(3)
+	Seed.AddSpoiler("MissionOrderType|" .. Settings.MissionOrderType)
+	
+	Settings.HintType = math.random(3)
+	Seed.AddSpoiler("HintType|" .. Settings.MissionOrderType)
+	
+	Settings.RemoveUnluckyCards = math.random(2) == 1
+	Seed.AddSpoiler("RemoveUnluckyCards|" .. tostring(Settings.RemoveUnluckyCards))
+	
+	Settings.BanCars = math.random(2) == 1
+	Seed.AddSpoiler("BanCars|" .. tostring(Settings.BanCars))
+	Settings.BannedCars = "fone_v,smith_v,cHears" --TODO: Randomise
+	
+	Settings.PriceMultiplier = math.random(10, 1000) / 100
+	Seed.AddSpoiler("PriceMultiplier|" .. Settings.PriceMultiplier)
+	
+	Settings.RandomBasePrice = math.random(2) == 1
+	Seed.AddSpoiler("RandomBasePrice|" .. tostring(Settings.RandomBasePrice))
+	
+	Settings.CanGetRaceRewards = math.random(2) == 1
+	Seed.AddSpoiler("CanGetRaceRewards|" .. tostring(Settings.CanGetRaceRewards))
+	
+	Settings.CanGetBonusRewards = math.random(2) == 1
+	Seed.AddSpoiler("CanGetBonusRewards|" .. tostring(Settings.CanGetBonusRewards))
+	
+	Settings.CanGetNPCRewards = math.random(2) == 1
+	Seed.AddSpoiler("CanGetNPCRewards|" .. tostring(Settings.CanGetNPCRewards))
+	
+	Settings.CanGetGilRewards = math.random(2) == 1
+	Seed.AddSpoiler("CanGetGilRewards|" .. tostring(Settings.CanGetGilRewards))
+	
+	Seed.AddSpoiler("")
 end
 
 CompletedMissions = {}
@@ -569,7 +608,6 @@ if Settings.Debug then
 	Pause()
 end
 
-Seed.Init()
 local InvalidCount = Seed.Generate()
 
 local endTime = GetTime()

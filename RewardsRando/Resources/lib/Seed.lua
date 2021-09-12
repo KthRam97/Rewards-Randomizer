@@ -48,7 +48,6 @@ end
 function Seed.Generate()
 	local InvalidCount = 0
 	::RestartGenerator::
-	Seed.Spoiler = {}
 	--[[
 		SR1			8
 		SR2			9
@@ -112,6 +111,7 @@ function Seed.Generate()
 			end
 		end
 	end
+	Seed.AddSpoiler("")
 	
 	if not Seed.CheckSoftlock() then
 		InvalidCount = InvalidCount + 1
@@ -144,7 +144,6 @@ function Seed.Generate()
 		end
 	end
 	
-	Seed.AddSpoiler("")
 	Seed.AddSpoiler("REWARDS:")
 	for i=1,#MissionRewards do
 		for j=1,#MissionRewards[i] do
@@ -154,6 +153,7 @@ function Seed.Generate()
 			end
 		end
 	end
+	Seed.AddSpoiler("")
 	
 	return InvalidCount
 end
