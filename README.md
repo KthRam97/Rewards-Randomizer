@@ -25,40 +25,56 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 - All Forced Purchase Requirements remain, i.e. to start 1-3 you will need to find/unlock the Plow King
 
 ## Bonus Features
-- A Hint System tied to the Collector Cards where every 3 cards collected gives a single hint saying which level contains 1 of the 13 forced purchasables
-  - This hint will load in the console and as an ingame popup when you next start a mission (following a mission warp)
-  - Note: This is still in testing and there have been reported issues with not all cards being tracked and the ingame popups being inaccurate. It is recommended that you use the Console to read hints as these are generally more accurate.
-- A Reverse Mission Order Setting that reverses Mission Order within each level. This is designed to weaken levels that are usually considered strong in forward rando, while also giving later missions in each level more shine.
-  - Levels 1-6 have mission orders completely reversed, e.g. the first mission of Homer 1 becomes The Fat and the Furious (normally the 7th Mission)
-  - Level 7 only has the first 4 missions reversed. I.e. it begins with Mission 4, then 3, 2 and 1, before finishing with Missions 5, 6 and 7. This was done to preserve the same win condition as Forward Rando (requiring all 3 Proofs)
+- 2 options for hint systems explain in "Hint Settings" below
+- 2 options for mission re-ordering explained in "Mission Order Settings" below. This is designed to weaken levels that are usually considered strong in forward rando, while also giving later missions in each level more shine.
 - A Forced Purchasables Tracker that automatically keeps track of what forced purchasables you have unlocked and in what levels. This is currently in testing and may be a bit buggy. The steps for setup are:
-  1) Open RewardsRandoTracker.exe
-  2) Start SHAR with the RewardsRando and Console enabled (Console should only have Mods checked in the Include section of its Mod Settings)
-  3) Check that the box on the right hand side of the tracker has ouput, including ---END SEED SPOILER
-  4) If it _doesn't_ have the output, close SHAR and repeat from step 2
+  1) Make sure the Console and Logging hack is enabled, with "Mods" being the only Include option ticked.
+  2) Launch the Reward Randomiser with your chosen settings.
+  3) Open RewardsRandoTracker.exe
+  4) Click "Start Tracking Log File".
+  5) In the window that opens, browse and find the correct log file. Depending on your "Console and Logging" settings, it will either be a file called "Log.txt" in the directory that opens, or the latest file in the "Logs" directory.
+  6) Click "Show Restrictions Tracker" to show the automated tracker window.
 
-## Current Settings
-- Fixed Seeded (Default: Unticked): If ticked, it lets you type in a custom seed into the Seed Setting. Use this if you want to try a funny meme seed or race someone else. Leaving it unticked, randomizes your seed.
-  - Seed (Default: 123): Lets you set the current seed for the rando. Match this with opponents if you are racing them
-- Reverse Mission Order (Default: Unticked): If ticked, the missions within each level will be reversed. This is intended to give later missions in each level that would not normally be encountered an opportunity to shine. E.g. Fat and the Furious will become Mission 1 of Homer 1. 
-  - Note: Due to the proof system in Homer 2, the order of missions in Homer 2 is only reversed for the first four missions. The 3 Alien Autotopsy Missions will still finish Homer 2 when this setting is on.
-  - Hacky Music Fix (Default: Unticked): When Reverse Mission Order is on there have been issues with some music tracks not being reversed. Turning on this setting attempts to fix this but may not always work and is not fully tested. 
-- Price Multiplier (Default: 3): Multiplies all prices of NPC and Gil Cars by whatever the number is, ranging from 0.1 (1 tenth of the price) to 10
-  - Recommended setting: 2 or 3 times. This ensures that you'll want/need roughly 1500-2000 coins on average to complete a seed, which is about half the coins of a regular ASM speedrun
-- Disable In-game Popups (Default: Unticked): Turns off in-game popups when you unlock an item or get a hint.
-- Ban Cars (Default: Unticked): Removes certain cars from the pool of randomized rewards. Ticking it allows you to enter cars into the Banned Cars Setting
-  - Banned Cars (Default: fone_v, smith_v, cHears): Specifies the cars to be removed from the pool when Ban Cars is ticked. Type the filenames of the cars you wish to remove separated by a comma. Filenames for all cars of interest are listed here: https://docs.google.com/document/d/12CfjZz_jJPPA1jTHEURepX-O2SyTu_7a34ZBJg5IrQ0/edit?usp=sharing
+## Seed Settings
+- Hash Seed (Default: Unticked): If ticked, the on-screen seed in both the main menu and pause menu will be a hash of the actual seed. Useful for streamers to avoid viewers spoiling the seed for you.
+- Fixed Seed (Default: Unticked): If ticked, the randomisation will use the custom seed in the Seed textbox. Normally used for races. Leaving it unticked will randomise the seed.
+  - Seed (Max Length: 11 characters): Lets you set the base seed for randomisation. Anyone using the same seed will get the same reward order (if all settings match).
 
-## Current Problems/Errors: 
-- If you collect a card while your character is saying another voiceline it won't count to the cards for hints. This means by chance you may need more than 3 cards per hint
+## Mission Order Settings
+(Note: L7M5, L7M6 and L7M7 will always be in that order, regardless of these settings.)
+- Mission Order (Default: Normal): Lets you choose one of 3 options for the mission order:
+  - Normal: The mission order will be the same the base game.
+  - Reverse: Levels will be in the same order, but each level's missions will be reversed.
+  - Random: Levels will be in the same order, but each level's mission will be in a random order.
+- Disable Mission Music Fix (Default: Unticked): If ticked, the mission music will match the base game, not the changed mission order.
+
+## Hint Settings
+- Hints (Default: None): Lets you choose one of 3 options for hint types:
+  - None: The game will contain no hints, and you will have to find all the required rewards on your own.
+  - Collect X Cards: Every X cards you collect, you will get a hint that will give you the level one of the required rewards can be found in. X = Card Count (49) divided by Required Reward Count (13 by default), rounded down. Defaults to 3.
+  - Randomly Dispersed: Each required reward will be randomly assigned to one of the available 49 collector cards. The hint will contain the level the reward is available in. You will have to check the card text to see the hint.
+- Remove Unlucky Cards (Default: Unticked): If ticked, collector cards without a reward attached in "Randomly Dispersed" hint mode will be removed from the game.
+
+## Car Modifier Settings
+- Ban Cars (Default: Unticked): If ticked, the cars listed in "Banned Cars" will be removed from the reward pool.
+- Banned Cars (Default: fone_v,smith_v,cHears): A list of banned car internal names, separated by commas.
+
+## Shop Price Settings
+- Price Multiplier (Default: 3): Sets the price multplier to the NPC and Gil car shops (Min: 0.1, Max: 10.0).
+- Random Base Price (Default: Unticked): If ticked, this randomises the base price prior to the multiplier to a value between 100 and 1000.
+
+## Miscellaneous Settings
+- Disable In-game Popups (Default: Unticked): If ticked, the in-game popups for reward unlocks or hints will be removed. You will still be able to see the information in console.
+
+## Reward Options
+Lets you the ability to disable certain places from granting rewards.
+
+## Current Problems/Errors
+- When using "Hints: Collect X Cards", a collected card won't be tracked if the player character is already saying a dialogue line. If this happens, you may have to collect more cards than expected for a hint
 - Some users have reported empty loading screens between levels (with no newspapers). If this happens, it should load but may take up to 1-2 mins.
-- The ingame popups for Hints can be inaccurate. It is recommended that you read the hints in the console rather than in the popups
-
-## Plans for the future
-- Adding a Card Counter to the Tracker. This will only count the ones that are actually registered to keep better track of your Hint despite the bugs with card counting
-- A setting to randomize mission order within each level
 
 ## Credits
+
 ### Authors
 - KthRam (https://www.twitch.tv/kthram)
 - Proddy (https://zhbot.org)
@@ -68,10 +84,11 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 - EnAppelsin (https://github.com/EnAppelsin) (Original P3D Lua idea - P3D Functions)
 - Lucas Cardellini (https://lucasstuff.com/) (P3D Functions Performance Improvements)
 
-### Everyone else who made the Rando Possible
+### Everyone else who made this possible
+- Lucas Cardellini (Massive help in RMS processing)
 - Bamford (https://www.twitch/tv/bamford) (Assisted KthRam in understanding how SHAR works)
-- EnAppelsin (https://github.com/EnAppelsin) (Created the SHARConsoleHook that enables the external tracker to work)
-- Timbs (https://www.twitch.tv/da_timbsII) and Gibstack (https://www.twitch.tv/Gibstack) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
-- Weasel, Max, UnknownSteel and more in the DonutTeam community (Helped come up with many feature implementations)
+- Timbs (https://www.twitch.tv/da_timbsII) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
+- Gibstack (https://www.twitch.tv/Gibstack) (Taught KthRam how to create a mod instead of editing the raw files and breaking his game 4 times)
+- Weasel, Max, UnknownSteel and more in the Donut Team community (Helped come up with many feature implementations)
 - Baconman12, Spruce37, Timbs, Gibstack, GuffMcGufferson, TehSpearmeister, Greeny0359 and jpecimage (Helped test the initial versions of the mod to ensure stability)
-- TheTicker, Axington123 and dtops24 for being legends :)
+- TheTicker, Axington123 and dtops24 (Being legends)
