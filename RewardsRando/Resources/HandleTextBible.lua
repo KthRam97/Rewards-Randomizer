@@ -37,21 +37,25 @@ RandoInfoTbl[#RandoInfoTbl + 1] = ModTitle
 RandoInfoTbl[#RandoInfoTbl + 1] = " v"
 RandoInfoTbl[#RandoInfoTbl + 1] = ModVersion
 RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
-RandoInfoTbl[#RandoInfoTbl + 1] = "Mission Order: "
-RandoInfoTbl[#RandoInfoTbl + 1] = MissionOrderType
-RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
-RandoInfoTbl[#RandoInfoTbl + 1] = "Hints: "
-RandoInfoTbl[#RandoInfoTbl + 1] = HintType
-if Settings.HintType == 3 and Settings.RemoveUnluckyCards then
-	RandoInfoTbl[#RandoInfoTbl + 1] = " (Rem Unlucky)"
+if Settings.RandomSettings then
+	RandoInfoTbl[#RandoInfoTbl + 1] = "Who knows what the settings are.\nThey're random.\n"
+else
+	RandoInfoTbl[#RandoInfoTbl + 1] = "Mission Order: "
+	RandoInfoTbl[#RandoInfoTbl + 1] = MissionOrderType
+	RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+	RandoInfoTbl[#RandoInfoTbl + 1] = "Hints: "
+	RandoInfoTbl[#RandoInfoTbl + 1] = HintType
+	if Settings.HintType == 3 and Settings.RemoveUnluckyCards then
+		RandoInfoTbl[#RandoInfoTbl + 1] = " (Rem Unlucky)"
+	end
+	RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
+	RandoInfoTbl[#RandoInfoTbl + 1] = "Price Multiplier: "
+	RandoInfoTbl[#RandoInfoTbl + 1] = Settings.PriceMultiplier
+	RandoInfoTbl[#RandoInfoTbl + 1] = " | "
+	RandoInfoTbl[#RandoInfoTbl + 1] = "Ban Cars: "
+	RandoInfoTbl[#RandoInfoTbl + 1] = tostring(Settings.BanCars)
+	RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
 end
-RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
-RandoInfoTbl[#RandoInfoTbl + 1] = "Price Multiplier: "
-RandoInfoTbl[#RandoInfoTbl + 1] = Settings.PriceMultiplier
-RandoInfoTbl[#RandoInfoTbl + 1] = " | "
-RandoInfoTbl[#RandoInfoTbl + 1] = "Ban Cars: "
-RandoInfoTbl[#RandoInfoTbl + 1] = tostring(Settings.BanCars)
-RandoInfoTbl[#RandoInfoTbl + 1] = "\n"
 RandoInfoTbl[#RandoInfoTbl + 1] = SeedInfo
 local RandoInfo = table.concat(RandoInfoTbl)
 local RandoPauseInfo = SeedInfo
@@ -135,6 +139,31 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				local mission = hint % 8 + 1
 				UnluckyCards[level] = UnluckyCards[level] or {}
 				UnluckyCards[level][mission] = true
+			end
+			
+			if Settings.RandomCardLocations then
+				for i=1,7 do
+					local LevelP3DFile = P3D.P3DChunk:new{Raw = Cache["Level"..i]}
+					local removed = false
+					for idx in LevelP3DFile:GetChunkIndexes(P3D.Identifiers.Locator) do
+						local LocatorChunk = P3D.LocatorP3DChunk:new{Raw = LevelP3DFile:GetChunkAtIndex(idx)}
+						if LocatorChunk.Type == 9 then
+							local Type, UnknownStr1, UnknownStr2, Unknown1, Unknown2 = LocatorChunk:GetType9Data()
+							if P3D.CleanP3DString(Type) == "CollectorCard" then
+								local level, mission = UnknownStr1:match("card(%d)(%d)")
+								level = tonumber(level)
+								mission = tonumber(mission)
+								if UnluckyCards[level] and UnluckyCards[level][mission] then
+									LevelP3DFile:RemoveChunkAtIndex(idx)
+									removed = true
+								end
+							end
+						end
+					end
+					if removed then
+						Cache["Level"..i] = LevelP3DFile:Output()
+					end
+				end
 			end
 		end
 		

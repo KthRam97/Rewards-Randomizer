@@ -54,6 +54,7 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
   - Collect X Cards: Every X cards you collect, you will get a hint that will give you the level one of the required rewards can be found in. X = Card Count (49) divided by Required Reward Count (13 by default), rounded down. Defaults to 3.
   - Randomly Dispersed: Each required reward will be randomly assigned to one of the available 49 collector cards. The hint will contain the level the reward is available in. You will have to check the card text to see the hint.
 - Remove Unlucky Cards (Default: Unticked): If ticked, collector cards without a reward attached in "Randomly Dispersed" hint mode will be removed from the game.
+- Random Card Locations (Default: Unticked): If ticked, collector cards locations will be randomised within each level.
 
 ## Car Modifier Settings
 - Ban Cars (Default: Unticked): If ticked, the cars listed in "Banned Cars" will be removed from the reward pool.
@@ -65,6 +66,7 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 
 ## Miscellaneous Settings
 - Disable In-game Popups (Default: Unticked): If ticked, the in-game popups for reward unlocks or hints will be removed. You will still be able to see the information in console.
+- Random Settings (Default: Unticked): If ticked, certain settings will be randomised on game load.
 
 ## Reward Options
 Lets you the ability to disable certain places from granting rewards.

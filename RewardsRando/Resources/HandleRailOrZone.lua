@@ -9,12 +9,17 @@ if Settings.RemoveUnluckyCards then
 		if LocatorChunk.Type == 9 then
 			local Type, UnknownStr1, UnknownStr2, Unknown1, Unknown2 = LocatorChunk:GetType9Data()
 			if P3D.CleanP3DString(Type) == "CollectorCard" then
-				local level, mission = UnknownStr1:match("card(%d)(%d)")
-				level = tonumber(level)
-				mission = tonumber(mission)
-				if UnluckyCards[level] and UnluckyCards[level][mission] then
+				if Settings.RandomCardLocations then
 					P3DFile:RemoveChunkAtIndex(idx)
 					removed = true
+				else
+					local level, mission = UnknownStr1:match("card(%d)(%d)")
+					level = tonumber(level)
+					mission = tonumber(mission)
+					if UnluckyCards[level] and UnluckyCards[level][mission] then
+						P3DFile:RemoveChunkAtIndex(idx)
+						removed = true
+					end
 				end
 			end
 		end

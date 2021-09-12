@@ -24,8 +24,6 @@ function Seed.Base64dec(s)
 end
 
 local function ChooseLevelAndMission(Possible, IsCar)
-	local InvalidCount = 0
-	::RepickLevel::
 	local PossibleValues = {}
 	for i=1,#Possible do
 		for j=1,#Possible[i] do
@@ -45,7 +43,7 @@ function Seed.Generate()
 	local InvalidCount = 0
 	::RestartGenerator::
 	if InvalidCount > 1000 then
-		error("Unfortunately, a working reward order couldn't be generated in over 1000 attempts with this seed and settings. The game will now exit.")
+		Alert("Unfortunately, a working reward order couldn't be generated in over 1000 attempts with this seed and settings. The game will now exit.")
 		os.exit()
 	end
 	--[[

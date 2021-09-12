@@ -115,6 +115,9 @@ if Settings.RandomSettings then
 	Settings.RemoveUnluckyCards = math.random(2) == 1
 	Seed.AddSpoiler("RemoveUnluckyCards|" .. tostring(Settings.RemoveUnluckyCards))
 	
+	Settings.RandomCardLocations = math.random(2) == 1
+	Seed.AddSpoiler("RandomCardLocations|" .. tostring(Settings.RandomCardLocations))
+	
 	Settings.BanCars = math.random(2) == 1
 	Seed.AddSpoiler("BanCars|" .. tostring(Settings.BanCars))
 	Settings.BannedCars = "fone_v,smith_v,cHears" --TODO: Randomise
@@ -283,7 +286,7 @@ if Settings.Debug then
 	Pause()
 end
 
-print("Setting up level shop locators...")
+print("Setting up level locators...")
 local startTime = GetTime()
 
 --TODO: Make locator generation automatic
@@ -527,6 +530,72 @@ local GilLocators = {
 	{{286.79837036133,0.59050196409225,-404.02044677734,2.9567441940308}, {275.78332519531,0.59050130844116,-400.34979248047,1.5781652927399}},
 }
 
+local CardLocators = {
+	{ --Level 1
+		{224.33351135254,7.2457370758057,-201.48526000977}, --Default Card 1 Position
+		{223.40678405762,19.251113891602,-310.43450927734}, --Default Card 2 Position
+		{377.11407470703,8.2252225875854,-143.49005126953}, --Default Card 3 Position
+		{-302.43173217773,5.4270811080933,-219.78591918945}, --Default Card 4 Position
+		{-405.0764465332,11.472186088562,68.022415161133}, --Default Card 5 Position
+		{-125.77495574951,17.398292541504,280.95556640625}, --Default Card 6 Position
+		{407.99295043945,4.2372632026672,413.08834838867}, --Default Card 7 Position
+	},
+	{ --Level 2
+		{134.22686767578,15.850852012634,36.596462249756}, --Default Card 1 Position
+		{202.26776123047,12.205675125122,53.215717315674}, --Default Card 2 Position
+		{-205.33152770996,26.835302352905,40.667762756348}, --Default Card 3 Position
+		{-196.91584777832,13.335711479187,128.03283691406}, --Default Card 4 Position
+		{-401.76385498047,15.425839424133,223.12873840332}, --Default Card 5 Position
+		{-83.465423583984,32.151924133301,361.35119628906}, --Default Card 6 Position
+		{125.15988922119,20.947353363037,310.24243164063}, --Default Card 7 Position
+	},
+	{ --Level 3
+		{25.579637527466,16.406297683716,-6.2031555175781}, --Default Card 1 Position
+		{-184.23794555664,-27.262760162354,-153.87704467773}, --Default Card 2 Position
+		{-578.34393310547,-39.324352264404,46.0712890625}, --Default Card 3 Position
+		{-547.36700439453,-52.979251861572,102.11651611328}, --Default Card 4 Position
+		{-240.24584960938,-51.415519714355,239.23120117188}, --Default Card 5 Position
+		{175.2220916748,-13.090600967407,255.94239807129}, --Default Card 6 Position
+		{102.26796722412,-9.1240463256836,298.60754394531}, --Default Card 7 Position
+	},
+	{ --Level 4
+		{243.2347869873,12.139566421509,-335.02828979492}, --Default Card 1 Position
+		{-288.3317565918,36.424903869629,73.02961730957}, --Default Card 2 Position
+		{322.69198608398,13.252814292908,185.37338256836}, --Default Card 3 Position
+		{-129.47454833984,24.520244598389,-461.41424560547}, --Default Card 4 Position
+		{-165.39199829102,16.971042633057,-192.0013885498}, --Default Card 5 Position
+		{208.79608154297,7.7058010101318,-207.27517700195}, --Default Card 6 Position
+		{414.92489624023,3.2752170562744,473.0612487793}, --Default Card 7 Position
+	},
+	{ --Level 5
+		{-25.772794723511,19.082229614258,-21.335083007813}, --Default Card 1 Position
+		{-218.67234802246,5.258668422699,41.943466186523}, --Default Card 2 Position
+		{-180.64682006836,15.199880599976,20.592338562012}, --Default Card 3 Position
+		{-367.27410888672,16.653484344482,154.78942871094}, --Default Card 4 Position
+		{-286.87100219727,49.375175476074,568.45178222656}, --Default Card 5 Position
+		{-47.224212646484,44.772361755371,370.57192993164}, --Default Card 6 Position
+		{-218.66571044922,43.457744598389,451.86560058594}, --Default Card 7 Position
+	},
+	{ --Level 6
+		{93.155570983887,9.0245981216431,-70.679168701172}, --Default Card 1 Position
+		{-390.56219482422,-35.400291442871,-157.61085510254}, --Default Card 2 Position
+		{-518.34393310547,-54.874481201172,-71.763397216797}, --Default Card 3 Position
+		{-372.67065429688,-50.58150100708,95.217445373535}, --Default Card 4 Position
+		{-337.18072509766,-52.513717651367,356.09948730469}, --Default Card 5 Position
+		{9.2742719650269,-44.194770812988,327.34619140625}, --Default Card 6 Position
+		{110.77772521973,-6.7157592773438,258.81652832031}, --Default Card 7 Position
+	},
+	{ --Level 7
+		{263.02700805664,7.8882312774658,-210.05313110352}, --Default Card 1 Position
+		{152.10539245605,11.525991439819,-190.92462158203}, --Default Card 2 Position
+		{-98.147750854492,8.8505191802979,-608.88720703125}, --Default Card 3 Position
+		{245.31123352051,18.873668670654,-352.55676269531}, --Default Card 4 Position
+		{317.76135253906,9.4066038131714,39.413146972656}, --Default Card 5 Position
+		{193.52969360352,11.207420349121,463.26138305664}, --Default Card 6 Position
+		{-26.520801544189,33.787097930908,288.39309692383}, --Default Card 7 Position
+	},
+}
+
 for i=1,7 do
 	local P3DFile = P3D.P3DChunk:new{Raw = ReadFile("/GameData/art/missions/level0"..i.."/level.p3d")}
 	
@@ -553,12 +622,23 @@ for i=1,7 do
 		end
 	end
 	
+	if Settings.RandomCardLocations then
+		local PossibleCards = {table.unpack(CardLocators[i])}
+		for j=1,7 do
+			local idx = math.random(#PossibleCards)
+			local Locator = PossibleCards[idx]
+			table.remove(PossibleCards, idx)
+			local LocatorChunk = P3D.LocatorP3DChunk:createType9("card" .. i .. j, {X=Locator[1],Y=Locator[2],Z=Locator[3]}, "CollectorCard", "card" .. i .. j, "card" .. i .. j, 3, 0)
+			LocatorChunk:AddChunk(P3D.TriggerVolumeP3DChunk:create("card" .. i .. j .. "Trigger",0,{X=2.5,Y=2.5,Z=2.5},{M11=0,M12=0,M13=0,M14=0,M21=0,M22=0,M23=0,M24=0,M31=0,M32=0,M33=0,M34=0,M41=Locator[1],M42=Locator[2],M43=Locator[3],M44=0}):Output())
+			P3DFile:AddChunk(LocatorChunk:Output())
+		end
+	end
 	
 	Cache["Level" .. i] = P3DFile:Output()
 end
 
 local endTime = GetTime()
-print("Setup level shop locators in " .. (endTime - startTime) * 1000 .. "ms.")
+print("Setup level locators in " .. (endTime - startTime) * 1000 .. "ms.")
 
 print("Setting seed...")
 local startTime = GetTime()
