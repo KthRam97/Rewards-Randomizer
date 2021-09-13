@@ -26,6 +26,7 @@ namespace RewardsRandoTracker
         public readonly Dictionary<string, string> Rewards = new Dictionary<string, string>();
         public readonly Dictionary<string, string> Restrictions = new Dictionary<string, string>();
         public readonly Dictionary<string, string> NameMap = new Dictionary<string, string>();
+        public readonly Dictionary<string, string> NameMap2 = new Dictionary<string, string>();
 
         public FrmMain()
         {
@@ -131,16 +132,16 @@ namespace RewardsRandoTracker
             }
         }
 
-        private void TrackHint(string Hint)
+        private void TrackHint(int Level, string Restriction)
         {
             if (restrictionsTracker.InvokeRequired)
             {
-                Action a = delegate { TrackHint(Hint); };
+                Action a = delegate { TrackHint(Level, Restriction); };
                 restrictionsTracker.Invoke(a);
             }
             else
             {
-                restrictionsTracker.HintUnlocked(Hint);
+                restrictionsTracker.HintUnlocked(Level, Restriction);
             }
         }
 
@@ -273,25 +274,27 @@ namespace RewardsRandoTracker
             switch (parts[0])
             {
                 case "UNLOCK":
-                    int Level;
-                    int Mission;
-                    if (parts.Length == 5 && int.TryParse(parts[2], out Level) && int.TryParse(parts[3], out Mission))
+                    int UnlockLevel;
+                    int UnlockMission;
+                    if (parts.Length == 5 && int.TryParse(parts[2], out UnlockLevel) && int.TryParse(parts[3], out UnlockMission))
                     {
-                        ProcessReward(Level, Mission, parts[1], parts[4]);
+                        ProcessReward(UnlockLevel, UnlockMission, parts[1], parts[4]);
                     }
                     break;
                 case "HINT":
-                    if (parts.Length == 2)
+                    int HintLevel;
+                    if (parts.Length == 3 && int.TryParse(parts[1], out HintLevel))
                     {
-                        ProcessHint(parts[1]);
+                        ProcessHint(HintLevel, parts[2]);
                     }
                     break;
                 case "CARD":
                     if (parts.Length == 3)
                     {
-                        if (parts[1] == "Collected")
+                        int CardCount;
+                        if (parts[1] == "Collected" && int.TryParse(parts[2], out CardCount))
                         {
-                            ProcessCard();
+                            ProcessCard(CardCount);
                         }
                     }
                     break;
@@ -354,6 +357,7 @@ namespace RewardsRandoTracker
                             {
                                 Rewards[parts[2]] = parts[0].Replace("M8", "SR1").Replace("M9", "SR2").Replace("M10", "SR3").Replace("M11", "BM").Replace("M12", " NPC").Replace("M13", " Gil").Replace("M14", " Gil");
                                 NameMap[parts[2]] = parts[1];
+                                NameMap2[parts[1]] = parts[2];
                             }
                         }
                         break;
@@ -368,19 +372,20 @@ namespace RewardsRandoTracker
 
         private void ProcessReward(int Level, int Mission, string Type, string Reward)
         {
-            AddLog($"Unlocked {Reward} ({Type}) for completing L{Level}M{Mission}");
+            AddLog($"Unlocked {Reward} ({Type}) for completing L{Level}M{Mission}!");
             TrackReward(Level, NameMap[Reward]);
         }
 
-        private void ProcessHint(string Hint)
+        private void ProcessHint(int Level, string Restriction)
         {
-            AddLog($"Hint received! {Hint}");
-            TrackHint(Hint);
+            AddLog($"Hint received! You can find {NameMap2[Restriction]} in level {Level}!");
+            TrackHint(Level, Restriction);
         }
 
-        private void ProcessCard()
+        private void ProcessCard(int CardCount)
         {
             CollectedCards++;
+            AddLog($"Card collected! {CardCount} towards next hint (depending on mode).");
             LblCards.Text = "Collected Cards: " + CollectedCards;
             TrackCard();
         }

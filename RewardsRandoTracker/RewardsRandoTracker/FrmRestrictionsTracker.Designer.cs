@@ -38,6 +38,7 @@ namespace RewardsRandoTracker
             this.PBL6 = new System.Windows.Forms.PictureBox();
             this.PBL7 = new System.Windows.Forms.PictureBox();
             this.PnlLayout = new System.Windows.Forms.TableLayoutPanel();
+            this.PBCards = new System.Windows.Forms.PictureBox();
             this.PnlUnlocked7 = new System.Windows.Forms.Panel();
             this.PnlUnlocked6 = new System.Windows.Forms.Panel();
             this.PnlUnlocked5 = new System.Windows.Forms.Panel();
@@ -46,7 +47,6 @@ namespace RewardsRandoTracker
             this.PnlUnlocked2 = new System.Windows.Forms.Panel();
             this.PnlLocked = new System.Windows.Forms.Panel();
             this.PnlUnlocked1 = new System.Windows.Forms.Panel();
-            this.PBCards = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.PBL1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL3)).BeginInit();
@@ -178,87 +178,6 @@ namespace RewardsRandoTracker
             this.PnlLayout.Size = new System.Drawing.Size(579, 743);
             this.PnlLayout.TabIndex = 0;
             // 
-            // PnlUnlocked7
-            // 
-            this.PnlUnlocked7.AutoScroll = true;
-            this.PnlUnlocked7.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked7.Location = new System.Drawing.Point(95, 555);
-            this.PnlUnlocked7.Name = "PnlUnlocked7";
-            this.PnlUnlocked7.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked7.TabIndex = 63;
-            this.PnlUnlocked7.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlUnlocked6
-            // 
-            this.PnlUnlocked6.AutoScroll = true;
-            this.PnlUnlocked6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked6.Location = new System.Drawing.Point(95, 463);
-            this.PnlUnlocked6.Name = "PnlUnlocked6";
-            this.PnlUnlocked6.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked6.TabIndex = 62;
-            this.PnlUnlocked6.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlUnlocked5
-            // 
-            this.PnlUnlocked5.AutoScroll = true;
-            this.PnlUnlocked5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked5.Location = new System.Drawing.Point(95, 371);
-            this.PnlUnlocked5.Name = "PnlUnlocked5";
-            this.PnlUnlocked5.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked5.TabIndex = 61;
-            this.PnlUnlocked5.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlUnlocked4
-            // 
-            this.PnlUnlocked4.AutoScroll = true;
-            this.PnlUnlocked4.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked4.Location = new System.Drawing.Point(95, 279);
-            this.PnlUnlocked4.Name = "PnlUnlocked4";
-            this.PnlUnlocked4.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked4.TabIndex = 60;
-            this.PnlUnlocked4.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlUnlocked3
-            // 
-            this.PnlUnlocked3.AutoScroll = true;
-            this.PnlUnlocked3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked3.Location = new System.Drawing.Point(95, 187);
-            this.PnlUnlocked3.Name = "PnlUnlocked3";
-            this.PnlUnlocked3.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked3.TabIndex = 59;
-            this.PnlUnlocked3.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlUnlocked2
-            // 
-            this.PnlUnlocked2.AutoScroll = true;
-            this.PnlUnlocked2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked2.Location = new System.Drawing.Point(95, 95);
-            this.PnlUnlocked2.Name = "PnlUnlocked2";
-            this.PnlUnlocked2.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked2.TabIndex = 58;
-            this.PnlUnlocked2.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlLocked
-            // 
-            this.PnlLocked.AutoScroll = true;
-            this.PnlLocked.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlLocked.Location = new System.Drawing.Point(95, 647);
-            this.PnlLocked.Name = "PnlLocked";
-            this.PnlLocked.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
-            this.PnlLocked.Size = new System.Drawing.Size(481, 93);
-            this.PnlLocked.TabIndex = 56;
-            this.PnlLocked.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
-            // PnlUnlocked1
-            // 
-            this.PnlUnlocked1.AutoScroll = true;
-            this.PnlUnlocked1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.PnlUnlocked1.Location = new System.Drawing.Point(95, 3);
-            this.PnlUnlocked1.Name = "PnlUnlocked1";
-            this.PnlUnlocked1.Size = new System.Drawing.Size(481, 86);
-            this.PnlUnlocked1.TabIndex = 57;
-            this.PnlUnlocked1.SizeChanged += new System.EventHandler(this.Pnl_SizeChanged);
-            // 
             // PBCards
             // 
             this.PBCards.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
@@ -270,6 +189,79 @@ namespace RewardsRandoTracker
             this.PBCards.TabIndex = 64;
             this.PBCards.TabStop = false;
             this.PBCards.Paint += new System.Windows.Forms.PaintEventHandler(this.PBCards_Paint);
+            // 
+            // PnlUnlocked7
+            // 
+            this.PnlUnlocked7.AutoScroll = true;
+            this.PnlUnlocked7.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked7.Location = new System.Drawing.Point(95, 555);
+            this.PnlUnlocked7.Name = "PnlUnlocked7";
+            this.PnlUnlocked7.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked7.TabIndex = 63;
+            // 
+            // PnlUnlocked6
+            // 
+            this.PnlUnlocked6.AutoScroll = true;
+            this.PnlUnlocked6.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked6.Location = new System.Drawing.Point(95, 463);
+            this.PnlUnlocked6.Name = "PnlUnlocked6";
+            this.PnlUnlocked6.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked6.TabIndex = 62;
+            // 
+            // PnlUnlocked5
+            // 
+            this.PnlUnlocked5.AutoScroll = true;
+            this.PnlUnlocked5.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked5.Location = new System.Drawing.Point(95, 371);
+            this.PnlUnlocked5.Name = "PnlUnlocked5";
+            this.PnlUnlocked5.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked5.TabIndex = 61;
+            // 
+            // PnlUnlocked4
+            // 
+            this.PnlUnlocked4.AutoScroll = true;
+            this.PnlUnlocked4.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked4.Location = new System.Drawing.Point(95, 279);
+            this.PnlUnlocked4.Name = "PnlUnlocked4";
+            this.PnlUnlocked4.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked4.TabIndex = 60;
+            // 
+            // PnlUnlocked3
+            // 
+            this.PnlUnlocked3.AutoScroll = true;
+            this.PnlUnlocked3.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked3.Location = new System.Drawing.Point(95, 187);
+            this.PnlUnlocked3.Name = "PnlUnlocked3";
+            this.PnlUnlocked3.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked3.TabIndex = 59;
+            // 
+            // PnlUnlocked2
+            // 
+            this.PnlUnlocked2.AutoScroll = true;
+            this.PnlUnlocked2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked2.Location = new System.Drawing.Point(95, 95);
+            this.PnlUnlocked2.Name = "PnlUnlocked2";
+            this.PnlUnlocked2.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked2.TabIndex = 58;
+            // 
+            // PnlLocked
+            // 
+            this.PnlLocked.AutoScroll = true;
+            this.PnlLocked.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlLocked.Location = new System.Drawing.Point(95, 647);
+            this.PnlLocked.Name = "PnlLocked";
+            this.PnlLocked.Padding = new System.Windows.Forms.Padding(0, 0, 25, 0);
+            this.PnlLocked.Size = new System.Drawing.Size(481, 93);
+            this.PnlLocked.TabIndex = 56;
+            // 
+            // PnlUnlocked1
+            // 
+            this.PnlUnlocked1.AutoScroll = true;
+            this.PnlUnlocked1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.PnlUnlocked1.Location = new System.Drawing.Point(95, 3);
+            this.PnlUnlocked1.Name = "PnlUnlocked1";
+            this.PnlUnlocked1.Size = new System.Drawing.Size(481, 86);
+            this.PnlUnlocked1.TabIndex = 57;
             // 
             // FrmRestrictionsTracker
             // 

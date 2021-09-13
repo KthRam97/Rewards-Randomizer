@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -19,9 +20,48 @@ namespace RewardsRandoTracker
         private static readonly string LevelImageRoot = Path.Combine(ImageRoot, "Levels");
         private static readonly string RewardsImageRoot = Path.Combine(ImageRoot, "Rewards");
 
+        private readonly Dictionary<string, Image> RewardImages = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Image> RewardImagesGreyscale = new Dictionary<string, Image>();
+
         public FrmRestrictionsTracker()
         {
             InitializeComponent();
+        }
+
+        //Stolen from: https://stackoverflow.com/questions/2265910/convert-an-image-to-grayscale
+        private static Bitmap MakeGrayscale3(Bitmap original)
+        {
+            //create a blank bitmap the same size as original
+            Bitmap newBitmap = new Bitmap(original.Width, original.Height);
+
+            //get a graphics object from the new image
+            using (Graphics g = Graphics.FromImage(newBitmap))
+            {
+
+                //create the grayscale ColorMatrix
+                ColorMatrix colorMatrix = new ColorMatrix(
+                    new float[][]
+                    {
+                        new float[] {.3f, .3f, .3f, 0, 0},
+                        new float[] {.59f, .59f, .59f, 0, 0},
+                        new float[] {.11f, .11f, .11f, 0, 0},
+                        new float[] {0, 0, 0, 1, 0},
+                        new float[] {0, 0, 0, 0, 1}
+                    }
+                );
+
+                //create some image attributes
+                using (ImageAttributes attributes = new ImageAttributes())
+                {
+                    //set the color matrix attribute
+                    attributes.SetColorMatrix(colorMatrix);
+
+                    //draw the original image on the new image
+                    //using the grayscale color matrix
+                    g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attributes);
+                }
+            }
+            return newBitmap;
         }
 
         private void FrmRestrictionsTracker_Load(object sender, EventArgs e)
@@ -39,13 +79,16 @@ namespace RewardsRandoTracker
             for (var i = 0; i < rewardFiles.Length; i++)
             {
                 string fileName = System.IO.Path.GetFileNameWithoutExtension(rewardFiles[i]);
+                RewardImages[fileName] = Image.FromFile(rewardFiles[i]);
+                RewardImagesGreyscale[fileName] = MakeGrayscale3(new Bitmap(RewardImages[fileName]));
                 PictureBox pb = new PictureBox
                 {
                     Name = fileName,
-                    Image = Image.FromFile(rewardFiles[i]),
+                    Image = RewardImagesGreyscale[fileName],
                     SizeMode = PictureBoxSizeMode.Zoom,
                     Dock = DockStyle.Left
                 };
+                pb.SizeChanged += PB_SizeChanged;
                 PnlLocked.Controls.Add(pb);
                 double ratio = pb.Height / (pb.Image.Height * 1.0f);
                 pb.Width = (int)(pb.Image.Width * ratio);
@@ -59,6 +102,7 @@ namespace RewardsRandoTracker
                 for (var i = pnl.Controls.Count - 1; i >= 0; i--)
                 {
                     PictureBox pb = (PictureBox)pnl.Controls[i];
+                    pb.Image = RewardImagesGreyscale[pb.Name];
                     pnl.Controls.Remove(pb);
                     PnlLocked.Controls.Add(pb);
                 }
@@ -78,6 +122,7 @@ namespace RewardsRandoTracker
             }
             if (pb != null)
             {
+                pb.Image = RewardImages[Reward];
                 PnlLocked.Controls.Remove(pb);
                 switch(Level)
                 {
@@ -111,11 +156,69 @@ namespace RewardsRandoTracker
                         break;
                 }
             }
+            else
+            {
+                foreach (Panel pnl in new Panel[] { PnlUnlocked1, PnlUnlocked2, PnlUnlocked3, PnlUnlocked4, PnlUnlocked5, PnlUnlocked6, PnlUnlocked7 })
+                {
+                    for (var i = pnl.Controls.Count - 1; i >= 0; i--)
+                    {
+                        pb = (PictureBox)pnl.Controls[i];
+                        if (pb.Name == Reward)
+                        {
+                            pb.Image = RewardImages[pb.Name];
+                            return;
+                        }
+                    }
+                }
+            }
         }
 
-        public void HintUnlocked(string Hint)
+        public void HintUnlocked(int Level, string Reward)
         {
-
+            PictureBox pb = null;
+            for (var i = 0; i < PnlLocked.Controls.Count; i++)
+            {
+                if (PnlLocked.Controls[i].Name == Reward)
+                {
+                    pb = (PictureBox)PnlLocked.Controls[i];
+                    break;
+                }
+            }
+            if (pb != null)
+            {
+                PnlLocked.Controls.Remove(pb);
+                switch (Level)
+                {
+                    case 1:
+                        PnlUnlocked1.Controls.Add(pb);
+                        PnlUnlocked1.Controls.SetChildIndex(pb, 0);
+                        break;
+                    case 2:
+                        PnlUnlocked2.Controls.Add(pb);
+                        PnlUnlocked2.Controls.SetChildIndex(pb, 0);
+                        break;
+                    case 3:
+                        PnlUnlocked3.Controls.Add(pb);
+                        PnlUnlocked3.Controls.SetChildIndex(pb, 0);
+                        break;
+                    case 4:
+                        PnlUnlocked4.Controls.Add(pb);
+                        PnlUnlocked4.Controls.SetChildIndex(pb, 0);
+                        break;
+                    case 5:
+                        PnlUnlocked5.Controls.Add(pb);
+                        PnlUnlocked5.Controls.SetChildIndex(pb, 0);
+                        break;
+                    case 6:
+                        PnlUnlocked6.Controls.Add(pb);
+                        PnlUnlocked6.Controls.SetChildIndex(pb, 0);
+                        break;
+                    case 7:
+                        PnlUnlocked7.Controls.Add(pb);
+                        PnlUnlocked7.Controls.SetChildIndex(pb, 0);
+                        break;
+                }
+            }
         }
 
         public void CardCollected()
@@ -123,14 +226,11 @@ namespace RewardsRandoTracker
             PBCards.Refresh();
         }
 
-        private void Pnl_SizeChanged(object sender, EventArgs e)
+        private void PB_SizeChanged(object sender, EventArgs e)
         {
-            Control ctrl = (Control)sender;
-            foreach(PictureBox pb in ctrl.Controls.OfType<PictureBox>())
-            {
-                double ratio = pb.Height / (pb.Image.Height * 1.0f);
-                pb.Width = (int)(pb.Image.Width * ratio);
-            }
+            PictureBox pb = (PictureBox)sender;
+            double ratio = pb.Height / (pb.Image.Height * 1.0f);
+            pb.Width = (int)(pb.Image.Width * ratio);
         }
 
         private void FrmRestrictionsTracker_FormClosing(object sender, FormClosingEventArgs e)
