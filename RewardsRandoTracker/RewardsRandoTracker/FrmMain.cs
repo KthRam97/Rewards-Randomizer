@@ -21,6 +21,7 @@ namespace RewardsRandoTracker
         private readonly FrmRestrictionsTracker restrictionsTracker = new FrmRestrictionsTracker();
         private bool IsLoading = true;
         private bool IsSeedSpoiler = false;
+        private string Spoiler;
         public static int CollectedCards = 0;
 
         public readonly Dictionary<string, string> Rewards = new Dictionary<string, string>();
@@ -232,6 +233,7 @@ namespace RewardsRandoTracker
                 ResetLookup();
                 ResetTracker();
                 IsLoading = true;
+                Spoiler = string.Empty;
             }
 
             if (IsLoading)
@@ -256,7 +258,8 @@ namespace RewardsRandoTracker
                         string base64dec = Encoding.UTF8.GetString(base64bytes);
                         if (base64dec.Contains("REWARDS:"))
                         {
-                            ProcessSpoiler(base64dec);
+                            Spoiler = base64dec;
+                            ProcessSpoiler(Spoiler);
                         }
                     }
                     catch (Exception ex)
@@ -396,8 +399,6 @@ namespace RewardsRandoTracker
             restrictionsTracker.Show();
             restrictionsTracker.Hide();
             ResetLookup();
-            /*SetStatus("Waiting for Simpsons.exe...");
-            HookSimpsons();*/
         }
 
         private void BtnLookup_Click(object sender, EventArgs e)
@@ -407,6 +408,7 @@ namespace RewardsRandoTracker
             string Reward = CBLookup.SelectedItem.ToString();
             if (MessageBox.Show($"Are you sure you want to lookup the location of {Reward}?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                AddLog($"LOOKED UP REWARD: {Reward}");
                 if (Rewards.ContainsKey(Reward))
                 {
                     MessageBox.Show($"{Reward} can be unlocked from: {Rewards[Reward]}");
@@ -418,14 +420,23 @@ namespace RewardsRandoTracker
             }
         }
 
-        private void BtnShowTracker_Click(object sender, EventArgs e)
+        private void BtnShowSpoiler_Click(object sender, EventArgs e)
         {
-            restrictionsTracker.Show();
+            if (string.IsNullOrWhiteSpace(Spoiler))
+                return;
+            if (MessageBox.Show("Are you sure you want to view the spoiler?", "Are you sure?", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                AddLog("SPOILER OPENED!");
+                using (FrmSpoiler frm = new FrmSpoiler(Spoiler))
+                {
+                    frm.ShowDialog();
+                }
+            }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void BtnToggleTracker_Click(object sender, EventArgs e)
         {
-            restrictionsTracker.Hide();
+            restrictionsTracker.Visible = !restrictionsTracker.Visible;
         }
 
         private void CBTrackerTopmost_CheckedChanged(object sender, EventArgs e)

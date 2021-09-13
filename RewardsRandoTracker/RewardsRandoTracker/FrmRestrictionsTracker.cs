@@ -75,10 +75,10 @@ namespace RewardsRandoTracker
             PBL7.Image = Image.FromFile(Path.Combine(LevelImageRoot, "7.png"));
             PBCards.Image = Image.FromFile(Path.Combine(CardImageRoot, "Base.png"));
 
-            string[] rewardFiles = System.IO.Directory.GetFiles(RewardsImageRoot, "*.png");
+            string[] rewardFiles = Directory.GetFiles(RewardsImageRoot, "*.png");
             for (var i = 0; i < rewardFiles.Length; i++)
             {
-                string fileName = System.IO.Path.GetFileNameWithoutExtension(rewardFiles[i]);
+                string fileName = Path.GetFileNameWithoutExtension(rewardFiles[i]);
                 RewardImages[fileName] = Image.FromFile(rewardFiles[i]);
                 RewardImagesGreyscale[fileName] = MakeGrayscale3(new Bitmap(RewardImages[fileName]));
                 PictureBox pb = new PictureBox
@@ -107,6 +107,7 @@ namespace RewardsRandoTracker
                     PnlLocked.Controls.Add(pb);
                 }
             }
+            PBCards.Refresh();
         }
 
         public void RewardUnlocked(int Level, string Reward)

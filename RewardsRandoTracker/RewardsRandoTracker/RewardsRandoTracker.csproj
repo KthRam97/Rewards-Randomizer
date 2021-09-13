@@ -62,6 +62,12 @@
     <Compile Include="FrmRestrictionsTracker.Designer.cs">
       <DependentUpon>FrmRestrictionsTracker.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmSpoiler.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmSpoiler.Designer.cs">
+      <DependentUpon>FrmSpoiler.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FrmMain.resx">
@@ -69,6 +75,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmRestrictionsTracker.resx">
       <DependentUpon>FrmRestrictionsTracker.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmSpoiler.resx">
+      <DependentUpon>FrmSpoiler.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
