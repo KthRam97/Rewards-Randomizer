@@ -52,40 +52,43 @@ if not Settings.DisableIngamePopups then
 		MFK:AddFunction("CloseMission")
 	end
 
-	if CurrMission < 8 and Settings.HintType == 2 and CardCount > 0 and CardCount >= CardsPerHint and CardHints[CardHintsGiven + 1] then
-		CardHintsGiven = CardHintsGiven + 1
-		
-		local Hint = CardHints[CardHintsGiven + 1]
-		
-		print("HINT|" .. Hint[2] .. "|" .. Hint[3])
-		
-		if not Settings.DisableIngamePopups then
-			File = File or ReadFile(GamePath)
-			MFK = MFK or MFKLexer.Lexer:Parse(File)
+	if CurrMission < 8 and Settings.HintType == 2 and CardCount > 0 then
+		while CardCount >= CardsPerHint and CardHints[CardHintsGiven + 1] do
+			CardCount = CardCount - CardsPerHint
+			CardHintsGiven = CardHintsGiven + 1
 			
-			local firstStage
-			for i=1,#MFK.Functions do
-				local name = MFK.Functions[i].Name:lower()
-				if name == "addstage" then
-					firstStage = firstStage or i
-					break
+			local Hint = CardHints[CardHintsGiven + 1]
+			
+			print("HINT|" .. Hint[2] .. "|" .. Hint[3])
+			
+			if not Settings.DisableIngamePopups then
+				File = File or ReadFile(GamePath)
+				MFK = MFK or MFKLexer.Lexer:Parse(File)
+				
+				local firstStage
+				for i=1,#MFK.Functions do
+					local name = MFK.Functions[i].Name:lower()
+					if name == "addstage" then
+						firstStage = firstStage or i
+						break
+					end
 				end
+				
+				local idx = firstStage
+				
+				MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
+				idx = idx + 1
+				MFK:InsertFunction(idx, "SetStageMessageIndex", Hint[1])
+				idx = idx + 1
+				MFK:InsertFunction(idx, "AddObjective", "timer")
+				idx = idx + 1
+				MFK:InsertFunction(idx, "SetDurationTime", 0)
+				idx = idx + 1
+				MFK:InsertFunction(idx, "CloseObjective")
+				idx = idx + 1
+				MFK:InsertFunction(idx, "CloseStage")
+				idx = idx + 1
 			end
-			
-			local idx = firstStage
-			
-			MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
-			idx = idx + 1
-			MFK:InsertFunction(idx, "SetStageMessageIndex", Hint[1])
-			idx = idx + 1
-			MFK:InsertFunction(idx, "AddObjective", "timer")
-			idx = idx + 1
-			MFK:InsertFunction(idx, "SetDurationTime", 0)
-			idx = idx + 1
-			MFK:InsertFunction(idx, "CloseObjective")
-			idx = idx + 1
-			MFK:InsertFunction(idx, "CloseStage")
-			idx = idx + 1
 		end
 	end
 end
