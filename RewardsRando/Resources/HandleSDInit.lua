@@ -10,6 +10,7 @@ if ThisLevel == 1 and ThisMission == 0 then
 		Alert("Unfortunately, the Rewards Randomiser can not currently launch a New Game due to limitations in rewards.\nThe game will now exit.")
 		os.exit()
 	end
+	Seed.PrintSpoiler()
 	CompletedMissions = {}
 	CardCount = 0
 	CardHintsGiven = 0

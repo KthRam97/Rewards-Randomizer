@@ -61,7 +61,7 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 - Banned Cars (Default: fone_v,smith_v,cHears): A list of banned car internal names, separated by commas.
 
 ## Shop Price Settings
-- Price Multiplier (Default: 3): Sets the price multplier to the NPC and Gil car shops (Min: 0.1, Max: 10.0).
+- Price Multiplier (Default: 2.5): Sets the price multplier to the NPC and Gil car shops (Min: 0.1, Max: 10.0).
 - Random Base Price (Default: Unticked): If ticked, this randomises the base price prior to the multiplier to a value between 100 and 1000.
 
 ## Miscellaneous Settings

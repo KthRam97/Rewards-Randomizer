@@ -1,4 +1,4 @@
-if Settings.RemoveUnluckyCards then
+if Settings.RandomCardLocations or Settings.RemoveUnluckyCards then
 	local Path = GetPath()
 	local GamePath = GetGamePath(Path)
 	

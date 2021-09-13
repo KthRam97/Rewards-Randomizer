@@ -1,6 +1,8 @@
 local Path = GetPath()
 local GamePath = GetGamePath(Path)
 
+local LastLevel, LastMission = CurrLevel, CurrMission
+
 CurrLevel = tonumber(Path:match("level0(%d)[/\\]"))
 if Path:find("sr", 1, true) then
 	CurrMission = tonumber(Path:match("sr(%d)")) + 7
@@ -9,6 +11,7 @@ elseif Path:find("bm", 1, true) then
 else
 	CurrMission = tonumber(Path:match("m(%d)"))
 end
+local IsRestart = LastLevel == CurrLevel and LastMission == CurrMission
 
 local File
 local MFK
@@ -52,12 +55,12 @@ if not Settings.DisableIngamePopups then
 		MFK:AddFunction("CloseMission")
 	end
 
-	if CurrMission < 8 and Settings.HintType == 2 and CardCount > 0 then
+	if not IsRestart and CurrMission < 8 and Settings.HintType == 2 and CardCount > 0 then
 		while CardCount >= CardsPerHint and CardHints[CardHintsGiven + 1] do
 			CardCount = CardCount - CardsPerHint
 			CardHintsGiven = CardHintsGiven + 1
 			
-			local Hint = CardHints[CardHintsGiven + 1]
+			local Hint = CardHints[CardHintsGiven]
 			
 			print("HINT|" .. Hint[2] .. "|" .. Hint[3])
 			

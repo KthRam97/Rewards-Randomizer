@@ -119,6 +119,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				end
 			end
 			
+			Seed.AddSpoiler("HINT CARDS:")
 			for i=1,#RestrictionNames do
 				local HintIdx = math.random(#AvailableHints)
 				local Hint = AvailableHints[HintIdx]
@@ -133,16 +134,20 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 					LanguageChunk:SetValue("CARD_EPISODE_" .. Hint, "Congratulations!")
 				end
 				LanguageChunk:SetValue("CARD_TITLE_" .. Hint, RewardNames[RestrictionNames[i]])
+				local Level = math.ceil((Hint + 1)/8)
+				local Card = Hint % 8 + 1
+				Seed.AddSpoiler(RestrictionNames[i] .. "|L" .. Level .. "C" .. tostring(Card):gsub("%.0", ""))
 			end
+			Seed.AddSpoiler("")
 			for i=1,#AvailableHints do
 				LanguageChunk:SetValue("CARD_DESC_" .. AvailableHints[i], "Unlucky! Unfortunately, this card doesn't contain a hint.")
 				LanguageChunk:SetValue("CARD_TITLE_" .. AvailableHints[i], UnluckyTitles[math.random(#UnluckyTitles)])
 				LanguageChunk:SetValue("CARD_EPISODE_" .. AvailableHints[i], "Better Luck Next Time")
-				local hint = AvailableHints[i]
-				local level = math.ceil((hint + 1)/8)
-				local mission = hint % 8 + 1
-				UnluckyCards[level] = UnluckyCards[level] or {}
-				UnluckyCards[level][mission] = true
+				local Hint = AvailableHints[i]
+				local Level = math.ceil((Hint + 1)/8)
+				local Card = Hint % 8 + 1
+				UnluckyCards[Level] = UnluckyCards[Level] or {}
+				UnluckyCards[Level][Card] = true
 			end
 			
 			if Settings.RandomCardLocations then
