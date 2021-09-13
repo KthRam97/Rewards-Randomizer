@@ -60,7 +60,7 @@ RandoInfoTbl[#RandoInfoTbl + 1] = SeedInfo
 local RandoInfo = table.concat(RandoInfoTbl)
 local RandoPauseInfo = SeedInfo
 
-local CardHintText = {}
+local CardHintInfo = {}
 local RestrictionNames = {}
 local RestrictionMissions = {}
 local ImportantRewards = {}
@@ -210,13 +210,13 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			else
 				HintText = "Congratulations! You have collected "..CardsPerHint.." cards, so here is a hint:\n\nYou can find \"" .. RewardNames[Restriction] .. "\" in Level " .. RestrictionMission[1] .. "!\n\nThis is required for:\n" .. MissionTitle[Info[1]][Info[2]] .. " (L" .. Info[1] .. "M" .. Info[2] .. ")"
 			end
-			CardHintText[i] = HintText
+			CardHintInfo[i] = {HintText,RestrictionMission[1],Restriction}
 		end
 		CardHints = {}
-		for i=1,#CardHintText do
+		for i=1,#CardHintInfo do
 			InGameIdx = InGameIdx + 1
-			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, CardHintText[i])
-			CardHints[i] = {InGameIdx, CardHintText[i]}
+			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, CardHintInfo[i][1])
+			CardHints[i] = {InGameIdx, CardHintInfo[i][2], CardHintInfo[i][3]}
 		end
 		
 		local ObjectiveIdx = 299

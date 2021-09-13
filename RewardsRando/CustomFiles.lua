@@ -46,5 +46,3 @@ dofile(Paths.Init .. "Init.lua")
 dofile(Paths.Init .. "Rewards.lua")
 dofile(Paths.Init .. "Locators.lua")
 dofile(Paths.Init .. "Seed.lua")
-
-Seed.PrintSpoiler()

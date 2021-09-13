@@ -37,3 +37,5 @@ local InvalidCount = Seed.Generate()
 
 local endTime = GetTime()
 print("Seeding configured after " .. InvalidCount .. " attempts in " .. (endTime - startTime) * 1000 .. "ms.")
+
+Seed.PrintSpoiler()

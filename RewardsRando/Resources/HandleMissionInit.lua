@@ -52,9 +52,12 @@ if not Settings.DisableIngamePopups then
 		MFK:AddFunction("CloseMission")
 	end
 
-	if ShowCardHint and CurrMission < 8 then
-		ShowCardHint = false
+	if CurrMission < 8 and Settings.HintType == 2 and CardCount > 0 and CardCount >= CardsPerHint and CardHints[CardHintsGiven + 1] then
 		CardHintsGiven = CardHintsGiven + 1
+		
+		local Hint = CardHints[CardHintsGiven + 1]
+		
+		print("HINT|" .. Hint[2] .. "|" .. Hint[3])
 		
 		if not Settings.DisableIngamePopups then
 			File = File or ReadFile(GamePath)
@@ -73,7 +76,7 @@ if not Settings.DisableIngamePopups then
 			
 			MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
 			idx = idx + 1
-			MFK:InsertFunction(idx, "SetStageMessageIndex", CardHints[CardHintsGiven][1])
+			MFK:InsertFunction(idx, "SetStageMessageIndex", Hint[1])
 			idx = idx + 1
 			MFK:InsertFunction(idx, "AddObjective", "timer")
 			idx = idx + 1
