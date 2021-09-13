@@ -55,8 +55,7 @@ local function SetCarAttributes(CarName)
 		SpeedAttribute = 0
 	else
 		SpeedAttribute = 5 * ((Speed - 120) / 50)
-		SpeedAttribute = math.max(0.1, SpeedAttribute)
-		SpeedAttribute = math.min(5, SpeedAttribute)
+		SpeedAttribute = Clamp(SpeedAttribute, 0.1, 5)
 	end
 	
 	local AccelerationAttribute
@@ -64,8 +63,7 @@ local function SetCarAttributes(CarName)
 		AccelerationAttribute = 0
 	else
 		AccelerationAttribute = 5 * ((GasScale * TireGrip) / 32)
-		AccelerationAttribute = math.max(0.1, AccelerationAttribute)
-		AccelerationAttribute = math.min(5, AccelerationAttribute)
+		AccelerationAttribute = Clamp(AccelerationAttribute, 0.1, 5)
 	end
 	
 	local ToughnessAttribute
@@ -73,8 +71,7 @@ local function SetCarAttributes(CarName)
 		ToughnessAttribute = 0
 	else
 		ToughnessAttribute = 5 * (((Mass / 100) + HitPoints) / 60)
-		ToughnessAttribute = math.max(0.1, ToughnessAttribute)
-		ToughnessAttribute = math.min(5, ToughnessAttribute)
+		ToughnessAttribute = Clamp(ToughnessAttribute, 0.1, 5)
 	end
 	
 	local HandlingAttribute
@@ -82,8 +79,7 @@ local function SetCarAttributes(CarName)
 		HandlingAttribute = 0
 	else
 		HandlingAttribute = 5 * ((NormalSteering - 50) / 50)
-		HandlingAttribute = math.max(0.1, HandlingAttribute)
-		HandlingAttribute = math.min(5, HandlingAttribute)
+		HandlingAttribute = Clamp(HandlingAttribute, 0.1, 5)
 	end
 	MFK:AddFunction("SetCarAttributes", {CarName, SpeedAttribute, AccelerationAttribute, ToughnessAttribute, HandlingAttribute})
 end

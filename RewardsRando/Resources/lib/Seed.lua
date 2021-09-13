@@ -236,7 +236,6 @@ end
 function Seed.PrintSpoiler()
 	print("--- BEGIN SEED SPOILERS ---")
 	local spoilers = table.concat(Seed.Spoiler, "\n")
-	print(Settings.Debug and spoilers or base64(spoilers))
+	print(base64(spoilers))
 	print("--- END SPOILERS ---")
-	if Settings.Debug then Pause() end
 end
