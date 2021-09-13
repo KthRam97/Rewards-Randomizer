@@ -109,6 +109,8 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			end
 		end
 		
+		LanguageChunk:SetValue("MISSION_TITLE_L1_M0", ModTitle .. " v" .. ModVersion)
+		
 		if Settings.HintType == 3 then
 			LanguageChunk:SetValue("CARD_GET", "HINT CARD!")
 			local Hints = {}

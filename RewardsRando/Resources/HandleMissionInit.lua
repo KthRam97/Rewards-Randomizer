@@ -13,6 +13,21 @@ else
 end
 local IsRestart = LastLevel == CurrLevel and LastMission == CurrMission
 
+if CurrLevel == 1 and CurrMission == 0 then
+	local MFK = MFKLexer.Lexer:New()
+	MFK:AddFunction("SelectMission", "m0")
+	
+	MFK:AddFunction("AddStage", "final")
+	MFK:AddFunction("AddObjective", "timer")
+	MFK:AddFunction("SetDurationTime", 0)
+	MFK:AddFunction("CloseObjective")
+	MFK:AddFunction("CloseStage")
+	
+	MFK:AddFunction("CloseMission")
+	MFK:Output()
+	return
+end
+
 local File
 local MFK
 

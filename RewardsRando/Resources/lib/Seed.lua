@@ -229,8 +229,8 @@ function Seed.Init()
 	math.randomseed(Seed.SeedRaw)
 end
 
-function Seed.AddSpoiler(f, ...)
-	Seed.Spoiler[#Seed.Spoiler + 1] = string.format(f, ...)
+function Seed.AddSpoiler(f)
+	Seed.Spoiler[#Seed.Spoiler + 1] = tostring(f)
 end
 
 function Seed.PrintSpoiler()

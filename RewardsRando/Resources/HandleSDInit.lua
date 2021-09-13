@@ -17,6 +17,26 @@ if ThisLevel == 1 and ThisMission == 0 then
 	for i=1,7 do
 		CompletedMissions[i] = {}
 	end
+	
+	local MFK = MFKLexer.Lexer:Parse(ReadFile(GamePath))
+	for i=#MFK.Functions,1,-1 do
+		local name = MFK.Functions[i].Name:lower()
+		if name ~= "setmissionresetplayeroutcar" and name ~= "setdynaloaddata" then
+			table.remove(MFK.Functions, i)
+		end
+	end
+	MFK:InsertFunction(1, "SelectMission", "m0sd")
+	
+	MFK:AddFunction("AddStage")
+	MFK:AddFunction("AddObjective", "timer")
+	MFK:AddFunction("SetPresentationBitmap", "art/frontend/dynaload/images/mis01_00.p3d")
+	MFK:AddFunction("SetDurationTime", 0)
+	MFK:AddFunction("CloseObjective")
+	MFK:AddFunction("CloseStage")
+	
+	MFK:AddFunction("CloseMission")
+	MFK:Output()
+	return
 end
 
 local File
