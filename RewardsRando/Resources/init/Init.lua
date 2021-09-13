@@ -3,49 +3,46 @@ Cache = {}
 Seed.Init()
 
 if Settings.RandomSettings then
-	Seed.AddSpoiler("RANDOM SETTINGS:")
-	
 	Settings.MissionOrderType = math.random(3)
-	Seed.AddSpoiler("MissionOrderType|" .. Settings.MissionOrderType)
 	
 	Settings.HintType = math.random(3)
-	Seed.AddSpoiler("HintType|" .. Settings.MissionOrderType)
 	
 	Settings.RemoveUnluckyCards = math.random(2) == 1
-	Seed.AddSpoiler("RemoveUnluckyCards|" .. tostring(Settings.RemoveUnluckyCards))
 	
 	Settings.RandomCardLocations = math.random(2) == 1
-	Seed.AddSpoiler("RandomCardLocations|" .. tostring(Settings.RandomCardLocations))
 	
 	Settings.BanCars = math.random(2) == 1
-	Seed.AddSpoiler("BanCars|" .. tostring(Settings.BanCars))
 	Settings.BannedCars = "fone_v,smith_v,cHears" --TODO: Randomise
 	
 	Settings.PriceMultiplier = math.random(10, 1000) / 100
-	Seed.AddSpoiler("PriceMultiplier|" .. Settings.PriceMultiplier)
 	
 	Settings.RandomBasePrice = math.random(2) == 1
-	Seed.AddSpoiler("RandomBasePrice|" .. tostring(Settings.RandomBasePrice))
 	
 	for i=1,7 do
 		Settings["CanGetMissionRewardsL" .. i] = math.random(2) == 1
-		Seed.AddSpoiler("CanGetMissionRewardsL" .. i .. "|" .. tostring(Settings["CanGetMissionRewardsL" .. i]))
 		
 		Settings["CanGetRaceRewardsL" .. i] = math.random(2) == 1
-		Seed.AddSpoiler("CanGetRaceRewardsL" .. i .. "|" .. tostring(Settings["CanGetRaceRewardsL" .. i]))
 		
 		Settings["CanGetBonusRewardsL" .. i] = math.random(2) == 1
-		Seed.AddSpoiler("CanGetBonusRewardsL" .. i .. "|" .. tostring(Settings["CanGetBonusRewardsL" .. i]))
 		
 		Settings["CanGetNPCRewardsL" .. i] = math.random(2) == 1
-		Seed.AddSpoiler("CanGetNPCRewardsL" .. i .. "|" .. tostring(Settings["CanGetNPCRewardsL" .. i]))
 		
 		Settings["CanGetGilRewardsL" .. i] = math.random(2) == 1
-		Seed.AddSpoiler("CanGetGilRewardsL" .. i .. "|" .. tostring(Settings["CanGetGilRewardsL" .. i]))
 	end
 	
 	Seed.AddSpoiler("")
 end
+
+Seed.AddSpoiler("SETTINGS:")
+local SettingKeys = {}
+for k in pairs(Settings) do
+	SettingKeys[#SettingKeys + 1] = k
+end
+table.sort(SettingKeys)
+for i=1,#SettingKeys do
+	Seed.AddSpoiler(SettingKeys[i] .. " = " .. tostring(Settings[SettingKeys[i]]))
+end
+Seed.AddSpoiler("")
 
 CompletedMissions = {}
 for i=1,7 do

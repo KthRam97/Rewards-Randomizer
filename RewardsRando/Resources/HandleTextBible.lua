@@ -150,7 +150,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				UnluckyCards[Level][Card] = true
 			end
 			
-			if Settings.RandomCardLocations then
+			if Settings.RandomCardLocations and Settings.RemoveUnluckyCards then
 				for i=1,7 do
 					local LevelP3DFile = P3D.P3DChunk:new{Raw = Cache["Level"..i]}
 					local removed = false
