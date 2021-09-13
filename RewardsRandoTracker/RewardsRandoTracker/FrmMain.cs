@@ -310,8 +310,10 @@ namespace RewardsRandoTracker
         {
             string[] lines = Spoiler.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
             bool settings = false;
+            bool cardLocators = false;
             bool restrictions = false;
             bool rewards = false;
+            bool hintCards = false;
             Regex r = new Regex("L([0-9])M([0-9]+)");
             List<int> restrictionLevels = new List<int>();
             List<string> restrictionNames = new List<string>();
@@ -319,22 +321,42 @@ namespace RewardsRandoTracker
             {
                 switch (line)
                 {
-                    case "RANDOM SETTINGS:":
+                    case "SETTINGS:":
                         settings = true;
+                        cardLocators = false;
                         restrictions = false;
                         rewards = false;
+                        hintCards = false;
+                        break;
+                    case "CARD LOCATORS:":
+                        settings = false;
+                        cardLocators = true;
+                        restrictions = false;
+                        rewards = false;
+                        hintCards = false;
                         break;
                     case "RESTRICTIONS:":
                         settings = false;
+                        cardLocators = false;
                         restrictions = true;
                         rewards = false;
+                        hintCards = false;
                         restrictionLevels.Clear();
                         restrictionNames.Clear();
                         break;
                     case "REWARDS:":
                         settings = false;
+                        cardLocators = false;
                         restrictions = false;
                         rewards = true;
+                        hintCards = false;
+                        break;
+                    case "HINT CARDS:":
+                        settings = false;
+                        cardLocators = false;
+                        restrictions = false;
+                        rewards = false;
+                        hintCards = true;
                         break;
                     default:
                         if (restrictions)
