@@ -20,16 +20,16 @@ namespace RewardsRandoTracker
         private static bool Tracking = false;
         private static string LogFile;
 
-        public readonly FrmRestrictionsTracker RestrictionsTracker = new FrmRestrictionsTracker();
+        public static readonly FrmRestrictionsTracker RestrictionsTracker = new FrmRestrictionsTracker();
         private bool IsLoading = true;
         private bool IsSeedSpoiler = false;
         private string Spoiler;
         public static int CollectedCards = 0;
 
-        public readonly Dictionary<string, string> Rewards = new Dictionary<string, string>();
-        public readonly Dictionary<string, string> Restrictions = new Dictionary<string, string>();
-        public readonly Dictionary<string, string> NameMap = new Dictionary<string, string>();
-        public readonly Dictionary<string, string> NameMap2 = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> Rewards = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> Restrictions = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> NameMap = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> NameMap2 = new Dictionary<string, string>();
 
         public FrmMain()
         {
@@ -132,6 +132,19 @@ namespace RewardsRandoTracker
             else
             {
                 RestrictionsTracker.RewardUnlocked(Level, Reward);
+            }
+        }
+
+        private void SetRewardVisible(string Reward, bool Visible)
+        {
+            if (RestrictionsTracker.InvokeRequired)
+            {
+                Action a = delegate { SetRewardVisible(Reward, Visible); };
+                RestrictionsTracker.Invoke(a);
+            }
+            else
+            {
+                RestrictionsTracker.SetRewardVisible(Reward, Visible);
             }
         }
 
@@ -367,6 +380,7 @@ namespace RewardsRandoTracker
                             if (parts.Length == 2)
                             {
                                 Restrictions[parts[0]] = parts[1];
+                                SetRewardVisible(parts[0], true);
                                 Match m = r.Match(parts[1]);
                                 int Level = int.Parse(m.Groups[1].Value);
                                 int Mission = int.Parse(m.Groups[2].Value);
@@ -532,6 +546,7 @@ namespace RewardsRandoTracker
             RestrictionsTracker.Location = S.TrackerLocation;
             RestrictionsTracker.Size = S.TrackerSize;
             CBTrackerTopmost.Checked = S.TrackerTopmost;
+            RestrictionsTracker.ResetTracker();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -555,6 +570,14 @@ namespace RewardsRandoTracker
                 if (WindowState == FormWindowState.Normal)
                     S.Size = Size;
                 S.WindowState = WindowState;
+            }
+        }
+
+        private void BtnChooseRewards_Click(object sender, EventArgs e)
+        {
+            using (FrmChooseRewards frm = new FrmChooseRewards())
+            {
+                frm.ShowDialog();
             }
         }
     }

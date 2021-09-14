@@ -20,6 +20,8 @@ namespace RewardsRandoTracker
         private static readonly string LevelImageRoot = Path.Combine(ImageRoot, "Levels");
         private static readonly string RewardsImageRoot = Path.Combine(ImageRoot, "Rewards");
 
+        private readonly Dictionary<int, Panel> LevelPanels = new Dictionary<int, Panel>();
+        public readonly Dictionary<string, PictureBox> RewardPictureBoxes = new Dictionary<string, PictureBox>();
         private readonly Dictionary<string, Image> RewardImages = new Dictionary<string, Image>();
         private readonly Dictionary<string, Image> RewardImagesGreyscale = new Dictionary<string, Image>();
 
@@ -75,6 +77,14 @@ namespace RewardsRandoTracker
             PBL7.Image = Image.FromFile(Path.Combine(LevelImageRoot, "7.png"));
             PBCards.Image = Image.FromFile(Path.Combine(CardImageRoot, "Base.png"));
 
+            LevelPanels[1] = PnlUnlocked1;
+            LevelPanels[2] = PnlUnlocked2;
+            LevelPanels[3] = PnlUnlocked3;
+            LevelPanels[4] = PnlUnlocked4;
+            LevelPanels[5] = PnlUnlocked5;
+            LevelPanels[6] = PnlUnlocked6;
+            LevelPanels[7] = PnlUnlocked7;
+
             string[] rewardFiles = Directory.GetFiles(RewardsImageRoot, "*.png");
             for (var i = 0; i < rewardFiles.Length; i++)
             {
@@ -86,9 +96,11 @@ namespace RewardsRandoTracker
                     Name = fileName,
                     Image = RewardImagesGreyscale[fileName],
                     SizeMode = PictureBoxSizeMode.Zoom,
-                    Dock = DockStyle.Left
+                    Dock = DockStyle.Left,
+                    Visible = false
                 };
                 pb.SizeChanged += PB_SizeChanged;
+                RewardPictureBoxes[fileName] = pb;
                 PnlLocked.Controls.Add(pb);
                 double ratio = pb.Height / (pb.Image.Height * 1.0f);
                 pb.Width = (int)(pb.Image.Width * ratio);
@@ -97,128 +109,41 @@ namespace RewardsRandoTracker
 
         public void ResetTracker()
         {
-            foreach (Panel pnl in new Panel[]{ PnlUnlocked1, PnlUnlocked2, PnlUnlocked3, PnlUnlocked4, PnlUnlocked5, PnlUnlocked6, PnlUnlocked7})
+            foreach(KeyValuePair<string, PictureBox> kvp in RewardPictureBoxes)
             {
-                for (var i = pnl.Controls.Count - 1; i >= 0; i--)
-                {
-                    PictureBox pb = (PictureBox)pnl.Controls[i];
-                    pb.Image = RewardImagesGreyscale[pb.Name];
-                    pnl.Controls.Remove(pb);
-                    PnlLocked.Controls.Add(pb);
-                }
+                kvp.Value.Image = RewardImagesGreyscale[kvp.Key];
+                kvp.Value.Parent = PnlLocked;
+                kvp.Value.Visible = FrmMain.S.TrackerRewards.Contains(kvp.Key);
             }
             PBCards.Refresh();
         }
 
+        public void SetRewardVisible(string Reward, bool Visible)
+        {
+            if (!RewardPictureBoxes.ContainsKey(Reward))
+                return;
+            RewardPictureBoxes[Reward].Visible = Visible;
+        }
+
         public void RewardUnlocked(int Level, string Reward)
         {
-            PictureBox pb = null;
-            for (var i = 0; i < PnlLocked.Controls.Count; i++)
-            {
-                if (PnlLocked.Controls[i].Name == Reward)
-                {
-                    pb = (PictureBox)PnlLocked.Controls[i];
-                    break;
-                }
-            }
-            if (pb != null)
-            {
-                pb.Image = RewardImages[Reward];
-                PnlLocked.Controls.Remove(pb);
-                switch(Level)
-                {
-                    case 1:
-                        PnlUnlocked1.Controls.Add(pb);
-                        PnlUnlocked1.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 2:
-                        PnlUnlocked2.Controls.Add(pb);
-                        PnlUnlocked2.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 3:
-                        PnlUnlocked3.Controls.Add(pb);
-                        PnlUnlocked3.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 4:
-                        PnlUnlocked4.Controls.Add(pb);
-                        PnlUnlocked4.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 5:
-                        PnlUnlocked5.Controls.Add(pb);
-                        PnlUnlocked5.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 6:
-                        PnlUnlocked6.Controls.Add(pb);
-                        PnlUnlocked6.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 7:
-                        PnlUnlocked7.Controls.Add(pb);
-                        PnlUnlocked7.Controls.SetChildIndex(pb, 0);
-                        break;
-                }
-            }
-            else
-            {
-                foreach (Panel pnl in new Panel[] { PnlUnlocked1, PnlUnlocked2, PnlUnlocked3, PnlUnlocked4, PnlUnlocked5, PnlUnlocked6, PnlUnlocked7 })
-                {
-                    for (var i = pnl.Controls.Count - 1; i >= 0; i--)
-                    {
-                        pb = (PictureBox)pnl.Controls[i];
-                        if (pb.Name == Reward)
-                        {
-                            pb.Image = RewardImages[pb.Name];
-                            return;
-                        }
-                    }
-                }
-            }
+            if (!RewardPictureBoxes.ContainsKey(Reward))
+                return;
+            PictureBox pb = RewardPictureBoxes[Reward];
+            pb.Image = RewardImages[Reward];
+            pb.Parent = LevelPanels[Level];
+            LevelPanels[Level].Controls.SetChildIndex(pb, 0);
         }
 
         public void HintUnlocked(int Level, string Reward)
         {
-            PictureBox pb = null;
-            for (var i = 0; i < PnlLocked.Controls.Count; i++)
+            if (!RewardPictureBoxes.ContainsKey(Reward))
+                return;
+            PictureBox pb = RewardPictureBoxes[Reward];
+            if (pb.Parent != LevelPanels[Level])
             {
-                if (PnlLocked.Controls[i].Name == Reward)
-                {
-                    pb = (PictureBox)PnlLocked.Controls[i];
-                    break;
-                }
-            }
-            if (pb != null)
-            {
-                PnlLocked.Controls.Remove(pb);
-                switch (Level)
-                {
-                    case 1:
-                        PnlUnlocked1.Controls.Add(pb);
-                        PnlUnlocked1.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 2:
-                        PnlUnlocked2.Controls.Add(pb);
-                        PnlUnlocked2.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 3:
-                        PnlUnlocked3.Controls.Add(pb);
-                        PnlUnlocked3.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 4:
-                        PnlUnlocked4.Controls.Add(pb);
-                        PnlUnlocked4.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 5:
-                        PnlUnlocked5.Controls.Add(pb);
-                        PnlUnlocked5.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 6:
-                        PnlUnlocked6.Controls.Add(pb);
-                        PnlUnlocked6.Controls.SetChildIndex(pb, 0);
-                        break;
-                    case 7:
-                        PnlUnlocked7.Controls.Add(pb);
-                        PnlUnlocked7.Controls.SetChildIndex(pb, 0);
-                        break;
-                }
+                pb.Parent = LevelPanels[Level];
+                LevelPanels[Level].Controls.SetChildIndex(pb, 0);
             }
         }
 

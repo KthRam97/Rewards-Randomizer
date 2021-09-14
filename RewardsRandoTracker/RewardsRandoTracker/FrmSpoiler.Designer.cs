@@ -56,6 +56,7 @@ namespace RewardsRandoTracker
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmSpoiler";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Rewards Rando Tracker Spoiler";
             this.TopMost = true;
             this.ResumeLayout(false);

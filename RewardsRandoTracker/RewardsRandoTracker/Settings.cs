@@ -21,6 +21,7 @@ namespace RewardsRandoTracker
         public Point TrackerLocation { get; set; }
         public Size TrackerSize { get; set; }
         public bool TrackerTopmost { get; set; }
+        public List<string> TrackerRewards { get; set; }
 
         public static Settings Load(FrmMain frm)
         {
@@ -34,7 +35,10 @@ namespace RewardsRandoTracker
                         loadedSettings.Location = frm.Location;
 
                     if (loadedSettings.TrackerLocation.X == -32000 || loadedSettings.TrackerLocation.Y == -32000)
-                        loadedSettings.TrackerLocation = frm.RestrictionsTracker.Location;
+                        loadedSettings.TrackerLocation = FrmMain.RestrictionsTracker.Location;
+
+                    if (loadedSettings.TrackerRewards == null)
+                        loadedSettings.TrackerRewards = new List<string>();
 
                     return loadedSettings;
                 }
@@ -50,9 +54,10 @@ namespace RewardsRandoTracker
                 WindowState = frm.WindowState,
                 IncludeTimestamps = frm.CBTimestamps.Checked,
 
-                TrackerLocation = frm.RestrictionsTracker.Location,
-                TrackerSize = frm.RestrictionsTracker.Size,
+                TrackerLocation = FrmMain.RestrictionsTracker.Location,
+                TrackerSize = FrmMain.RestrictionsTracker.Size,
                 TrackerTopmost = frm.CBTrackerTopmost.Checked,
+                TrackerRewards = new List<string>(),
             };
             return newSettings;
         }

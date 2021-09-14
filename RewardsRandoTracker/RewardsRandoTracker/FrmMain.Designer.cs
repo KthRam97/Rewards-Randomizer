@@ -45,6 +45,7 @@ namespace RewardsRandoTracker
             this.LblLookup = new System.Windows.Forms.Label();
             this.PnlLayout = new System.Windows.Forms.TableLayoutPanel();
             this.PnlButtons = new System.Windows.Forms.Panel();
+            this.BtnChooseRewards = new System.Windows.Forms.Button();
             this.PnlLog = new System.Windows.Forms.Panel();
             this.PnlLayout.SuspendLayout();
             this.PnlButtons.SuspendLayout();
@@ -77,11 +78,11 @@ namespace RewardsRandoTracker
             // CBTimestamps
             // 
             this.CBTimestamps.AutoSize = true;
-            this.CBTimestamps.Location = new System.Drawing.Point(16, 237);
+            this.CBTimestamps.Location = new System.Drawing.Point(148, 237);
             this.CBTimestamps.Name = "CBTimestamps";
-            this.CBTimestamps.Size = new System.Drawing.Size(129, 17);
+            this.CBTimestamps.Size = new System.Drawing.Size(103, 17);
             this.CBTimestamps.TabIndex = 10;
-            this.CBTimestamps.Text = "Add timestamps to log";
+            this.CBTimestamps.Text = "Log Timestamps";
             this.CBTimestamps.UseVisualStyleBackColor = true;
             // 
             // BtnExport
@@ -133,11 +134,11 @@ namespace RewardsRandoTracker
             // CBTrackerTopmost
             // 
             this.CBTrackerTopmost.AutoSize = true;
-            this.CBTrackerTopmost.Location = new System.Drawing.Point(16, 214);
+            this.CBTrackerTopmost.Location = new System.Drawing.Point(16, 237);
             this.CBTrackerTopmost.Name = "CBTrackerTopmost";
-            this.CBTrackerTopmost.Size = new System.Drawing.Size(168, 17);
+            this.CBTrackerTopmost.Size = new System.Drawing.Size(107, 17);
             this.CBTrackerTopmost.TabIndex = 5;
-            this.CBTrackerTopmost.Text = "Make tracker window topmost";
+            this.CBTrackerTopmost.Text = "Tracker Topmost";
             this.CBTrackerTopmost.UseVisualStyleBackColor = true;
             this.CBTrackerTopmost.CheckedChanged += new System.EventHandler(this.CBTrackerTopmost_CheckedChanged);
             // 
@@ -214,6 +215,7 @@ namespace RewardsRandoTracker
             // 
             // PnlButtons
             // 
+            this.PnlButtons.Controls.Add(this.BtnChooseRewards);
             this.PnlButtons.Controls.Add(this.LblInfo);
             this.PnlButtons.Controls.Add(this.CBTimestamps);
             this.PnlButtons.Controls.Add(this.BtnExport);
@@ -231,6 +233,18 @@ namespace RewardsRandoTracker
             this.PnlButtons.Name = "PnlButtons";
             this.PnlButtons.Size = new System.Drawing.Size(259, 475);
             this.PnlButtons.TabIndex = 0;
+            // 
+            // BtnChooseRewards
+            // 
+            this.BtnChooseRewards.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.BtnChooseRewards.Location = new System.Drawing.Point(16, 213);
+            this.BtnChooseRewards.Name = "BtnChooseRewards";
+            this.BtnChooseRewards.Size = new System.Drawing.Size(235, 23);
+            this.BtnChooseRewards.TabIndex = 12;
+            this.BtnChooseRewards.Text = "Choose Tracker Rewards";
+            this.BtnChooseRewards.UseVisualStyleBackColor = true;
+            this.BtnChooseRewards.Click += new System.EventHandler(this.BtnChooseRewards_Click);
             // 
             // PnlLog
             // 
@@ -283,6 +297,7 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Panel PnlLog;
         public System.Windows.Forms.CheckBox CBTrackerTopmost;
         public System.Windows.Forms.CheckBox CBTimestamps;
+        private System.Windows.Forms.Button BtnChooseRewards;
     }
 }
 
