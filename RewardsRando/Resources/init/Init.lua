@@ -18,6 +18,8 @@ if Settings.RandomSettings then
 	
 	Settings.RandomBasePrice = math.random(2) == 1
 	
+	Settings.PayForUnlocks = math.random(2) == 1
+	
 	for i=1,7 do
 		Settings["CanGetMissionRewardsL" .. i] = math.random(2) == 1
 		
