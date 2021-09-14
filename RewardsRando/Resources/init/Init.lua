@@ -7,9 +7,11 @@ if Settings.RandomSettings then
 	
 	Settings.HintType = math.random(3)
 	
+	Settings.RandomCardLocations = math.random(2) == 1
+	
 	Settings.RemoveUnluckyCards = math.random(2) == 1
 	
-	Settings.RandomCardLocations = math.random(2) == 1
+	Settings.HintHints = math.random(2) == 1
 	
 	Settings.BanCars = math.random(2) == 1
 	Settings.BannedCars = "fone_v,smith_v,cHears" --TODO: Randomise
@@ -41,9 +43,17 @@ for k in pairs(Settings) do
 	SettingKeys[#SettingKeys + 1] = k
 end
 table.sort(SettingKeys)
+local SettingsHashTbl = {}
+local OmittedSettings = {
+	["HideSeed"]=true
+}
 for i=1,#SettingKeys do
 	Seed.AddSpoiler(SettingKeys[i] .. " = " .. tostring(Settings[SettingKeys[i]]))
+	if not OmittedSettings[SettingKeys[i]] then
+		SettingsHashTbl[#SettingsHashTbl + 1] = SettingKeys[#SettingsHashTbl + 1] .. "=" .. tostring(Settings[SettingKeys[i]])
+	end
 end
+SettingsHash = sha1.hex(table.concat(SettingsHashTbl, "\n")):gsub("(.)...", "%1")
 Seed.AddSpoiler("")
 
 CompletedMissions = {}

@@ -210,7 +210,7 @@ function Seed.CheckSoftlock()
 end
 
 function Seed.Init()
-	if not Settings.FixedSeed or not Settings.Seed or Settings.Seed == "" then
+	if not Settings.StaticSeed or not Settings.Seed or Settings.Seed == "" then
 		local number = math.random(math.maxinteger)
 		Settings.Seed = Seed.Base64(string.pack("j", number))
 		Seed.SeedRaw = number

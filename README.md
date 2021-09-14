@@ -36,8 +36,8 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
   6) Click "Show Restrictions Tracker" to show the automated tracker window.
 
 ## Seed Settings
-- Hash Seed (Default: Unticked): If ticked, the on-screen seed in both the main menu and pause menu will be a hash of the actual seed. Useful for streamers to avoid viewers spoiling the seed for you.
-- Fixed Seed (Default: Unticked): If ticked, the randomisation will use the custom seed in the Seed textbox. Normally used for races. Leaving it unticked will randomise the seed.
+- Hide Seed (Default: Unticked): If ticked, the on-screen seed in both the main menu and pause menu will be hidden. Useful for streamers to avoid viewers spoiling the seed for you.
+- Static Seed (Default: Unticked): If ticked, the randomisation will use the custom seed in the Seed textbox. Normally used for races. Leaving it unticked will randomise the seed.
   - Seed (Max Length: 11 characters): Lets you set the base seed for randomisation. Anyone using the same seed will get the same reward order (if all settings match).
 
 ## Mission Order Settings
@@ -53,8 +53,9 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
   - None: The game will contain no hints, and you will have to find all the required rewards on your own.
   - Collect X Cards: Every X cards you collect, you will get a hint that will give you the level one of the required rewards can be found in. X = Card Count (49) divided by Required Reward Count (13 by default), rounded down. Defaults to 3.
   - Randomly Dispersed: Each required reward will be randomly assigned to one of the available 49 collector cards. The hint will contain the level the reward is available in. You will have to check the card text to see the hint.
-- Remove Unlucky Cards (Default: Unticked): If ticked, collector cards without a reward attached in "Randomly Dispersed" hint mode will be removed from the game.
 - Random Card Locations (Default: Unticked): If ticked, collector cards locations will be randomised within each level.
+- Remove Unlucky Cards (Default: Unticked): If ticked, collector cards without a reward attached in "Randomly Dispersed" hint mode will be removed from the game.
+- Add Hint Hints (Default: Unticked): If ticked, after completing a certain number of tasks in "Randomly Dispersed" hint mode, you will receive a hint where a Hint Card can be found.
 
 ## Car Modifier Settings
 - Ban Cars (Default: Unticked): If ticked, the cars listed in "Banned Cars" will be removed from the reward pool.
