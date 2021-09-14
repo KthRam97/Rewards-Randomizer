@@ -58,7 +58,7 @@ namespace RewardsRandoTracker
             this.LBLog.FormattingEnabled = true;
             this.LBLog.Location = new System.Drawing.Point(0, 0);
             this.LBLog.Name = "LBLog";
-            this.LBLog.Size = new System.Drawing.Size(525, 442);
+            this.LBLog.Size = new System.Drawing.Size(525, 471);
             this.LBLog.TabIndex = 1;
             this.LBLog.KeyDown += new System.Windows.Forms.KeyEventHandler(this.LBLog_KeyDown);
             // 
@@ -70,7 +70,7 @@ namespace RewardsRandoTracker
             this.LblInfo.ForeColor = System.Drawing.Color.Red;
             this.LblInfo.Location = new System.Drawing.Point(13, 272);
             this.LblInfo.Name = "LblInfo";
-            this.LblInfo.Size = new System.Drawing.Size(238, 171);
+            this.LblInfo.Size = new System.Drawing.Size(238, 200);
             this.LblInfo.TabIndex = 11;
             this.LblInfo.Text = resources.GetString("LblInfo.Text");
             // 
@@ -209,7 +209,7 @@ namespace RewardsRandoTracker
             this.PnlLayout.Name = "PnlLayout";
             this.PnlLayout.RowCount = 1;
             this.PnlLayout.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.PnlLayout.Size = new System.Drawing.Size(800, 452);
+            this.PnlLayout.Size = new System.Drawing.Size(800, 481);
             this.PnlLayout.TabIndex = 3;
             // 
             // PnlButtons
@@ -229,7 +229,7 @@ namespace RewardsRandoTracker
             this.PnlButtons.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PnlButtons.Location = new System.Drawing.Point(3, 3);
             this.PnlButtons.Name = "PnlButtons";
-            this.PnlButtons.Size = new System.Drawing.Size(259, 446);
+            this.PnlButtons.Size = new System.Drawing.Size(259, 475);
             this.PnlButtons.TabIndex = 0;
             // 
             // PnlLog
@@ -240,20 +240,24 @@ namespace RewardsRandoTracker
             this.PnlLog.Dock = System.Windows.Forms.DockStyle.Fill;
             this.PnlLog.Location = new System.Drawing.Point(268, 3);
             this.PnlLog.Name = "PnlLog";
-            this.PnlLog.Size = new System.Drawing.Size(529, 446);
+            this.PnlLog.Size = new System.Drawing.Size(529, 475);
             this.PnlLog.TabIndex = 1;
             // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 452);
+            this.ClientSize = new System.Drawing.Size(800, 481);
             this.Controls.Add(this.PnlLayout);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(320, 491);
+            this.MinimumSize = new System.Drawing.Size(320, 520);
             this.Name = "FrmMain";
             this.Text = "Rewards Rando Tracker";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Shown += new System.EventHandler(this.FrmMain_Shown);
+            this.LocationChanged += new System.EventHandler(this.FrmMain_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.FrmMain_SizeChanged);
             this.PnlLayout.ResumeLayout(false);
             this.PnlButtons.ResumeLayout(false);
             this.PnlButtons.PerformLayout();
@@ -269,16 +273,16 @@ namespace RewardsRandoTracker
         private System.Windows.Forms.Button BtnLookup;
         private System.Windows.Forms.Button BtnToggleTracker;
         private System.Windows.Forms.Button BtnShowSpoiler;
-        private System.Windows.Forms.CheckBox CBTrackerTopmost;
         private System.Windows.Forms.Label LblCards;
         private System.Windows.Forms.Button BtnStart;
         private System.Windows.Forms.Button BtnStop;
         private System.Windows.Forms.Button BtnExport;
-        private System.Windows.Forms.CheckBox CBTimestamps;
         private System.Windows.Forms.Label LblInfo;
         private System.Windows.Forms.TableLayoutPanel PnlLayout;
         private System.Windows.Forms.Panel PnlButtons;
         private System.Windows.Forms.Panel PnlLog;
+        public System.Windows.Forms.CheckBox CBTrackerTopmost;
+        public System.Windows.Forms.CheckBox CBTimestamps;
     }
 }
 

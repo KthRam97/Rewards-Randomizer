@@ -252,5 +252,22 @@ namespace RewardsRandoTracker
                 e.Graphics.FillPath(Brushes.White, p);
             }
         }
+
+        private void FrmRestrictionsTracker_LocationChanged(object sender, EventArgs e)
+        {
+            if (FrmMain.S != null && WindowState == FormWindowState.Normal)
+            {
+                FrmMain.S.TrackerLocation = Location;
+            }
+        }
+
+        private void FrmRestrictionsTracker_SizeChanged(object sender, EventArgs e)
+        {
+            if (FrmMain.S != null)
+            {
+                if (WindowState == FormWindowState.Normal)
+                    FrmMain.S.TrackerSize = Size;
+            }
+        }
     }
 }

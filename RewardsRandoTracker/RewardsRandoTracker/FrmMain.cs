@@ -15,10 +15,12 @@ namespace RewardsRandoTracker
 {
     public partial class FrmMain : Form
     {
+        public static Settings S = null;
+
         private static bool Tracking = false;
         private static string LogFile;
 
-        private readonly FrmRestrictionsTracker restrictionsTracker = new FrmRestrictionsTracker();
+        public readonly FrmRestrictionsTracker RestrictionsTracker = new FrmRestrictionsTracker();
         private bool IsLoading = true;
         private bool IsSeedSpoiler = false;
         private string Spoiler;
@@ -109,53 +111,53 @@ namespace RewardsRandoTracker
 
         private void ResetTracker()
         {
-            if (restrictionsTracker.InvokeRequired)
+            if (RestrictionsTracker.InvokeRequired)
             {
                 Action a = delegate { ResetTracker(); };
-                restrictionsTracker.Invoke(a);
+                RestrictionsTracker.Invoke(a);
             }
             else
             {
-                restrictionsTracker.ResetTracker();
+                RestrictionsTracker.ResetTracker();
             }
         }
 
         private void TrackReward(int Level, string Reward)
         {
-            if (restrictionsTracker.InvokeRequired)
+            if (RestrictionsTracker.InvokeRequired)
             {
                 Action a = delegate { TrackReward(Level, Reward); };
-                restrictionsTracker.Invoke(a);
+                RestrictionsTracker.Invoke(a);
             }
             else
             {
-                restrictionsTracker.RewardUnlocked(Level, Reward);
+                RestrictionsTracker.RewardUnlocked(Level, Reward);
             }
         }
 
         private void TrackHint(int Level, string Restriction)
         {
-            if (restrictionsTracker.InvokeRequired)
+            if (RestrictionsTracker.InvokeRequired)
             {
                 Action a = delegate { TrackHint(Level, Restriction); };
-                restrictionsTracker.Invoke(a);
+                RestrictionsTracker.Invoke(a);
             }
             else
             {
-                restrictionsTracker.HintUnlocked(Level, Restriction);
+                RestrictionsTracker.HintUnlocked(Level, Restriction);
             }
         }
 
         private void TrackCard()
         {
-            if (restrictionsTracker.InvokeRequired)
+            if (RestrictionsTracker.InvokeRequired)
             {
                 Action a = delegate { TrackCard(); };
-                restrictionsTracker.Invoke(a);
+                RestrictionsTracker.Invoke(a);
             }
             else
             {
-                restrictionsTracker.CardCollected();
+                RestrictionsTracker.CardCollected();
             }
         }
 
@@ -418,8 +420,8 @@ namespace RewardsRandoTracker
         private void Form1_Load(object sender, EventArgs e)
         {
             Text = Text + " v" + Program.Version;
-            restrictionsTracker.Show();
-            restrictionsTracker.Hide();
+            RestrictionsTracker.Show();
+            RestrictionsTracker.Hide();
             ResetLookup();
         }
 
@@ -458,12 +460,12 @@ namespace RewardsRandoTracker
 
         private void BtnToggleTracker_Click(object sender, EventArgs e)
         {
-            restrictionsTracker.Visible = !restrictionsTracker.Visible;
+            RestrictionsTracker.Visible = !RestrictionsTracker.Visible;
         }
 
         private void CBTrackerTopmost_CheckedChanged(object sender, EventArgs e)
         {
-            restrictionsTracker.TopMost = CBTrackerTopmost.Checked;
+            RestrictionsTracker.TopMost = CBTrackerTopmost.Checked;
         }
 
         private void BtnStart_Click(object sender, EventArgs e)
@@ -516,6 +518,43 @@ namespace RewardsRandoTracker
             if (LBLog.SelectedIndex >= 0 && e.Control && e.KeyCode == Keys.C)
             {
                 Clipboard.SetText(LBLog.SelectedItem.ToString());
+            }
+        }
+
+        private void FrmMain_Shown(object sender, EventArgs e)
+        {
+            S = Settings.Load(this);
+            Location = S.Location;
+            Size = S.Size;
+            WindowState = S.WindowState;
+            CBTimestamps.Checked = S.IncludeTimestamps;
+
+            RestrictionsTracker.Location = S.TrackerLocation;
+            RestrictionsTracker.Size = S.TrackerSize;
+            CBTrackerTopmost.Checked = S.TrackerTopmost;
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (S != null)
+                S.Save();
+        }
+
+        private void FrmMain_LocationChanged(object sender, EventArgs e)
+        {
+            if (S != null && WindowState == FormWindowState.Normal)
+            {
+                S.Location = Location;
+            }
+        }
+
+        private void FrmMain_SizeChanged(object sender, EventArgs e)
+        {
+            if (S != null)
+            {
+                if (WindowState == FormWindowState.Normal)
+                    S.Size = Size;
+                S.WindowState = WindowState;
             }
         }
     }

@@ -277,6 +277,8 @@ namespace RewardsRandoTracker
             this.Text = "Restrictions Tracker";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmRestrictionsTracker_FormClosing);
             this.Load += new System.EventHandler(this.FrmRestrictionsTracker_Load);
+            this.LocationChanged += new System.EventHandler(this.FrmRestrictionsTracker_LocationChanged);
+            this.SizeChanged += new System.EventHandler(this.FrmRestrictionsTracker_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.PBL1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.PBL3)).EndInit();
