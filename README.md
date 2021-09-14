@@ -63,6 +63,7 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
 ## Shop Price Settings
 - Price Multiplier (Default: 2.5): Sets the price multplier to the NPC and Gil car shops (Min: 0.1, Max: 10.0).
 - Random Base Price (Default: Unticked): If ticked, this randomises the base price prior to the multiplier to a value between 100 and 1000.
+- Pay for Unlocks (Default: Unticked): If ticked, unlocks will no longer be free in the shops, and instead be 100 \* Price Multiplier. If Random Base Price is enabled, the base will randomise from 100-250, still with the Price Multiplier applied. The same value will be used for all unlocks.
 
 ## Miscellaneous Settings
 - Disable In-game Popups (Default: Unticked): If ticked, the in-game popups for reward unlocks or hints will be removed. You will still be able to see the information in console.

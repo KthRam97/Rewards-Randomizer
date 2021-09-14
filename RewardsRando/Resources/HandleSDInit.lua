@@ -51,10 +51,10 @@ if CompletedLevel and CompletedMission then
 		MFK = MFK or MFKLexer.Lexer:Parse(File)
 		if Costumes[Reward] then
 			print("UNLOCK|COSTUME|"..CompletedLevel.."|"..CompletedMission.."|"..RewardNames[Reward])
-			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], 0, "interior"})
+			MFK:InsertFunction(1, "BindReward", {Reward, "art\\chars\\"..Reward:sub(1,6).."_m.p3d", "skin", "forsale", Costumes[Reward], UnlockPrice, "interior"})
 		elseif Cars[Reward] then
 			print("UNLOCK|CAR|"..CompletedLevel.."|"..CompletedMission.."|"..RewardNames[Reward])
-			MFK:InsertFunction(1, "BindReward", {Reward, "art\\cars\\"..Reward..".p3d", "car", "forsale", CompletedLevel, 0, "simpson"})
+			MFK:InsertFunction(1, "BindReward", {Reward, "art\\cars\\"..Reward..".p3d", "car", "forsale", CompletedLevel, UnlockPrice, "simpson"})
 		elseif type(Reward) == "number" then
 			print("UNLOCK|COINS|"..CompletedLevel.."|"..CompletedMission.."|"..Reward)
 			AddCoins = Reward

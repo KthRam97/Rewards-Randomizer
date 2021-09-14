@@ -84,3 +84,13 @@ else
 		MissionOrder[i] = {1,2,3,4,5,6,7}
 	end
 end
+
+UnlockPrice = 0
+if Settings.PayForUnlocks then
+	if Settings.RandomBasePrice then
+		UnlockPrice = math.random(100, 250)
+	else
+		UnlockPrice = 100
+	end
+	UnlockPrice = UnlockPrice * Settings.PriceMultiplier
+end
