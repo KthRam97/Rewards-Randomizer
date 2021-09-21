@@ -122,16 +122,16 @@ namespace RewardsRandoTracker
             }
         }
 
-        private void TrackReward(int Level, string Reward)
+        private void TrackReward(int Level, string Reward, bool Purchasable = false)
         {
             if (RestrictionsTracker.InvokeRequired)
             {
-                Action a = delegate { TrackReward(Level, Reward); };
+                Action a = delegate { TrackReward(Level, Reward, Purchasable); };
                 RestrictionsTracker.Invoke(a);
             }
             else
             {
-                RestrictionsTracker.RewardUnlocked(Level, Reward);
+                RestrictionsTracker.RewardUnlocked(Level, Reward, Purchasable);
             }
         }
 
@@ -319,17 +319,21 @@ namespace RewardsRandoTracker
             }
         }
 
+        private enum SpoilerMode
+        {
+            None,
+            Settings,
+            CardLocators,
+            Restrictions,
+            Rewards,
+            HintCards
+        }
 
-
+        private static readonly Regex LevelMission = new Regex("L([0-9])M([0-9]+)");
         private void ProcessSpoiler(string Spoiler)
         {
             string[] lines = Spoiler.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-            bool settings = false;
-            bool cardLocators = false;
-            bool restrictions = false;
-            bool rewards = false;
-            bool hintCards = false;
-            Regex r = new Regex("L([0-9])M([0-9]+)");
+            SpoilerMode mode = SpoilerMode.None;
             List<int> restrictionLevels = new List<int>();
             List<string> restrictionNames = new List<string>();
             foreach (string line in lines)
@@ -337,76 +341,56 @@ namespace RewardsRandoTracker
                 switch (line)
                 {
                     case "SETTINGS:":
-                        settings = true;
-                        cardLocators = false;
-                        restrictions = false;
-                        rewards = false;
-                        hintCards = false;
+                        mode = SpoilerMode.Settings;
                         break;
                     case "CARD LOCATORS:":
-                        settings = false;
-                        cardLocators = true;
-                        restrictions = false;
-                        rewards = false;
-                        hintCards = false;
+                        mode = SpoilerMode.CardLocators;
                         break;
                     case "RESTRICTIONS:":
-                        settings = false;
-                        cardLocators = false;
-                        restrictions = true;
-                        rewards = false;
-                        hintCards = false;
+                        mode = SpoilerMode.Restrictions;
                         restrictionLevels.Clear();
                         restrictionNames.Clear();
                         break;
                     case "REWARDS:":
-                        settings = false;
-                        cardLocators = false;
-                        restrictions = false;
-                        rewards = true;
-                        hintCards = false;
+                        mode = SpoilerMode.Rewards;
                         break;
                     case "HINT CARDS:":
-                        settings = false;
-                        cardLocators = false;
-                        restrictions = false;
-                        rewards = false;
-                        hintCards = true;
+                        mode = SpoilerMode.HintCards;
                         break;
                     default:
-                        if (restrictions)
+                        string[] parts = line.Split('|');
+                        switch (mode)
                         {
-                            string[] parts = line.Split('|');
-                            if (parts.Length == 2)
-                            {
-                                Restrictions[parts[0]] = parts[1];
-                                SetRewardVisible(parts[0], true);
-                                Match m = r.Match(parts[1]);
-                                int Level = int.Parse(m.Groups[1].Value);
-                                int Mission = int.Parse(m.Groups[2].Value);
-                                if (Mission > 11 || (Level == 7 && Mission == 7))
+                            case SpoilerMode.Restrictions:
+                                if (parts.Length == 2)
                                 {
-                                    restrictionLevels.Add(Level);
-                                    restrictionNames.Add(parts[0]);
+                                    Restrictions[parts[0]] = parts[1];
+                                    SetRewardVisible(parts[0], true);
+                                    Match m = LevelMission.Match(parts[1]);
+                                    int Level = int.Parse(m.Groups[1].Value);
+                                    int Mission = int.Parse(m.Groups[2].Value);
+                                    if (Mission > 11 || (Level == 7 && Mission == 7))
+                                    {
+                                        restrictionLevels.Add(Level);
+                                        restrictionNames.Add(parts[0]);
+                                    }
                                 }
-                            }
-                        }
-                        else if (rewards)
-                        {
-                            string[] parts = line.Split('|');
-                            if (parts.Length == 3)
-                            {
-                                Rewards[parts[2]] = parts[0].Replace("M8", "SR1").Replace("M9", "SR2").Replace("M10", "SR3").Replace("M11", "BM").Replace("M12", " NPC").Replace("M13", " Gil").Replace("M14", " Gil");
-                                NameMap[parts[2]] = parts[1];
-                                NameMap2[parts[1]] = parts[2];
-                            }
+                                break;
+                            case SpoilerMode.Rewards:
+                                if (parts.Length == 3)
+                                {
+                                    Rewards[parts[2]] = parts[0].Replace("M8", "SR1").Replace("M9", "SR2").Replace("M10", "SR3").Replace("M11", "BM").Replace("M12", " NPC").Replace("M13", " Gil").Replace("M14", " Gil");
+                                    NameMap[parts[2]] = parts[1];
+                                    NameMap2[parts[1]] = parts[2];
+                                }
+                                break;
                         }
                         break;
                 }
             }
             for (int i = 0; i < restrictionLevels.Count; i++)
             {
-                TrackReward(restrictionLevels[i], restrictionNames[i]);
+                TrackReward(restrictionLevels[i], restrictionNames[i], true);
             }
             PopulateLookup();
         }

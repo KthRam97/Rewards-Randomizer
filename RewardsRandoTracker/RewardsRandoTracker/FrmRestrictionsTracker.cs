@@ -19,11 +19,14 @@ namespace RewardsRandoTracker
         private static readonly string CardImageRoot = Path.Combine(ImageRoot, "Cards");
         private static readonly string LevelImageRoot = Path.Combine(ImageRoot, "Levels");
         private static readonly string RewardsImageRoot = Path.Combine(ImageRoot, "Rewards");
+        private static readonly string OverlaysImageRoot = Path.Combine(ImageRoot, "Overlays");
+        private static readonly Image DollarOverlay = Image.FromFile(Path.Combine(OverlaysImageRoot, "dollar.png"));
 
-        private readonly Dictionary<int, Panel> LevelPanels = new Dictionary<int, Panel>();
         public readonly Dictionary<string, PictureBox> RewardPictureBoxes = new Dictionary<string, PictureBox>();
         private readonly Dictionary<string, Image> RewardImages = new Dictionary<string, Image>();
+        private readonly Dictionary<string, Image> RewardImagesPurchasable = new Dictionary<string, Image>();
         private readonly Dictionary<string, Image> RewardImagesGreyscale = new Dictionary<string, Image>();
+        private readonly Dictionary<int, Panel> LevelPanels = new Dictionary<int, Panel>();
 
         public FrmRestrictionsTracker()
         {
@@ -33,14 +36,10 @@ namespace RewardsRandoTracker
         //Stolen from: https://stackoverflow.com/questions/2265910/convert-an-image-to-grayscale
         private static Bitmap MakeGrayscale3(Bitmap original)
         {
-            //create a blank bitmap the same size as original
             Bitmap newBitmap = new Bitmap(original.Width, original.Height);
 
-            //get a graphics object from the new image
             using (Graphics g = Graphics.FromImage(newBitmap))
             {
-
-                //create the grayscale ColorMatrix
                 ColorMatrix colorMatrix = new ColorMatrix(
                     new float[][]
                     {
@@ -52,17 +51,30 @@ namespace RewardsRandoTracker
                     }
                 );
 
-                //create some image attributes
                 using (ImageAttributes attributes = new ImageAttributes())
                 {
-                    //set the color matrix attribute
                     attributes.SetColorMatrix(colorMatrix);
-
-                    //draw the original image on the new image
-                    //using the grayscale color matrix
                     g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height), 0, 0, original.Width, original.Height, GraphicsUnit.Pixel, attributes);
                 }
             }
+            return newBitmap;
+        }
+
+        private static Bitmap AddDollar(Bitmap original)
+        {
+            Bitmap newBitmap = new Bitmap(original.Width, original.Height);
+
+            using (Graphics g = Graphics.FromImage(newBitmap))
+            {
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.DrawImage(original, new Rectangle(0, 0, original.Width, original.Height));
+                int height = original.Height;
+                float ratio = DollarOverlay.Height / (height * 1.0f);
+                int width = (int)(DollarOverlay.Width / ratio);
+                g.DrawImage(DollarOverlay, new Rectangle(original.Width / 2 - width / 2, original.Height / 2 - height/ 2, width, height));
+            }
+
             return newBitmap;
         }
 
@@ -90,6 +102,7 @@ namespace RewardsRandoTracker
             {
                 string fileName = Path.GetFileNameWithoutExtension(rewardFiles[i]);
                 RewardImages[fileName] = Image.FromFile(rewardFiles[i]);
+                RewardImagesPurchasable[fileName] = AddDollar(new Bitmap(RewardImages[fileName]));
                 RewardImagesGreyscale[fileName] = MakeGrayscale3(new Bitmap(RewardImages[fileName]));
                 PictureBox pb = new PictureBox
                 {
@@ -97,7 +110,8 @@ namespace RewardsRandoTracker
                     Image = RewardImagesGreyscale[fileName],
                     SizeMode = PictureBoxSizeMode.Zoom,
                     Dock = DockStyle.Left,
-                    Visible = false
+                    Visible = false,
+                    BackgroundImageLayout = ImageLayout.Zoom
                 };
                 pb.SizeChanged += PB_SizeChanged;
                 RewardPictureBoxes[fileName] = pb;
@@ -111,6 +125,7 @@ namespace RewardsRandoTracker
         {
             foreach(KeyValuePair<string, PictureBox> kvp in RewardPictureBoxes)
             {
+                kvp.Value.BackColor = Color.Transparent;
                 kvp.Value.Image = RewardImagesGreyscale[kvp.Key];
                 kvp.Value.Parent = PnlLocked;
                 kvp.Value.Visible = FrmMain.S.TrackerRewards.Contains(kvp.Key);
@@ -125,12 +140,15 @@ namespace RewardsRandoTracker
             RewardPictureBoxes[Reward].Visible = Visible;
         }
 
-        public void RewardUnlocked(int Level, string Reward)
+        public void RewardUnlocked(int Level, string Reward, bool Purchasable = false)
         {
             if (!RewardPictureBoxes.ContainsKey(Reward))
                 return;
             PictureBox pb = RewardPictureBoxes[Reward];
-            pb.Image = RewardImages[Reward];
+            if (Purchasable)
+                pb.Image = RewardImagesPurchasable[Reward];
+            else
+                pb.Image = RewardImages[Reward];
             pb.Parent = LevelPanels[Level];
             LevelPanels[Level].Controls.SetChildIndex(pb, 0);
         }
