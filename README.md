@@ -36,6 +36,15 @@ A Simpsons: Hit &amp; Run Rewards Randomizer inspired by KH2 Rando.
   5) (Optional) Click "Choose Tracker Rewards" and tick any items you'd like to be tracked when you collect them
   6) In the window that opens, browse and find the correct log file. Depending on your "Console and Logging" settings, it will either be a file called "Log.txt" in the directory that opens, or the latest file in the "Logs" directory.
   7) Click "Show Restrictions Tracker" to show the automated tracker window.
+- A PresetEditor program that lets you customise presets for settings to quick change between different settings. The steps for setup are:
+  1) Open Lucas' Simpsons Hit & Run Mod Launcher and Click Open -> Saved Games (Mod Launcher)
+  2) Create a new folder called "RewardsRando" in this location
+  3) Open the PresetEditor and click the "Load" button
+  4) Navigate to the folder you created in Step 2 (it should jump there by default) and click "Select Folder"
+  5) Click the dropdown box next to "Current Settings" to choose a preset to edit
+  6) Edit your preset settings as you would in the Mod Launcher and give it a name under "Preset Name"
+  7) Click "Save" to save your new preset in the same folder as before
+  8) Under Preset Settings in the Mod Launcher, tick which preset you just saved to load those settings in Rewards Rando
 
 ## Seed Settings
 - Hide Seed (Default: Unticked): If ticked, the on-screen seed in both the main menu and pause menu will be hidden. Useful for streamers to avoid viewers spoiling the seed for you.
@@ -80,7 +89,6 @@ Lets you set your own forced purchaseables for each mission.
 - Multiple forced purchasables can be added for a single mission provided they are separated by commas and no spaces.
 - Each forced purchaseable must use the ingame code for the item. These are listed here:
 https://docs.google.com/document/d/12CfjZz_jJPPA1jTHEURepX-O2SyTu_7a34ZBJg5IrQ0/edit?usp=sharing
-
 
 ## Reward Options
 Lets you the ability to disable certain places from granting rewards.
