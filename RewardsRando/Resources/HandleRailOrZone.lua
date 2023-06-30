@@ -1,7 +1,7 @@
 if Settings.RandomCardLocations or Settings.RemoveUnluckyCards then
 	local Path = GetPath()
 	local GamePath = GetGamePath(Path)
-	
+
 	local P3DFile = P3D.P3DChunk:new{Raw = ReadFile(GamePath)}
 	local removed = false
 	for idx in P3DFile:GetChunkIndexes(P3D.Identifiers.Locator) do

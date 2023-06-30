@@ -13,19 +13,19 @@ local RemoveFrontWheels = {
 local function RemoveProps(P3DFile, PropNames)
 	local CompositeDrawableIDX = P3DFile:GetChunkIndex(P3D.Identifiers.Composite_Drawable)
 	local CompositeDrawableChunk = P3D.CompositeDrawableP3DChunk:new{Raw = P3DFile:GetChunkAtIndex(CompositeDrawableIDX)}
-	
+
 	local CompositeDrawablePropListIDX = CompositeDrawableChunk:GetChunkIndex(P3D.Identifiers.Composite_Drawable_Prop_List)
 	local CompositeDrawablePropListChunk = P3D.CompositeDrawablePropListP3DChunk:new{Raw = CompositeDrawableChunk:GetChunkAtIndex(CompositeDrawablePropListIDX)}
-	
+
 	for idx in CompositeDrawablePropListChunk:GetChunkIndexes(P3D.Identifiers.Composite_Drawable_Prop) do
 		local CompositeDrawablePropChunk = P3D.CompositeDrawablePropP3DChunk:new{Raw = CompositeDrawablePropListChunk:GetChunkAtIndex(idx)}
 		if PropNames[P3D.CleanP3DString(CompositeDrawablePropChunk.Name)] then
 			CompositeDrawablePropListChunk:RemoveChunkAtIndex(idx)
 		end
 	end
-	
+
 	CompositeDrawableChunk:SetChunkAtIndex(CompositeDrawablePropListIDX, CompositeDrawablePropListChunk:Output())
-	
+
 	P3DFile:SetChunkAtIndex(CompositeDrawableIDX, CompositeDrawableChunk:Output())
 end
 

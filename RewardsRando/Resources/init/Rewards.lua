@@ -17,7 +17,7 @@ local BibleChunk = P3D.FrontendTextBibleP3DChunk:new{Raw = TextBibleP3D:GetChunk
 local LanguageChunk
 for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 	local Chunk = P3D.FrontendLanguageP3DChunk:new{Raw = BibleChunk:GetChunkAtIndex(idx)}
-	
+
 	if Chunk.Language == GetGameLanguage() then
 		LanguageChunk = Chunk
 		break
@@ -59,11 +59,27 @@ local BannedCars = {
 	["cCellD"] = true,
 	["sedanB"] = true,
 }
+
+BannedCarCount=6
 if Settings.BanCars and Settings.BannedCars and Settings.BannedCars:len() > 0 then
 	for BannedCar in Settings.BannedCars:gmatch("[^,]+") do
+		BannedCarCount = BannedCarCount + 1
 		BannedCars[BannedCar] = true
 	end
 end
+
+if Settings.Bingo then
+	if BannedCarCount < 12 then
+		extra_bans = {"cPolice", "icecream", "cCube", "compactA", "glastruc", "minivanA"}
+		i=1
+		while BannedCarCount < 12 do
+			BannedCars[extra_bans[i]] = true
+			BannedCarCount = BannedCarCount + 1
+			i = i + 1
+		end
+	end
+end
+
 local tmp = {}
 for k,v in pairs(BannedCars) do
 	if v then tmp[#tmp +1] = k end

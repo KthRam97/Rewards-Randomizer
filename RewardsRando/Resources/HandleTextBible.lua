@@ -74,7 +74,7 @@ if GetGameLanguage then
 end
 for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 	local LanguageChunk = P3D.FrontendLanguageP3DChunk:new{Raw = BibleChunk:GetChunkAtIndex(idx)}
-	
+
 	if lang == nil or LanguageChunk.Language == lang then
 		LanguageChunk:AddValue("RandoInfo", RandoInfo)
 		LanguageChunk:AddValue("RandoPauseInfo", RandoPauseInfo)
@@ -88,9 +88,9 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				MissionTitle[i][j] = LanguageChunk:GetValueFromName("MISSION_TITLE_L"..i.."_M"..j)
 			end
 		end
-		
+
 		LanguageChunk:SetValue("MISSION_TITLE_L1_M0", ModTitle .. " v" .. ModVersion)
-		
+
 		if Settings.HintType == 3 then
 			LanguageChunk:SetValue("CARD_GET", "HINT CARD!")
 			local Hints = {}
@@ -100,7 +100,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 					AvailableHints[#AvailableHints + 1] = string.format("%.2i", i - 1)
 				end
 			end
-			
+
 			Seed.AddSpoiler("HINT CARDS:")
 			for i=1,#RestrictionNames do
 				local HintIdx = math.random(#AvailableHints)
@@ -131,7 +131,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				UnluckyCards[Level] = UnluckyCards[Level] or {}
 				UnluckyCards[Level][Card] = true
 			end
-			
+
 			if Settings.RandomCardLocations and Settings.RemoveUnluckyCards then
 				for i=1,7 do
 					local LevelP3DFile = P3D.P3DChunk:new{Raw = Cache["Level"..i]}
@@ -157,7 +157,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				end
 			end
 		end
-		
+
 		local InGameIdx = 19
 		for i=1,#Rewards do
 			InGameIdx = InGameIdx + 1
@@ -168,7 +168,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, "New reward unlocked:\n" .. RewardNames[Rewards[i]])
 			end
 		end
-		
+
 		local BMIdx = 12
 		for i=1,7 do
 			local Reward = MissionRewards[i][11]
@@ -182,7 +182,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			end
 			BMIdx = BMIdx + 1
 		end
-		
+
 		CardsPerHint = math.floor(49 / #RestrictionNames)
 		for i=1,#RestrictionNames do
 			local RestrictionIdx = math.random(#RestrictionNames)
@@ -205,21 +205,32 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 			LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, CardHintInfo[i][1])
 			CardHints[i] = {InGameIdx, CardHintInfo[i][2], CardHintInfo[i][3]}
 		end
-		
+
 		local ObjectiveIdx = 299
 		for i=1,7 do
 			for j=1,7 do
 				if CustomRestrictions[i][j] then
-					InGameIdx = InGameIdx + 1
-					ObjectiveIdx = ObjectiveIdx + 1
-					local Restriction = CustomRestrictions[i][j]
-					CustomRestrictionsIdx[Restriction[1]] = {InGameIdx,ObjectiveIdx}
-					LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, Restriction[2])
-					LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Purchase \"" .. RewardNames[Restriction[1]] .. "\" to continue.")
+					if type(CustomRestrictions[i][j] == "table") then
+						for k=1,#CustomRestrictions[i][j] do
+							InGameIdx = InGameIdx + 1
+							ObjectiveIdx = ObjectiveIdx + 1
+							local Restriction = CustomRestrictions[i][j][k]
+							CustomRestrictionsIdx[Restriction[1]] = {InGameIdx,ObjectiveIdx}
+							LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, Restriction[2])
+							LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Purchase \"" .. RewardNames[Restriction[1]] .. "\" to continue.")
+						end
+					else
+						InGameIdx = InGameIdx + 1
+						ObjectiveIdx = ObjectiveIdx + 1
+						local Restriction = CustomRestrictions[i][j]
+						CustomRestrictionsIdx[Restriction[1]] = {InGameIdx,ObjectiveIdx}
+						LanguageChunk:AddValue("INGAME_MESSAGE_" .. InGameIdx, Restriction[2])
+						LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Purchase \"" .. RewardNames[Restriction[1]] .. "\" to continue.")
+						end
 				end
 			end
 		end
-		
+
 		for i=1,7 do
 			LockedMissionPrompts[i] = {}
 			for j=1,7 do
@@ -234,7 +245,7 @@ for idx in BibleChunk:GetChunkIndexes(P3D.Identifiers.Frontend_Language) do
 				LanguageChunk:AddValue("MISSION_OBJECTIVE_" .. ObjectiveIdx, "Mission warp to \"" .. MissionTitle[i][MissionOrder[i][j]] .. "\".")
 			end
 		end
-		
+
 		BibleChunk:SetChunkAtIndex(idx, LanguageChunk:Output())
 		break
 	end

@@ -17,7 +17,7 @@ if ThisLevel == 1 and ThisMission == 0 then
 	for i=1,7 do
 		CompletedMissions[i] = {}
 	end
-	
+
 	local MFK = MFKLexer.Lexer:Parse(ReadFile(GamePath))
 	for i=#MFK.Functions,1,-1 do
 		local name = MFK.Functions[i].Name:lower()
@@ -26,14 +26,14 @@ if ThisLevel == 1 and ThisMission == 0 then
 		end
 	end
 	MFK:InsertFunction(1, "SelectMission", "m0sd")
-	
+
 	MFK:AddFunction("AddStage")
 	MFK:AddFunction("AddObjective", "timer")
 	MFK:AddFunction("SetPresentationBitmap", "art/frontend/dynaload/images/mis01_00.p3d")
 	MFK:AddFunction("SetDurationTime", 0)
 	MFK:AddFunction("CloseObjective")
 	MFK:AddFunction("CloseStage")
-	
+
 	MFK:AddFunction("CloseMission")
 	MFK:Output()
 	return
@@ -42,6 +42,12 @@ end
 local File
 local MFK
 local AddCoins
+
+File = File or ReadFile(GamePath)
+if File:match("locked") then
+	File = File:gsub("AddStage%s*%(\"locked\".-%s*%);(.-)CloseStage%s*%(%s*%);%s*AddStage%s*%([^\n]-%s*%);.-CloseStage%s*%(%s*%);", "", 1);
+	MFK = MFKLexer.Lexer:Parse(File)
+end
 
 if CompletedLevel and CompletedMission then
 	print("L" .. CompletedLevel .. "M" .. CompletedMission, "Completed", CompletedMissions[CompletedLevel][CompletedMission] and "Not first time" or "First time")
@@ -121,73 +127,147 @@ if ThisMission > 0 and ThisMission < 8 and ThisMission ~= MissionOrder[ThisLevel
 end
 
 if not missionLocked and CustomRestrictions[ThisLevel][ThisMission] then
-	local Restriction = CustomRestrictions[ThisLevel][ThisMission][1]
-	File = File or ReadFile(GamePath)
-	MFK = MFK or MFKLexer.Lexer:Parse(File)
+	if type(CustomRestrictions[ThisLevel][ThisMission] == "table") then
+		for k=1,#CustomRestrictions[ThisLevel][ThisMission] do
 
-	local firstStage
-	local lastStage
-	local resetStage
-	for i=1,#MFK.Functions do
-		local name = MFK.Functions[i].Name:lower()
-		if name == "addstage" then
-			firstStage = firstStage or i
-			lastStage = i
-		elseif name == "reset_to_here" then
-			table.remove(MFK.Functions, i)
-			resetStage = lastStage
-			break
+			local Restriction = CustomRestrictions[ThisLevel][ThisMission][k][1]
+			File = File or ReadFile(GamePath)
+			MFK = MFK or MFKLexer.Lexer:Parse(File)
+
+			local firstStage
+			local lastStage
+			local resetStage
+			for i=1,#MFK.Functions do
+				local name = MFK.Functions[i].Name:lower()
+				if name == "addstage" then
+					firstStage = firstStage or i
+					lastStage = i
+				elseif name == "reset_to_here" then
+					table.remove(MFK.Functions, i)
+					resetStage = lastStage
+					break
+				end
+			end
+
+			local idx = resetStage or firstStage
+
+			MFK:InsertFunction(idx, "AddStage")
+			idx = idx + 1
+			if resetStage then
+				MFK:InsertFunction(idx, "RESET_TO_HERE")
+				idx = idx + 1
+			end
+			MFK:InsertFunction(idx, "AddObjective", "timer")
+			idx = idx + 1
+			MFK:InsertFunction(idx, "SetDurationTime", 5)
+			idx = idx + 1
+			MFK:InsertFunction(idx, "CloseObjective")
+			idx = idx + 1
+			MFK:InsertFunction(idx, "CloseStage")
+			idx = idx + 1
+
+			if Cars[Restriction] then
+				RestrictionType = "car"
+			else
+				RestrictionType = "skin"
+			end
+
+			MFK:InsertFunction(idx, "AddStage", {"locked", Costumes[Restriction] and "skin" or "car", Restriction})
+			idx = idx + 1
+			MFK:InsertFunction(idx, "SetStageMessageIndex", CustomRestrictionsIdx[Restriction][1])
+			idx = idx + 1
+			MFK:InsertFunction(idx, "AddObjective", "timer")
+			idx = idx + 1
+			MFK:InsertFunction(idx, "SetDurationTime", 0)
+			idx = idx + 1
+			MFK:InsertFunction(idx, "CloseObjective")
+			idx = idx + 1
+			MFK:InsertFunction(idx, "CloseStage")
+			idx = idx + 1
+
+			MFK:InsertFunction(idx, "AddStage")
+			idx = idx + 1
+			MFK:InsertFunction(idx, "SetStageMessageIndex", CustomRestrictionsIdx[Restriction][2])
+			idx = idx + 1
+			MFK:InsertFunction(idx, "SetHUDIcon", "tshirt" )
+			idx = idx + 1
+			MFK:InsertFunction(idx, "AddObjective", {Costumes[Restriction] and "buyskin" or "buycar", Restriction})
+			idx = idx + 1
+			MFK:InsertFunction(idx, "CloseObjective")
+			idx = idx + 1
+			MFK:InsertFunction(idx, "CloseStage")
+			idx = idx + 1
 		end
-	end
-	
-	local idx = resetStage or firstStage
-	
-	MFK:InsertFunction(idx, "AddStage")
-	idx = idx + 1
-	if resetStage then
-		MFK:InsertFunction(idx, "RESET_TO_HERE")
+
+	else
+		local Restriction = CustomRestrictions[ThisLevel][ThisMission][1]
+		File = File or ReadFile(GamePath)
+		MFK = MFK or MFKLexer.Lexer:Parse(File)
+
+		local firstStage
+		local lastStage
+		local resetStage
+		for i=1,#MFK.Functions do
+			local name = MFK.Functions[i].Name:lower()
+			if name == "addstage" then
+				firstStage = firstStage or i
+				lastStage = i
+			elseif name == "reset_to_here" then
+				table.remove(MFK.Functions, i)
+				resetStage = lastStage
+				break
+			end
+		end
+
+		local idx = resetStage or firstStage
+
+		MFK:InsertFunction(idx, "AddStage")
+		idx = idx + 1
+		if resetStage then
+			MFK:InsertFunction(idx, "RESET_TO_HERE")
+			idx = idx + 1
+		end
+		MFK:InsertFunction(idx, "AddObjective", "timer")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetDurationTime", 5)
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseObjective")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseStage")
+		idx = idx + 1
+
+		MFK:InsertFunction(idx, "AddStage", {"locked", Costumes[Restriction] and "skin" or "car", Restriction})
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetStageMessageIndex", CustomRestrictionsIdx[Restriction][1])
+		idx = idx + 1
+		MFK:InsertFunction(idx, "AddObjective", "timer")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetDurationTime", 0)
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseObjective")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseStage")
+		idx = idx + 1
+
+		MFK:InsertFunction(idx, "AddStage")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetStageMessageIndex", CustomRestrictionsIdx[Restriction][2])
+		idx = idx + 1
+		MFK:InsertFunction(idx, "SetHUDIcon", "tshirt" )
+		idx = idx + 1
+		MFK:InsertFunction(idx, "AddObjective", {"buyskin", Restriction})
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseObjective")
+		idx = idx + 1
+		MFK:InsertFunction(idx, "CloseStage")
 		idx = idx + 1
 	end
-	MFK:InsertFunction(idx, "AddObjective", "timer")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetDurationTime", 5)
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseObjective")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseStage")
-	idx = idx + 1
-
-	MFK:InsertFunction(idx, "AddStage", {"locked", Costumes[Restriction] and "skin" or "car", Restriction})
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetStageMessageIndex", CustomRestrictionsIdx[Restriction][1])
-	idx = idx + 1
-	MFK:InsertFunction(idx, "AddObjective", "timer")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetDurationTime", 0)
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseObjective")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseStage")
-	idx = idx + 1
-
-	MFK:InsertFunction(idx, "AddStage")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetStageMessageIndex", CustomRestrictionsIdx[Restriction][2])
-	idx = idx + 1
-	MFK:InsertFunction(idx, "SetHUDIcon", "tshirt" )
-	idx = idx + 1
-	MFK:InsertFunction(idx, "AddObjective", {"buyskin", Restriction})
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseObjective")
-	idx = idx + 1
-	MFK:InsertFunction(idx, "CloseStage")
-	idx = idx + 1
 end
 
 if AddCoins then
 	File = File or ReadFile(GamePath)
 	MFK = MFK or MFKLexer.Lexer:Parse(File)
-	
+
 	for i=1,#MFK.Functions do
 		if MFK.Functions[i].Name:lower() == "reset_to_here" then
 			MFK:InsertFunction(i + 1, "SetStagePayout", AddCoins)

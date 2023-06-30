@@ -39,6 +39,7 @@ local function ChooseLevelAndMission(Possible, IsCar)
 	return value[1], value[2]
 end
 
+
 function Seed.Generate()
 	local InvalidCount = 0
 	::RestartGenerator::
@@ -85,12 +86,136 @@ function Seed.Generate()
 	for i=1,#Rewards do
 		RemainingRewards[i] = Rewards[i]
 	end
-	
+
 	local RestrictionLocations = {}
 	MissionRewards = {}
 	for i=1,7 do
 		MissionRewards[i] = {}
 	end
+
+	if Settings.RandomRestrictions then
+
+		RestrictionNames = {}
+		CustomRestrictions = {
+		{false, false, false, false, false, false, false}, -- Level 1
+		{false, false, false, false, false, false, false}, -- Level 2
+		{false, false, false, false, false, false, false}, -- Level 3
+		{false, false, false, false, false, false, false}, -- Level 4
+		{false, false, false, false, false, false, false}, -- Level 5
+		{false, false, false, false, false, false, false}, -- Level 6
+		{false, false, false, false, false, false, false} -- Level 7
+		}
+
+		Restrictions = {
+		{{}, {}, {}, {}, {}, {}, {}}, -- Level 1
+		{{}, {}, {}, {}, {}, {}, {}}, -- Level 2
+		{{}, {}, {}, {}, {}, {}, {}}, -- Level 3
+		{{}, {}, {}, {}, {}, {}, {}}, -- Level 4
+		{{}, {}, {}, {}, {}, {}, {}}, -- Level 5
+		{{}, {}, {}, {}, {}, {}, {}}, -- Level 6
+		{{}, {}, {}, {}, {}, {}, {}} -- Level 7
+		}
+
+
+		while #RestrictionNames < 13 do
+			restriction = Rewards[math.random(#Rewards)]
+
+			if #RestrictionNames <= 2 then
+				if not Cars[restriction] then
+					if restriction:sub(1,1) == "h" then
+						if restriction == "h_scuzzy" or restriction == "h_evil" or restriction == "h_donut" then
+							i = 7
+						else
+							i = 1
+						end
+					elseif restriction:sub(1,1) == "b" then
+						if restriction == "b_tall" or restriction == "b_football" or restriction == "b_ninja" then
+							i = 2
+						else
+							i = 6
+						end
+					elseif restriction:sub(1,1) == "l" then
+						i = 3
+					elseif restriction:sub(1,1) == "m" then
+						i = 4
+					elseif restriction:sub(1,1) == "a" then
+						i = 5
+					else
+						Alert("You have a custom costume mod enabled. Unfortunately Random Forced Purchaseables does not support custom costumes. Please turn off any custom costume mods and try again")
+						os.exit()
+					end
+				else
+					i = 7
+				end
+
+				if i == 7 then
+					j = 7
+
+					if not CustomRestrictions[i][j] then
+						CustomRestrictions[i][j] = {}
+					end
+					name = RewardNames[restriction]
+					CustomRestrictions[i][j][#CustomRestrictions[i][j] + 1] = {restriction, "You need "..name.." to continue!\nPurchase "..name.. " if you've unlocked it. Otherwise track it down in other missions.\nOwnership of "..name.." must be shown to the Rewards Rando gods!"}
+					Restrictions[i][j][#Restrictions[i][j] + 1] = restriction
+					RestrictionNames[#RestrictionNames + 1] = restriction
+				end
+
+			else
+				duplicate = false
+				for i=1,#RestrictionNames do
+					if RestrictionNames[i] == restriction then
+						duplicate = true
+					end
+				end
+
+				if not duplicate then
+
+					if not Cars[restriction] then
+						if restriction:sub(1,1) == "h" then
+							if restriction == "h_scuzzy" or restriction == "h_evil" or restriction == "h_donut" then
+								i = 7
+							else
+								i = 1
+							end
+						elseif restriction:sub(1,1) == "b" then
+							if restriction == "b_tall" or restriction == "b_football" or restriction == "b_ninja" then
+								i = 2
+							else
+								i = 6
+							end
+						elseif restriction:sub(1,1) == "l" then
+							i = 3
+						elseif restriction:sub(1,1) == "m" then
+							i = 4
+						elseif restriction:sub(1,1) == "a" then
+							i = 5
+						else
+							Alert("You have a custom costume mod enabled. Unfortunately Random Forced Purchaseables does not support custom costumes. Please turn off any custom costume mods and try again")
+							os.exit()
+						end
+					else
+						i = math.random(7)
+					end
+
+					if i == 7 then
+						j = math.random(6)
+					else
+						j = math.random(7)
+					end
+
+					if not CustomRestrictions[i][j] then
+						CustomRestrictions[i][j] = {}
+					end
+					name = RewardNames[restriction]
+					CustomRestrictions[i][j][#CustomRestrictions[i][j] + 1] = {restriction, "You need "..name.." to continue!\nPurchase "..name.. " if you've unlocked it. Otherwise track it down in other missions.\nOwnership of "..name.." must be shown to the Rewards Rando gods!"}
+					Restrictions[i][j][#Restrictions[i][j] + 1] = restriction
+					RestrictionNames[#RestrictionNames + 1] = restriction
+				end
+			end
+		end
+	end
+
+	local RestrictionItems = {}
 	for i=1,#Restrictions do
 		for j=1,#Restrictions[i] do
 			local MissionRestrictions = Restrictions[i][j]
@@ -103,6 +228,7 @@ function Seed.Generate()
 				MissionRewards[level][mission] = MissionRestrictions[k]
 				RestrictionLocations[#RestrictionLocations + 1] = {MissionRestrictions[k],"L" .. level .. "M" .. mission}
 				PossibleMissions[level][mission] = false
+				RestrictionItems[#RestrictionItems + 1] = MissionRestrictions[k]
 				for l=1,#RemainingRewards do
 					if RemainingRewards[l] == MissionRestrictions[k] then
 						table.remove(RemainingRewards, l)
@@ -112,12 +238,12 @@ function Seed.Generate()
 			end
 		end
 	end
-	
+
 	if not Seed.CheckSoftlock() then
 		InvalidCount = InvalidCount + 1
 		goto RestartGenerator
 	end
-	
+
 	for k=14,1,-1 do
 		for j=#PossibleMissions,1,-1 do
 			if PossibleMissions[j][k] then
@@ -132,20 +258,30 @@ function Seed.Generate()
 				if #RemainingRewards == 0 then
 					print("Re-filling the rewards table - may cause duplicte rewards")
 					for i=1,#Rewards do
-						RemainingRewards[i] = Rewards[i]
+						IsRestriction = false
+						-- Checks if current reward is a forced purchaseable
+						for j=1,#RestrictionItems do
+							if RestrictionItems[j] == Rewards[i] then
+								IsRestriction = true
+							end
+						end
+						-- Readd to table only if it isn't a forced purchaseable (prevents doubling up of these items)
+						if not(IsRestriction) then
+							RemainingRewards[i] = Rewards[i]
+						end
 					end
 				end
 				PossibleMissions[j][k] = false
 			end
 		end
 	end
-	
+
 	Seed.AddSpoiler("RESTRICTIONS:")
 	for i=1,#RestrictionLocations do
 		Seed.AddSpoiler(RestrictionLocations[i][1] .. "|" .. RestrictionLocations[i][2])
 	end
 	Seed.AddSpoiler("")
-	
+
 	Seed.AddSpoiler("REWARDS:")
 	for i=1,7 do
 		for j=1,14 do
@@ -155,7 +291,7 @@ function Seed.Generate()
 		end
 	end
 	Seed.AddSpoiler("")
-	
+
 	return InvalidCount
 end
 
@@ -164,7 +300,7 @@ function Seed.CheckSoftlock()
 		print("Seed.Generate() hasn't yet been called.")
 		return
 	end
-	
+
 	local UnlockedRewards = {}
 	for i=1,7 do
 		for j=8,14 do
@@ -172,7 +308,7 @@ function Seed.CheckSoftlock()
 		end
 	end
 	if MissionRewards[7][7] then UnlockedRewards[MissionRewards[7][7]] = true end
-	
+
 	local Missions = {}
 	for i=1,7 do
 		Missions[i] = {}
@@ -180,7 +316,7 @@ function Seed.CheckSoftlock()
 			Missions[i][j] = false
 		end
 	end
-	
+
 	local loops = 0
 	local completedMissions = 0
 	while loops < 100 do

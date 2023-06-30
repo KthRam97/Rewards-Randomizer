@@ -16,13 +16,13 @@ local IsRestart = LastLevel == CurrLevel and LastMission == CurrMission
 if CurrLevel == 1 and CurrMission == 0 then
 	local MFK = MFKLexer.Lexer:New()
 	MFK:AddFunction("SelectMission", "m0")
-	
+
 	MFK:AddFunction("AddStage", "final")
 	MFK:AddFunction("AddObjective", "timer")
 	MFK:AddFunction("SetDurationTime", 0)
 	MFK:AddFunction("CloseObjective")
 	MFK:AddFunction("CloseStage")
-	
+
 	MFK:AddFunction("CloseMission")
 	MFK:Output()
 	return
@@ -51,7 +51,7 @@ if not Settings.DisableIngamePopups then
 				end
 				break
 			end
-		end	
+		end
 
 		MFK:AddFunction("AddStage", {"locked", "car", "notification"})
 		MFK:AddFunction("SetStageMessageIndex", 19 + RewardsIdx[MissionRewards[CurrLevel][CurrMission]])
@@ -75,15 +75,15 @@ if not IsRestart and CurrMission < 8 and Settings.HintType == 2 and CardCount > 
 	while CardCount >= CardsPerHint and CardHints[CardHintsGiven + 1] do
 		CardCount = CardCount - CardsPerHint
 		CardHintsGiven = CardHintsGiven + 1
-		
+
 		local Hint = CardHints[CardHintsGiven]
-		
+
 		print("HINT|" .. Hint[2] .. "|" .. Hint[3])
-		
+
 		if not Settings.DisableIngamePopups then
 			File = File or ReadFile(GamePath)
 			MFK = MFK or MFKLexer.Lexer:Parse(File)
-			
+
 			local firstStage
 			for i=1,#MFK.Functions do
 				local name = MFK.Functions[i].Name:lower()
@@ -92,9 +92,9 @@ if not IsRestart and CurrMission < 8 and Settings.HintType == 2 and CardCount > 
 					break
 				end
 			end
-			
+
 			local idx = firstStage
-			
+
 			MFK:InsertFunction(idx, "AddStage", {"locked", "car", "notification"})
 			idx = idx + 1
 			MFK:InsertFunction(idx, "SetStageMessageIndex", Hint[1])
